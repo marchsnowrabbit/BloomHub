@@ -2,10 +2,11 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from konlpy.tag import Okt
 import pandas as pd
 
+
 class KoreanScriptExtractor:
     def __init__(self, vid, setTime, NUM_OF_WORDS=5):
         self.vid = vid
-        self.scriptData = []
+        self.segments = []  # 세그먼트 및 시간 정보를 저장할 리스트
         self.setTime = setTime
         self.NUM_OF_WORDS = NUM_OF_WORDS
 
@@ -26,7 +27,7 @@ class KoreanScriptExtractor:
 
         print("Extracted Korean transcript")
 
-        # 세그먼트를 1분 단위로 나누어 스크립트 데이터에 추가
+        # 세그먼트를 1분 단위로 나누어 세그먼트와 시간 정보 저장
         segment_duration = 60  # 1분 = 60초
         start_time = 0
         end_time = segment_duration
@@ -35,16 +36,26 @@ class KoreanScriptExtractor:
             if segment['start'] >= start_time and segment['start'] < end_time:
                 segment_texts.append(segment['text'])
             elif segment['start'] >= end_time:
-                self.scriptData.append(" ".join(segment_texts))
+                segment_data = {
+                    "text": " ".join(segment_texts),
+                    "start_time": start_time,
+                    "end_time": end_time
+                }
+                self.segments.append(segment_data)
                 segment_texts = [segment['text']]
                 start_time = end_time
                 end_time += segment_duration
 
         # 마지막 세그먼트가 남아있는 경우 추가
         if segment_texts:
-            self.scriptData.append(" ".join(segment_texts))
+            segment_data = {
+                "text": " ".join(segment_texts),
+                "start_time": start_time,
+                "end_time": end_time
+            }
+            self.segments.append(segment_data)
 
-        print("Extracted {} segments".format(len(self.scriptData)))
+        print("Extracted {} segments".format(len(self.segments)))
 
     # Konlpy를 사용하여 형태소 분석 및 품사 태깅
     def konlpy_analysis(self):
