@@ -1,0 +1,221 @@
+{'text': '[음악]', 'start': 0.0, 'duration': 0.99}
+{'text': '[박수]', 'start': 0.95, 'duration': 2.66}
+{'text': '[음악]', 'start': 0.99, 'duration': 2.62}
+{'text': '[음악]', 'start': 5.8, 'duration': 4.18}
+{'text': '[박수]', 'start': 8.67, 'duration': 7.269}
+{'text': '[음악]', 'start': 9.98, 'duration': 5.959}
+{'text': '한번', 'start': 19.0, 'duration': 4.08}
+{'text': '해 한번', 'start': 20.0, 'duration': 6.72}
+{'text': '해한 지금 제일 좋아', 'start': 23.08, 'duration': 5.88}
+{'text': '[음악]', 'start': 26.72, 'duration': 5.16}
+{'text': '해라 신게 무조건', 'start': 28.96, 'duration': 7.24}
+{'text': '이깁니다 갑시다 하나 둘', 'start': 31.88, 'duration': 4.32}
+{'text': '셋지니까 원래 다 빠리지는 거야 원래', 'start': 40.64, 'duration': 5.399}
+{'text': '맞으면 야 상', 'start': 43.52, 'duration': 5.44}
+{'text': '아니야 오늘 내일부터 준비해야', 'start': 46.039, 'duration': 6.401}
+{'text': '돼 변상 보여줘 한', 'start': 48.96, 'duration': 6.48}
+{'text': '해여', 'start': 52.44, 'duration': 3.0}
+{'text': '네가야지', 'start': 58.92, 'duration': 3.0}
+{'text': '[박수]', 'start': 63.1, 'duration': 23.58}
+{'text': 'nan', 'start': 84.72, 'duration': 4.2}
+{'text': 'oan', 'start': 86.68, 'duration': 3.75}
+{'text': 'oan', 'start': 88.92, 'duration': 28.89}
+{'text': '[박수]', 'start': 90.43, 'duration': 27.38}
+{'text': '다', 'start': 118.84, 'duration': 5.16}
+{'text': '[박수]', 'start': 120.36, 'duration': 7.28}
+{'text': '만 온다', 'start': 124.0, 'duration': 3.64}
+{'text': '[박수]', 'start': 127.68, 'duration': 9.269}
+{'text': '온다', 'start': 143.36, 'duration': 3.2}
+{'text': '[박수]', 'start': 144.64, 'duration': 4.2}
+{'text': '다', 'start': 146.56, 'duration': 5.28}
+{'text': '대다', 'start': 148.84, 'duration': 3.0}
+{'text': '[박수]', 'start': 160.15, 'duration': 21.69}
+{'text': '들어가', 'start': 178.84, 'duration': 3.0}
+{'text': '[박수]', 'start': 183.74, 'duration': 26.88}
+{'text': 'W', 'start': 208.76, 'duration': 26.48}
+{'text': '[박수]', 'start': 210.62, 'duration': 24.62}
+{'text': 's', 'start': 238.72, 'duration': 3.0}
+{'text': '[박수]', 'start': 242.1, 'duration': 8.62}
+{'text': '나의', 'start': 247.72, 'duration': 3.0}
+{'text': '[박수]', 'start': 256.69, 'duration': 13.31}
+{'text': '승', 'start': 268.72, 'duration': 12.63}
+{'text': '[박수]', 'start': 270.0, 'duration': 14.519}
+{'text': '[음악]', 'start': 281.35, 'duration': 3.169}
+{'text': '[박수]', 'start': 287.75, 'duration': 8.67}
+{'text': 'h', 'start': 298.639, 'duration': 3.0}
+{'text': '[박수]', 'start': 306.27, 'duration': 8.069}
+{'text': '[박수]', 'start': 325.21, 'duration': 6.429}
+{'text': 'j', 'start': 328.639, 'duration': 3.0}
+{'text': '[박수]', 'start': 341.19, 'duration': 9.78}
+{'text': '[음악]', 'start': 344.07, 'duration': 6.9}
+{'text': 'p', 'start': 358.639, 'duration': 3.841}
+{'text': '[음악]', 'start': 359.85, 'duration': 4.51}
+{'text': '[박수]', 'start': 362.48, 'duration': 6.279}
+{'text': '느낌 왔어 지금 왔다', 'start': 364.36, 'duration': 4.399}
+{'text': '왔다', 'start': 375.599, 'duration': 3.0}
+{'text': '잘', 'start': 383.639, 'duration': 4.201}
+{'text': '[박수]', 'start': 384.64, 'duration': 6.92}
+{'text': '대공대 공', 'start': 387.84, 'duration': 3.72}
+{'text': '[박수]', 'start': 392.41, 'duration': 29.11}
+{'text': 'Oh', 'start': 418.52, 'duration': 3.0}
+{'text': '[박수]', 'start': 428.6, 'duration': 18.57}
+{'text': 'k', 'start': 448.52, 'duration': 3.0}
+{'text': '[박수]', 'start': 453.15, 'duration': 27.42}
+{'text': '오', 'start': 478.44, 'duration': 4.68}
+{'text': '[박수]', 'start': 480.57, 'duration': 4.43}
+{'text': '하나정', 'start': 483.12, 'duration': 4.88}
+{'text': '가하나', 'start': 485.0, 'duration': 3.0}
+{'text': '제은정', 'start': 488.639, 'duration': 3.0}
+{'text': '[박수]', 'start': 492.21, 'duration': 11.52}
+{'text': '다 어 맛있게 먹어', 'start': 508.44, 'duration': 3.84}
+{'text': '[박수]', 'start': 513.59, 'duration': 3.189}
+{'text': '네가 오케', 'start': 525.76, 'duration': 3.36}
+{'text': '[박수]', 'start': 531.57, 'duration': 3.319}
+{'text': '오케', 'start': 538.44, 'duration': 5.839}
+{'text': '감합니다', 'start': 541.279, 'duration': 3.0}
+{'text': '감합니다', 'start': 548.32, 'duration': 4.56}
+{'text': '나의', 'start': 549.88, 'duration': 3.0}
+{'text': '승해 나는', 'start': 554.399, 'duration': 4.56}
+{'text': '행복합니다', 'start': 557.44, 'duration': 3.28}
+{'text': '나는', 'start': 558.959, 'duration': 7.441}
+{'text': '행복합니다 나는 행복합니다 스가', 'start': 560.72, 'duration': 7.64}
+{'text': '[음악]', 'start': 566.4, 'duration': 4.96}
+{'text': '행복합니다', 'start': 568.36, 'duration': 3.0}
+{'text': '수', 'start': 577.56, 'duration': 3.71}
+{'text': '2', 'start': 578.8, 'duration': 19.52}
+{'text': '[박수]', 'start': 581.27, 'duration': 20.05}
+{'text': '1', 'start': 598.32, 'duration': 3.0}
+{'text': '[박수]', 'start': 611.99, 'duration': 3.33}
+{'text': '[박수]', 'start': 619.3, 'duration': 3.56}
+{'text': 'C', 'start': 628.32, 'duration': 3.0}
+{'text': '드리을', 'start': 633.839, 'duration': 6.621}
+{'text': '[박수]', 'start': 636.06, 'duration': 4.4}
+{'text': '부드리', 'start': 643.76, 'duration': 4.44}
+{'text': '6년', 'start': 646.0, 'duration': 6.6}
+{'text': '5년이 엄마 18년도 했을걸요', 'start': 648.2, 'duration': 7.48}
+{'text': '엄마 19년 19년도가 아 19년도에', 'start': 652.6, 'duration': 8.88}
+{'text': '했나 어 19년도 1 19년도 이상', 'start': 655.68, 'duration': 11.08}
+{'text': '억 그때 아카트 하나잡고 예 삼진 어', 'start': 661.48, 'duration': 8.4}
+{'text': '세이브 한 것보다 팀이 오늘 이겨서', 'start': 666.76, 'duration': 6.639}
+{'text': '더 좋고 오늘지면 만약에 연패 했는데', 'start': 669.88, 'duration': 7.04}
+{'text': '그 연패 안 가고 바로 또 끊어서', 'start': 673.399, 'duration': 6.761}
+{'text': '기분이 더 좋은 거 같아 어 원래', 'start': 676.92, 'duration': 6.68}
+{'text': '승혁이 뒤에 백업으로 준비했는데', 'start': 680.16, 'duration': 5.56}
+{'text': '상원이가 안 좋으면 어 뒤에 붙을 수', 'start': 683.6, 'duration': 3.6}
+{'text': '있겠다', 'start': 685.72, 'duration': 5.52}
+{'text': '생각했는데 바로 원프 해가지고', 'start': 687.2, 'duration': 4.04}
+{'text': '저번에 KT 전때 뭐 세이브 상황은', 'start': 691.279, 'duration': 5.761}
+{'text': '아니지만 구에 나와서 홈', 'start': 694.32, 'duration': 5.48}
+{'text': '맞아가고 그 살짝 그 생각 했어요 아', 'start': 697.04, 'duration': 6.32}
+{'text': '이번에는 가운데 말고 낮게 던지자', 'start': 699.8, 'duration': 5.4}
+{'text': '낮게만 던지면 막을 수 있다', 'start': 703.36, 'duration': 4.24}
+{'text': '생각하 많이', 'start': 705.2, 'duration': 6.319}
+{'text': '던 어 저 뭐 박민 치이 힘으로', 'start': 707.6, 'duration': 6.75}
+{'text': '승부하지 말라고 그말은으로', 'start': 711.519, 'duration': 6.25}
+{'text': '[박수]', 'start': 714.35, 'duration': 3.419}
+{'text': '좀는 까게 던지려고 단 사로 내려오지', 'start': 718.24, 'duration': 6.159}
+{'text': '마고 어 근데 저도 그거는 그건', 'start': 722.04, 'duration': 5.72}
+{'text': '인정해 진짜 ABS', 'start': 724.399, 'duration': 6.041}
+{'text': '들어오면서 제일 좋은게 커브 잘 넣진', 'start': 727.76, 'duration': 4.92}
+{'text': '사람이 제일 유리하다고 봐요 뭐', 'start': 730.44, 'duration': 4.32}
+{'text': '지구랑 변화구는 다른 거는 다', 'start': 732.68, 'duration': 4.68}
+{'text': '비슷한데 커브 잘 쓰는 투수가 제일', 'start': 734.76, 'duration': 5.68}
+{'text': '유리할 것 같아 다를 다른 때도', 'start': 737.36, 'duration': 5.88}
+{'text': '좋았는데 오늘은 뭔가 더 좋았던 거', 'start': 740.44, 'duration': 4.8}
+{'text': '같아요 그 원래 제가 액션이 별로', 'start': 743.24, 'duration': 4.039}
+{'text': '없는데 그까 저도 모르게 좀 액션이', 'start': 745.24, 'duration': 4.08}
+{'text': '나왔던 거 같아요 그 아웃되는 순간', 'start': 747.279, 'duration': 3.12}
+{'text': '액션', 'start': 749.32, 'duration': 3.48}
+{'text': '나오고 아 이래서 마무리 투수가 좋은', 'start': 750.399, 'duration': 3.8}
+{'text': '거 같아', 'start': 752.8, 'duration': 6.76}
+{'text': '부럽네요 기분이 많이 없다네 마면 다', 'start': 754.199, 'duration': 8.841}
+{'text': '수 아 안 나가는게 더 피곤해요', 'start': 759.56, 'duration': 6.68}
+{'text': '나가야 더 좋지 저는 그래서 경기를', 'start': 763.04, 'duration': 4.919}
+{'text': '매일매일 나가고', 'start': 766.24, 'duration': 4.68}
+{'text': '싶어 일단 개인적인 목표는 50', 'start': 767.959, 'duration': 6.32}
+{'text': '경기인데 왜냐면 그 정도는 나가야', 'start': 770.92, 'duration': 5.24}
+{'text': '팀에 도움이 도움이', 'start': 774.279, 'duration': 3.92}
+{'text': '되니까 마음으로 한 70경기 나가고', 'start': 776.16, 'duration': 4.2}
+{'text': '싶죠', 'start': 778.199, 'duration': 5.921}
+{'text': '불에서 가장 좋 모습을', 'start': 780.36, 'duration': 3.76}
+{'text': '보이는 아 친구들 어 현상 승가 올해', 'start': 784.72, 'duration': 9.08}
+{'text': '3시 잘해가지고 우리 팀 하나 좋은', 'start': 789.6, 'duration': 6.88}
+{'text': '성적 거둘 수 있게 어 많은 보탬이', 'start': 793.8, 'duration': 5.56}
+{'text': '되자 우리가', 'start': 796.48, 'duration': 2.88}
+{'text': '[음악]', 'start': 803.43, 'duration': 7.69}
+{'text': '팅', 'start': 808.12, 'duration': 3.0}
+{'text': '[음악]', 'start': 816.3, 'duration': 7.679}
+{'text': 'S', 'start': 827.639, 'duration': 2.241}
+{'text': 'sant', 'start': 829.959, 'duration': 6.21}
+{'text': '[박수]', 'start': 831.74, 'duration': 4.429}
+{'text': 'than', 'start': 838.04, 'duration': 5.009}
+{'text': '[박수]', 'start': 839.99, 'duration': 3.059}
+{'text': '[음악]', 'start': 843.1, 'duration': 9.62}
+{'text': 'con', 'start': 851.48, 'duration': 3.279}
+{'text': 'fam', 'start': 852.72, 'duration': 5.039}
+{'text': 'PlayStation', 'start': 854.759, 'duration': 3.0}
+{'text': 'apart si PlayStation', 'start': 859.12, 'duration': 4.36}
+{'text': 'almo tio con mi con', 'start': 861.399, 'duration': 4.201}
+{'text': 'mi', 'start': 863.48, 'duration': 2.12}
+{'text': 'nov', 'start': 868.04, 'duration': 4.44}
+{'text': 'PlayStation FIFA', 'start': 870.079, 'duration': 4.0}
+{'text': 'call of duty per', 'start': 872.48, 'duration': 3.84}
+{'text': 'Show show', 'start': 874.079, 'duration': 4.44}
+{'text': '24 mismo plan crito', 'start': 876.32, 'duration': 4.959}
+{'text': 'Al pendo UN loiz Los', 'start': 878.519, 'duration': 4.44}
+{'text': 'pich', 'start': 881.279, 'duration': 3.8}
+{'text': 'sonit pich', 'start': 882.959, 'duration': 4.761}
+{'text': 'bueno hicimos da Ah', 'start': 885.079, 'duration': 4.601}
+{'text': 'n Como lo dije sabes', 'start': 887.72, 'duration': 3.039}
+{'text': 'UNA presi obviamente', 'start': 889.68, 'duration': 1.719}
+{'text': 'uno se VE tranquilo', 'start': 890.759, 'duration': 1.32}
+{'text': 'per Al mismo tiempo', 'start': 891.399, 'duration': 1.321}
+{'text': 'LA misma presi de la', 'start': 892.079, 'duration': 2.0}
+{'text': 'fanatic LA misma', 'start': 892.72, 'duration': 4.08}
+{'text': 'situ coneva pres', 'start': 894.079, 'duration': 5.081}
+{'text': 'veos ES Como profo', 'start': 896.8, 'duration': 6.76}
+{'text': 'hao baj laaj', 'start': 899.16, 'duration': 4.4}
+{'text': 'alego no mira sab', 'start': 903.759, 'duration': 4.08}
+{'text': 'perdiendo UNA', 'start': 906.68, 'duration': 2.36}
+{'text': 'derrota no solamente', 'start': 907.839, 'duration': 3.12}
+{'text': 'ao tambi Al equipo y', 'start': 909.04, 'duration': 4.159}
+{'text': 'hayle ha eseo tambi', 'start': 910.959, 'duration': 2.961}
+{'text': 'Al equipo Que se', 'start': 913.199, 'duration': 2.961}
+{'text': 'caig y a LA fanatico', 'start': 913.92, 'duration': 3.08}
+{'text': 'tambi vine para AC', 'start': 916.16, 'duration': 1.64}
+{'text': 'solamente ha unen', 'start': 917.0, 'duration': 1.519}
+{'text': 'trabajo con EL bate', 'start': 917.8, 'duration': 1.52}
+{'text': 'O con LA defensa', 'start': 918.519, 'duration': 3.281}
+{'text': 'tambi trat sabes hac', 'start': 919.32, 'duration': 5.519}
+{'text': 'algo diferente', 'start': 921.8, 'duration': 4.959}
+{'text': 'anim TE dig comun', 'start': 924.839, 'duration': 3.68}
+{'text': 'ser con ell durante', 'start': 926.759, 'duration': 3.44}
+{'text': 'juego', 'start': 928.519, 'duration': 2.641}
+{'text': 'obviamente lo siento', 'start': 930.199, 'duration': 2.841}
+{'text': 'permo', 'start': 931.16, 'duration': 4.28}
+{'text': 'tiempo me peri', 'start': 933.04, 'duration': 5.64}
+{'text': 'terren solamente', 'start': 935.44, 'duration': 6.04}
+{'text': 'trabajo', 'start': 938.68, 'duration': 5.519}
+{'text': 'siana equip aipo', 'start': 941.48, 'duration': 5.64}
+{'text': 'comper pelot veun VA', 'start': 944.199, 'duration': 4.481}
+{'text': 'VA', 'start': 947.12, 'duration': 4.639}
+{'text': 'malando aend mal n', 'start': 948.68, 'duration': 5.68}
+{'text': 'siento contento', 'start': 951.759, 'duration': 5.681}
+{'text': 'esip sal la fama no', 'start': 954.36, 'duration': 6.56}
+{'text': 'graci ven', 'start': 957.44, 'duration': 3.48}
+{'text': 'acal', 'start': 987.92, 'duration': 4.64}
+{'text': 'ES EST trabajando', 'start': 990.12, 'duration': 5.48}
+{'text': 'EST trabajando para', 'start': 992.56, 'duration': 5.44}
+{'text': 'enend pero ha me', 'start': 995.6, 'duration': 4.52}
+{'text': 'motiva aen', 'start': 998.0, 'duration': 5.24}
+{'text': 'mejor hasta bueno se', 'start': 1000.12, 'duration': 7.48}
+{'text': 'objetivo campeonato', 'start': 1003.24, 'duration': 4.36}
+{'text': 'pal than', 'start': 1010.44, 'duration': 4.92}
+{'text': 'you', 'start': 1012.36, 'duration': 3.0}
+{'text': 'so', 'start': 1015.519, 'duration': 4.401}
+{'text': "beautiful I'm sorry", 'start': 1017.839, 'duration': 3.68}
+{'text': '너', 'start': 1019.92, 'duration': 4.599}
+{'text': 'vore', 'start': 1021.519, 'duration': 3.0}
+{'text': '와우라', 'start': 1027.439, 'duration': 3.0}
+{'text': '큐야 감사합니다 땡큐', 'start': 1034.6, 'duration': 4.199}
+{'text': '감사합니다', 'start': 1047.84, 'duration': 3.0}
