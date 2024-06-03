@@ -158,7 +158,7 @@ class KoreanScriptExtractor:
 # 영상링크는 사용자에게 받아 사용 예정
 # 5분 기준 -> 38초 정도 소요 됨(명사,동사 분류)
 if __name__ == "__main__":
-    extractor = KoreanScriptExtractor(vid="https://www.youtube.com/watch?v=k6HPjMyVJy0", setTime=600, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
+    extractor = KoreanScriptExtractor(vid="https://www.youtube.com/watch?v=u65F4ECaKaY", setTime=600, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
     wiki_data = extractor.url_to_wiki()
     wiki_data.to_csv('rs1.csv')
     print(wiki_data)
