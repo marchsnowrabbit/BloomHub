@@ -1,7 +1,5 @@
-#영어버젼과 한국어 모두 지원
 from youtube_transcript_api import YouTubeTranscriptApi
 from konlpy.tag import Okt
-import spacy
 import pandas as pd
 import urllib.parse
 import urllib.request
@@ -9,7 +7,7 @@ import json
 import concurrent.futures
 import re
 
-class ScriptExtractor:
+class KoreanScriptExtractor:
     def __init__(self, vid, setTime, wikiUserKey, NUM_OF_WORDS=5):
         self.vid = vid
         self.setTime = setTime
@@ -18,7 +16,6 @@ class ScriptExtractor:
         self.segments = []
         self.stopwords = self.load_stopwords()
         self.okt = Okt()
-        self.nlp = spacy.load("en_core_web_sm")
         self.video_title = self.get_video_title()
 
     def load_stopwords(self):
@@ -40,13 +37,12 @@ class ScriptExtractor:
         transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
         self.scriptData = None
         for transcript in transcript_list:
-            if transcript.language_code in ['ko', 'en']:
+            if transcript.language_code == 'ko':
                 self.scriptData = transcript.fetch()
-                self.language_code = transcript.language_code
                 break
 
         if not self.scriptData:
-            print("한국어 또는 영어 자막이 없습니다.")
+            print("한국어 자막이 없습니다.")
             return
 
         segment_duration = 60
@@ -74,31 +70,19 @@ class ScriptExtractor:
         }
         self.segments.append(segment_data)
 
-    def konlpy_analysis(self, text):
-        nouns = self.okt.nouns(text)
-        verbs = [word for word in self.okt.morphs(text) if '다' in word and word not in self.stopwords]
-        filtered_nouns = [word for word in nouns if word not in self.stopwords]
-        filtered_verbs = [word for word in verbs if word not in self.stopwords]
-        return filtered_nouns, filtered_verbs
-
-    def spacy_analysis(self, text):
-        doc = self.nlp(text)
-        nouns = [token.text for token in doc if token.pos_ == 'NOUN' and token.text not in self.stopwords]
-        verbs = [token.text for token in doc if token.pos_ == 'VERB' and token.text not in self.stopwords]
-        return nouns, verbs
-
-    def analyze_segments(self):
+    def konlpy_analysis(self):
         for segment in self.segments:
-            if self.language_code == 'ko':
-                nouns, verbs = self.konlpy_analysis(segment['text'])
-            elif self.language_code == 'en':
-                nouns, verbs = self.spacy_analysis(segment['text'])
-            segment['nouns'] = nouns
-            segment['verbs'] = verbs
+            analyzed_segment = self.okt.pos(segment['text'], stem=True)
+            nouns = [ word for word, pos in analyzed_segment if pos.startswith('N')]
+            verbs = [ word for word, pos in analyzed_segment if pos.startswith('V')]
+            filtered_nouns = [word for word in nouns if word not in self.stopwords]
+            filtered_verbs = [word for word in verbs if word not in self.stopwords]
+            segment['nouns'] = filtered_nouns
+            segment['verbs'] = filtered_verbs
 
     def url_to_wiki(self):
         self.extract()
-        self.analyze_segments()
+        self.konlpy_analysis()
         if not self.scriptData:
             return pd.DataFrame()
 
@@ -169,8 +153,12 @@ class ScriptExtractor:
         sorted_data = sorted(response.get('annotations', []), key=lambda x: x['pageRank'], reverse=True)
         return [{"title": ann["title"], "url": ann["url"], "pageRank": ann["pageRank"]} for ann in sorted_data[:numberOfKCs]]
 
+#최종 결과는 타이틀제목/url/페이지 랭크/단어/품사 /시작시간/ 종료시간 의 형태로 저장됨. csv
+# 유저키는 일단 작성자의 것. 즉 eqhfcdvhiwoikruteziguewrqhnkqn 로 사용함
+# 영상링크는 사용자에게 받아 사용 예정
+# 5분 기준 -> 38초 정도 소요 됨(명사,동사 분류)
 if __name__ == "__main__":
-    extractor = ScriptExtractor(vid="https://www.youtube.com/watch?v=6i3EGqOBRiU&list=PLdo5W4Nhv31bZSiqiOL5ta39vSnBxpOPT", setTime=600, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
+    extractor = KoreanScriptExtractor(vid="https://www.youtube.com/watch?v=u65F4ECaKaY", setTime=600, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
     wiki_data = extractor.url_to_wiki()
-    wiki_data.to_csv("test1.csv", index=False)
+    wiki_data.to_csv('rs1.csv')
     print(wiki_data)
