@@ -17,12 +17,12 @@ def load_dictionary(file_path):
         return [line.strip() for line in file]
 
 # 각 단계별 사전 로드
-remember = load_dictionary('remembering.txt')
-understand = load_dictionary('understanding.txt')
-apply = load_dictionary('applying.txt')
-analyze = load_dictionary('analyzing.txt')
-evaluate = load_dictionary('evaluating.txt')
-create = load_dictionary('creating.txt')
+remember = load_dictionary('KR_bloom_dictionary/analyzing.txt')
+understand = load_dictionary('KR_bloom_dictionary/understanding.txt')
+apply = load_dictionary('KR_bloom_dictionary/applying.txt')
+analyze = load_dictionary('KR_bloom_dictionary/analyzing.txt')
+evaluate = load_dictionary('KR_bloom_dictionary/evaluating.txt')
+create = load_dictionary('KR_bloom_dictionary/creating.txt')
 
 bloom_dict = {
     'remember': remember,
@@ -46,9 +46,9 @@ unknown_verbs = verb_counts[verb_counts['bloom_stage'] == 'unknown']
 unknown_verbs.to_csv('unknown_verbs.csv')
 print(unknown_verbs)
 
-#결과부
+#결과부(조금더 정리해서 최종결과 저장 예정/ 구간별 하나/우선순위/전체에 하나)
 bloom_distribution = verb_counts.groupby(['segment', 'bloom_stage']).size().unstack(fill_value=0)
-print(bloom_distribution)
+print(bloom_distribution) #이거 이용해서 그래프 하나 그릴예정
 
 
 #명사 자주나오는거 태그 5개 뽑기
@@ -65,3 +65,4 @@ print(top_nouns)
 # 최종 부 ->  그래프로 태그 추론 이유 보여주기
 # 단계를 숫자로 표기해 1 2 3 4 5 6으로한 후 구간별 그래프 보여주기
 # 단계에 적절한 구간 보여주기!! -> 검색이나 filter로 구현
+# 속도 개선 될려나..
