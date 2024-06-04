@@ -6,6 +6,8 @@ import urllib.request
 import json
 import concurrent.futures
 import re
+import asyncio
+import aiohttp
 
 class KoreanScriptExtractor:
     def __init__(self, vid, setTime, wikiUserKey, NUM_OF_WORDS=5):
@@ -70,34 +72,32 @@ class KoreanScriptExtractor:
         }
         self.segments.append(segment_data)
 
-    def konlpy_analysis(self):
-        for segment in self.segments:
-            analyzed_segment = self.okt.pos(segment['text'], stem=True)
-            nouns = [ word for word, pos in analyzed_segment if pos.startswith('N')]
-            verbs = [ word for word, pos in analyzed_segment if pos.startswith('V')]
-            filtered_nouns = [word for word in nouns if word not in self.stopwords]
-            filtered_verbs = [word for word in verbs if word not in self.stopwords]
-            segment['nouns'] = filtered_nouns
-            segment['verbs'] = filtered_verbs
+    async def analyze_and_wikify_segment(self, segment):
+        analyzed_segment = self.okt.pos(segment['text'], stem=True)
+        nouns = [word for word, pos in analyzed_segment if pos.startswith('N')]
+        verbs = [word for word, pos in analyzed_segment if pos.startswith('V')]
+        filtered_nouns = [word for word in nouns if word not in self.stopwords]
+        filtered_verbs = [word for word in verbs if word not in self.stopwords]
+        segment['nouns'] = filtered_nouns
+        segment['verbs'] = filtered_verbs
 
-    def url_to_wiki(self):
+        wikifier_result = await self.call_wikifier(segment['text'])
+        results = []
+        for res in wikifier_result:
+            res['segment'] = segment
+            results.append(res)
+        return results
+
+    async def url_to_wiki(self):
         self.extract()
-        self.konlpy_analysis()
         if not self.scriptData:
             return pd.DataFrame()
 
         results = []
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            future_to_segment = {executor.submit(self.call_wikifier, segment['text']): segment for segment in self.segments}
-            for future in concurrent.futures.as_completed(future_to_segment):
-                segment = future_to_segment[future]
-                try:
-                    wikifier_result = future.result()
-                    for res in wikifier_result:
-                        res['segment'] = segment
-                    results.extend(wikifier_result)
-                except Exception as e:
-                    print(f"Error during Wikifier API call: {e}")
+        loop = asyncio.get_event_loop()
+        tasks = [self.analyze_and_wikify_segment(segment) for segment in self.segments]
+        for future in await asyncio.gather(*tasks):
+            results.extend(future)
 
         wiki_data = []
         for result in results:
@@ -123,7 +123,7 @@ class KoreanScriptExtractor:
         df.drop(columns=['segment_text'], inplace=True, errors='ignore')
         return df
 
-    def call_wikifier(self, text, lang="ko", threshold=0.8, numberOfKCs=10):
+    async def call_wikifier(self, text, lang="ko", threshold=0.8, numberOfKCs=10):
         data = urllib.parse.urlencode({
             "text": text,
             "lang": lang,
@@ -142,23 +142,20 @@ class KoreanScriptExtractor:
         }).encode('utf-8')
 
         url = "https://www.wikifier.org/annotate-article"
-        req = urllib.request.Request(url, data=data, method="POST")
-        try:
-            with urllib.request.urlopen(req, timeout=60) as f:
-                response = json.loads(f.read().decode('utf-8'))
-        except Exception as e:
-            print(f"Error calling Wikifier API: {e}")
-            return []
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, data=data) as response:
+                try:
+                    response_data = await response.json()
+                except Exception as e:
+                    print(f"Error calling Wikifier API: {e}")
+                    return []
 
-        sorted_data = sorted(response.get('annotations', []), key=lambda x: x['pageRank'], reverse=True)
+        sorted_data = sorted(response_data.get('annotations', []), key=lambda x: x['pageRank'], reverse=True)
         return [{"title": ann["title"], "url": ann["url"], "pageRank": ann["pageRank"]} for ann in sorted_data[:numberOfKCs]]
 
-#최종 결과는 타이틀제목/url/페이지 랭크/단어/품사 /시작시간/ 종료시간 의 형태로 저장됨. csv
-# 유저키는 일단 작성자의 것. 즉 eqhfcdvhiwoikruteziguewrqhnkqn 로 사용함
-# 영상링크는 사용자에게 받아 사용 예정
-# 5분 기준 -> 38초 정도 소요 됨(명사,동사 분류)
 if __name__ == "__main__":
     extractor = KoreanScriptExtractor(vid="https://www.youtube.com/watch?v=qittJnccGk4&list=PLVsNizTWUw7FvE4FSPmYTtqtwUe0je4r_&index=6", setTime=600, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
-    wiki_data = extractor.url_to_wiki()
-    wiki_data.to_csv('ori1.csv')
+    loop = asyncio.get_event_loop()
+    wiki_data = loop.run_until_complete(extractor.url_to_wiki())
+    wiki_data.to_csv('reduce1.csv')
     print(wiki_data)
