@@ -1,11 +1,16 @@
-from youtube_transcript_api import YouTubeTranscriptApi
-import spacy
 import pandas as pd
+import spacy
+from youtube_transcript_api import YouTubeTranscriptApi
 import urllib.parse
 import urllib.request
 import json
 import concurrent.futures
 import re
+import nltk
+from nltk.corpus import stopwords
+
+# # nltk 불용어 다운로드 (최초 실행 시 한 번 필요)
+# nltk.download('stopwords')
 
 class EnglishScriptExtractor:
     def __init__(self, vid, setTime, wikiUserKey, NUM_OF_WORDS=5):
@@ -15,6 +20,7 @@ class EnglishScriptExtractor:
         self.NUM_OF_WORDS = NUM_OF_WORDS
         self.segments = []
         self.nlp = spacy.load('en_core_web_sm')
+        self.stop_words = set(stopwords.words('english'))
         self.video_title = self.get_video_title()
 
     def get_video_title(self):
@@ -37,7 +43,7 @@ class EnglishScriptExtractor:
                 break
 
         if not self.scriptData:
-            print("영어 자막이 없습니다.")
+            print("This video doesn't have english scripts")
             return
 
         segment_duration = 60
@@ -68,8 +74,8 @@ class EnglishScriptExtractor:
     def spacy_analysis(self):
         for segment in self.segments:
             doc = self.nlp(segment['text'])
-            nouns = [token.text for token in doc if token.pos_ == 'NOUN']
-            verbs = [token.lemma_ for token in doc if token.pos_ == 'VERB']
+            nouns = [token.text for token in doc if token.pos_ == 'NOUN' and token.text.lower() not in self.stop_words]
+            verbs = [token.lemma_ for token in doc if token.pos_ == 'VERB' and token.lemma_.lower() not in self.stop_words]
             segment['nouns'] = nouns
             segment['verbs'] = verbs
 
