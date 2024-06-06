@@ -154,7 +154,7 @@ class KoreanScriptExtractor:
         return [{"title": ann["title"], "url": ann["url"], "pageRank": ann["pageRank"]} for ann in sorted_data[:numberOfKCs]]
 
 if __name__ == "__main__":
-    extractor = KoreanScriptExtractor(vid="https://www.youtube.com/watch?v=qittJnccGk4&list=PLVsNizTWUw7FvE4FSPmYTtqtwUe0je4r_&index=6", setTime=600, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
+    extractor = KoreanScriptExtractor(vid="https://www.youtube.com/watch?v=T6z-0dpXPvU&t=143s", setTime=6000, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
     loop = asyncio.get_event_loop()
     wiki_data = loop.run_until_complete(extractor.url_to_wiki())
     wiki_data.to_csv('reduce1.csv')
