@@ -3,7 +3,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from collections import Counter
 
 # 데이터 로드 (예: CSV 파일)
-data = pd.read_csv('rs1.csv')
+data = pd.read_csv('reduce1.csv')
 
 # 동사만 이용한다.
 verbs = data[data['pos'] == 'verb']
