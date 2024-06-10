@@ -160,5 +160,5 @@ class KoreanScriptExtractor:
 if __name__ == "__main__":
     extractor = KoreanScriptExtractor(vid="https://www.youtube.com/watch?v=T6z-0dpXPvU&t=143s", setTime=6000, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
     wiki_data = extractor.url_to_wiki()
-    wiki_data.to_csv('ori1.csv')
+    wiki_data.to_csv('or1.csv')
     print(wiki_data)

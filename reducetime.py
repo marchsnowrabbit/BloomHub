@@ -122,7 +122,6 @@ class KoreanScriptExtractor:
         df = pd.DataFrame(wiki_data)
         df.drop(columns=['segment_text'], inplace=True, errors='ignore')
         return df
-
     async def call_wikifier(self, text, lang="ko", threshold=0.8, numberOfKCs=10):
         data = urllib.parse.urlencode({
             "text": text,
