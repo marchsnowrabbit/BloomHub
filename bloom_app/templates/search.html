@@ -1,0 +1,8 @@
+{% extends "base.html" %} {% block title %}Search YouTube{% endblock %} {% block content %}
+<h2>Search YouTube</h2>
+<form action="{% url 'search' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="query" placeholder="Search YouTube videos...">
+    <button type="submit">Search</button>
+</form>
+{% endblock %}
