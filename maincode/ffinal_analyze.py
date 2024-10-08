@@ -72,7 +72,20 @@ class BloomAnalysis:
         bloom_counts = self.verb_counts['bloom_stage'].value_counts().reset_index()
         bloom_counts.columns = ['bloom_stage', 'counts']
         bloom_counts = bloom_counts[bloom_counts['bloom_stage'] != 'unknown']
-        fig = px.pie(bloom_counts, names='bloom_stage', values='counts', hole=0.5)
+
+        # 이미지에서 색상 추출한 색상 맵핑 설정
+        color_map = {
+            'remember': '#8290c4',     # 진한 파랑
+            'understand': '#88c1e8',   # 밝은 파랑
+            'apply': '#74ac80',        # 초록
+            'analyze': '#b1d984',      # 연두
+            'evaluate': '#fae373',     # 노랑
+            'create': '#fb8976'        # 빨강
+        }
+
+        fig = px.pie(bloom_counts, names='bloom_stage', values='counts', hole=0.5,
+                     color='bloom_stage',  # 컬러 맵 적용
+                     color_discrete_map=color_map)
         fig.show()
 
     def plot_dot_graph(self, merged_segments):
@@ -84,22 +97,46 @@ class BloomAnalysis:
             'evaluate': 5,
             'create': 6
         }
+        # 이미지에서 색상 추출한 색상 맵핑 설정
+        color_map = {
+            'remember': '#8290c4',     # 진한 파랑
+            'understand': '#88c1e8',   # 밝은 파랑
+            'apply': '#74ac80',        # 초록
+            'analyze': '#b1d984',      # 연두
+            'evaluate': '#fae373',     # 노랑
+            'create': '#fb8976'        # 빨강
+        }
+
         final_result = pd.DataFrame(merged_segments, columns=['start_segment', 'end_segment', 'bloom_stage'])
         final_result['bloom_stage_numeric'] = final_result['bloom_stage'].map(bloom_stage_mapping)
+        final_result['bloom_color'] = final_result['bloom_stage'].map(color_map)  # 각 단계에 맞는 색상 매핑
+
+         # 도트 그래프 생성
         dot_trace = go.Scatter(
             x=final_result['start_segment'],  
             y=final_result['bloom_stage_numeric'],  
             mode='markers+lines',  
-            marker=dict(size=10),  
-            line=dict(width=2),  
+            marker=dict(
+                size=10,
+                color=final_result['bloom_color']  # 단계별 색상 적용
+            ),
+            line=dict(
+                width=2,
+                color='gray'  # 선 색상 설정 (단계와 다른 색상)
+            ),  
             name='Bloom Stages'
         )
+
+          # 레이아웃 설정
         layout = go.Layout(
             title='Bloom Stages Over Time',
             xaxis_title='Time (seconds)',
             yaxis_title='Bloom Stage (numeric)',
-            yaxis=dict(tickvals=[1, 2, 3, 4, 5, 6], ticktext=['remember', 'understand', 'apply', 'analyze', 'evaluate', 'create']),
-            showlegend=True
+            yaxis=dict(
+                tickvals=[1, 2, 3, 4, 5, 6], 
+                ticktext=['remember', 'understand', 'apply', 'analyze', 'evaluate', 'create']
+            ),
+            showlegend=False
         )
         fig = go.Figure(data=[dot_trace], layout=layout)
         fig.show()
@@ -119,7 +156,9 @@ class BloomAnalysis:
         nouns_text = ' '.join(nouns['word'])
         vectorizer = TfidfVectorizer()
         tfidf_matrix = vectorizer.fit_transform([nouns_text])
-        feature_names = vectorizer.get_feature_names_out()  # 수정됨
+
+        # get_feature_names() 메서드로 수정 (구버전 scikit-learn 지원)
+        feature_names = vectorizer.get_feature_names()  # get_feature_names_out() 대신 사용
         tfidf_scores = tfidf_matrix.toarray()[0]
         top_n_indices = tfidf_scores.argsort()[-top_n:][::-1]
         return [feature_names[i] for i in top_n_indices]
