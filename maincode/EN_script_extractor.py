@@ -159,9 +159,6 @@ class EnglishScriptExtractor:
 if __name__ == "__main__":
     # extractor = EnglishScriptExtractor(vid="https://www.youtube.com/watch?v=6i3EGqOBRiU&list=PLdo5W4Nhv31bZSiqiOL5ta39vSnBxpOPT", setTime=600, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
     newEx = EnglishScriptExtractor(vid="https://www.youtube.com/watch?v=eWRfhZUzrAc&list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB",setTime=18000,wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
-    # wiki_data = extractor.url_to_wiki()
-    # wiki_data.to_csv('en.csv')
-    # print(wiki_data)
     wiki_data = newEx.url_to_wiki()
     wiki_data.to_csv('new.csv')
     print(wiki_data)
