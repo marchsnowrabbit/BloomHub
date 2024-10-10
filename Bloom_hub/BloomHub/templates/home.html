@@ -14,7 +14,8 @@
 <body>
 
 <header>
-    <a href="index.html" class="logo">
+    <!-- 로고 링크를 Django URL로 변경 -->
+    <a href="{% url 'home' %}" class="logo">
         <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
     </a>
 
@@ -22,25 +23,28 @@
         <div class="language-container">
             <a href="#" class="language">Language</a>
             <div class="language-dropdown">
-                <a href="index한국어.html">Korean</a>
-                <a href="index.html">English</a>
+                <!-- 하드코딩된 한국어/영어 링크 수정 -->
+                <a href="{% url 'home' %}?lang=ko">Korean</a>
+                <a href="{% url 'home' %}?lang=en">English</a>
             </div>
         </div>
 
-        <a href="loginnew.html" id="login-link">Login</a>
-        <a href="회원가입newnew.html" id="signup-link">Sign up</a>
+        <!-- 로그인/회원가입 링크 Django URL로 변경 -->
+        <a href="{% url 'login' %}" id="login-link">Login</a>
+        <a href="{% url 'signup' %}" id="signup-link">Sign up</a>
         <a href="#" id="logout-link" style="display: none;">Logout</a>
     </div>
 
     <nav>
-        <a href="guide.html">Guides</a>
-        <a href="search.html">Search</a>
-        <a href="mypage.html">My profile</a>
+        <!-- 네비게이션 링크들도 Django URL로 변경 -->
+        <a href="{% url 'guide' %}">Guides</a>
+        <a href="{% url 'search' %}">Search</a>
+        <a href="{% url 'mypage' %}">My profile</a>
         <div class="dropdown-container">
             <a href="#" class="classing">Classing</a>
             <div class="dropdown">
-                <a href="learning.html">Learning Video</a>
-                <a href="learned.html">Learned Video</a>
+                <a href="{% url 'learning' %}">Learning Video</a>
+                <a href="{% url 'learned' %}">Learned Video</a>
             </div>
         </div>
     </nav>
@@ -48,7 +52,8 @@
 
 <main>
     <div class="card-container">
-        <div class="card" id="guide-card" onclick="location.href='guide.html'">
+        <!-- 카드 클릭 시 이동하는 링크들도 Django URL로 변경 -->
+        <div class="card" id="guide-card" onclick="location.href='{% url 'guide' %}'">
             <img class="card__background" src="{% static 'img/guide.png' %}">
             <div class="card-content">
                 <div class="card__content--container">
@@ -57,7 +62,7 @@
             </div>
         </div>
 
-        <div class="card" id="search-card" onclick="location.href='search.html'">
+        <div class="card" id="search-card" onclick="location.href='{% url 'search' %}'">
             <img class="card__background" src="{% static 'img/search.png' %}">
             <div class="card-content">
                 <div class="card__content--container">
@@ -66,7 +71,7 @@
             </div>
         </div>
 
-        <div class="card" id="profile-card" onclick="location.href='mypage.html'">
+        <div class="card" id="profile-card" onclick="location.href='{% url 'mypage' %}'">
             <img class="card__background" src="{% static 'img/profile.png' %}">
             <div class="card-content">
                 <div class="card__content--container">
@@ -80,7 +85,7 @@
 <script>
     $(document).ready(function() {
         // 로그인 상태 확인
-        $.get('/check-login', function(data) {
+        $.get('{% url "check_login" %}', function(data) {
             if (data.loggedIn) {
                 $('#login-link').hide();
                 $('#signup-link').hide();
@@ -95,7 +100,7 @@
         // 로그아웃 처리
         $('#logout-link').on('click', function(e) {
             e.preventDefault();
-            $.get('/logout', function(data) {
+            $.get('{% url "logout" %}', function(data) {
                 if (data.success) {
                     alert('로그아웃 되었습니다.');
                     location.reload();
