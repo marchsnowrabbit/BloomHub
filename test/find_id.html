@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이디 찾기</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="find_id.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="img-content">
+            <div class="img-cover"></div>
+       </div>
+       <div class="login-box">
+            <div class="login-header">
+                <h3><i class="fa-solid fa-chevron-left"></i>아이디 찾기</h3>
+            </div>
+            <div class="login-title">
+                <h3>가입시 입력한 정보를 입력해주세요.</h3>
+            </div>
+            <div class="login-info">
+                <form action="/login/findid" method="post" onsubmit="return checkId()">
+                    <div class="input-type">
+                        <label for=""><h3>이름</h3></label>
+                        <input type="text" name="userName" id="userName" class="id-info" placeholder="이름을 입력해주세요." autocomplete="off">
+                    </div>
+                    <div class="input-type">
+                        <label for=""><h3>이메일</h3></label>
+                        <input type="email" name="userEmail" id="userEmail" placeholder="이메일을 입력해주세요" autocomplete="off">
+                    </div>
+                    <div>
+                        <button type="submit" class="id-btn">아이디 찾기</button>
+                    </div>
+                    <br>
+                    <script th:if="${res != null}" th:inline="javascript">
+                        alert([[${res}]]);
+                    </script>
+                </form>
+            </div>
+       </div>
+    </div>
+    <script src="/js/kdh/pageMove/find_prev.js"></script>
+    <script src="/js/kdh/signin/find_Id.js"></script>
+</body>
+</html>
