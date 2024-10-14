@@ -275,8 +275,8 @@ h1 {
 .links li #ID {
 
 position:relative;
-top:-125px;
-left: 80px;
+top:-95px;
+left: 77px;
 
 
 }
@@ -285,8 +285,8 @@ left: 80px;
 .links li #PassWord {
 
     position:relative;
-    top:-68px;
-    left: -25px;
+    top:-38px;
+    left: -37px;
     
     
     }
@@ -294,8 +294,8 @@ left: 80px;
 .links li #Repeat-PassWord {
 
         position: relative;
-        top: -13px;
-        left: -140px;
+        top: 14px;
+        left: -160px;
 
 
 }
@@ -304,16 +304,16 @@ left: 80px;
 .links li #name-inputd {
 
     position: relative;
-    top: 45px;
-    left: -217px;
+    top: 72px;
+    left: -240px;
 
 
 }
 .links li #wiki-inputd {
 
     position: relative;
-    top: 100px;
-    left: -312px;
+    top: 130px;
+    left: -334px;
 
 
 }
@@ -321,7 +321,7 @@ left: 80px;
 
     position: relative;
     top: 155px;
-    left: -435px;
+    left: 0px;
 
 
 }
