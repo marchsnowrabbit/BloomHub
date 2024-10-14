@@ -261,18 +261,21 @@ h1 {
 }
 
 .links li {
+
+
     position: relative;
     display: inline-block;
     margin: 0 20px 0 0;
     transition: .2s linear;
 
+    margin-bottom:10px;
 
 }
 
 .links li #ID {
 
 position:relative;
-top:-115px;
+top:-125px;
 left: 80px;
 
 
@@ -282,8 +285,8 @@ left: 80px;
 .links li #PassWord {
 
     position:relative;
-    top:-60px;
-    left: -30px;
+    top:-68px;
+    left: -25px;
     
     
     }
@@ -291,8 +294,8 @@ left: 80px;
 .links li #Repeat-PassWord {
 
         position: relative;
-        top: -5px;
-        left: -153px;
+        top: -13px;
+        left: -140px;
 
 
 }
@@ -301,24 +304,24 @@ left: 80px;
 .links li #name-inputd {
 
     position: relative;
-    top: 50px;
-    left: -235px;
+    top: 45px;
+    left: -217px;
 
 
 }
 .links li #wiki-inputd {
 
     position: relative;
-    top: 110px;
-    left: -335px;
+    top: 100px;
+    left: -312px;
 
 
 }
 .links li #youtube-inputd {
 
     position: relative;
-    top: 150px;
-    left: 5px;
+    top: 155px;
+    left: -435px;
 
 
 }
