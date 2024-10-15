@@ -45,6 +45,40 @@
         </div>
     </header>
 
+    <h2>회원가입 시 API 키 발급 방법</h2>
+    <div class="api-keys-instructions">
+        
+        <div class="api-section youtube-api">
+            <h3>YouTube API 키 발급 방법</h3>
+            <ol>
+                API 키의 예) AIzaSy.....
+                <li><a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a>에 접속합니다.</li>
+                <li>로그인합니다. (Google 계정이 없을 경우 계정을 생성해야 합니다.)</li>
+                <li>상단의 <strong>"프로젝트 선택"</strong>을 클릭한 후 뜨는 팝업에서 <strong>"새 프로젝트"</strong>를 선택합니다.</li>
+                <li>프로젝트 이름을 입력 후 만들기를 선택합니다. (프로젝트 이름은 자유입니다.)</li>
+                <li>프로젝트가 생성되면 <strong>"API 및 서비스"</strong>로 이동 후 <strong>"라이브러리"</strong>를 선택합니다.</li>
+                <li>검색창에 <strong>"YouTube Data API v3"를 입력하고, 검색 결과에서 API를 클릭합니다.</li>
+                <li><strong>"사용"</strong> 버튼을 클릭하여 YouTube Data API를 활성화합니다.</li>
+                <li><strong>"API 및 서비스"</strong> 메뉴에서 "사용자 인증 정보"로 이동합니다.</li>
+                <li><strong>"인증 정보 만들기"</strong>를 클릭한 후 <strong>"API 키"</strong>를 선택합니다.</li>
+                <li>생성된 API 키가 화면에 표시되며, 이 키를 복사해서 회원가입 창 YouTubeAPI 칸에 입력합니다.</li>
+                
+            </ol>
+        </div>
+    
+        <div class="divider"></div>
+    
+        <div class="api-section wiki-api">
+            <h3>Wiki API 키 발급 방법</h3>
+            <ol>
+                <li><a href="https://www.wikifier.org/register.html" target="_blank">Wikifier</a>에 접속합니다.</li>
+                <li><strong></strong>"User name"</strong>에 당신의 이름을 입력합니다.</li>
+                <li><strong>"Register!"</strong>를 누릅니다.</li>
+                <li><strong>"Your user key is:"</strong> 다음에 있는 키를 회원가입 창 WikiAPI 칸에 입력합니다.</li>
+            </ol>
+        </div>
+    </div>
+
     <div class="banner">
         <div class="image-content">
             <img src="{% static 'img/bloom.png' %}" alt="Bloom's Taxonomy" onclick="openPopup(this)">
@@ -54,6 +88,7 @@
         </div>
         
     </div>
+
 
     <div class="container">
         <h1>Bloom의 분류법</h1>
