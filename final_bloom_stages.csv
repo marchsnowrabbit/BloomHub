@@ -1,8 +1,0 @@
-start_segment,end_segment,bloom_stage
-0,60,apply
-60,120,understand
-120,180,apply
-180,240,create
-240,360,apply
-360,420,create
-420,480,apply
