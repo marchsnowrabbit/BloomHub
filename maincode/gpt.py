@@ -1,78 +1,82 @@
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objs as go
-from sklearn.feature_extraction.text import TfidfVectorizer
-import openai
 import re
+import openai
+import plotly.express as px
+import plotly.graph_objects as go
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 class BloomAnalysisWithGPTandDictionary:
-    def __init__(self, data_path, bloom_dict_ko, bloom_dict_en):
-        self.data = pd.read_csv(data_path)
+    def __init__(self, word_data_path, sentence_data_path, bloom_dict_ko, bloom_dict_en):
+        self.word_data = pd.read_csv(word_data_path)
+        self.sentence_data = pd.read_csv(sentence_data_path)
+
         self.bloom_dict_ko = bloom_dict_ko
         self.bloom_dict_en = bloom_dict_en
         self.bloom_priority = {
-            'remember': 6,
-            'understand': 5,
-            'apply': 4,
-            'analyze': 3,
-            'evaluate': 2,
-            'create': 1
+            'remember': 6, 'understand': 5, 'apply': 4, 
+            'analyze': 3, 'evaluate': 2, 'create': 1
         }
 
-    def detect_language(self, word):
-        # 언어 감지
-        if re.search('[\u3131-\uD79D]', word):
-            return 'Korean'
-        elif re.search('[a-zA-Z]', word):
-            return 'English'
-        return 'Other'
+    @staticmethod
+    def load_dictionary(file_path):
+        with open(file_path, 'r', encoding='utf-8') as file:
+            return [line.strip() for line in file]
+
+    def detect_language(self):
+        # 벡터화된 언어 감지
+        self.word_data['language'] = self.word_data['word'].str.contains('[\u3131-\uD79D]').map(
+            {True: 'Korean', False: 'English'}
+        )
 
     def process_verbs(self):
-        self.data['language'] = self.data['word'].apply(self.detect_language)
-        verbs = self.data[self.data['pos'] == 'verb'].copy()
-        verbs['segment'] = verbs.apply(lambda row: int(row['start_time'] // 60) * 60, axis=1)
+        # 동사 추출 및 구간화
+        verbs = self.word_data[self.word_data['pos'] == 'verb'].copy()
+        verbs['segment'] = (verbs['start_time'] // 60 * 60).astype(int)
         self.verb_counts = verbs.groupby(['segment', 'word', 'language']).size().reset_index(name='count')
         self.verb_counts['bloom_stage'] = self.verb_counts.apply(
-            lambda row: self.compare_bloom_stage(row['word'], row['language'], row['text']), axis=1
+            lambda row: self.determine_final_bloom_stage(row['word'], row['language'], row['segment']), axis=1
         )
 
     def tag_bloom_stage(self, word, language):
-        # 사전 기반 단어 분석
+        # 단순 사전 탐색 (완전 일치)
         bloom_dict = self.bloom_dict_ko if language == 'Korean' else self.bloom_dict_en
         for stage, words in bloom_dict.items():
             if word in words:
                 return stage
         return 'unknown'
 
-    def gpt_bloom_classification(self, text):
-        # GPT 기반 문장 분석
-        prompt = f"Classify the following text into Bloom's Taxonomy stages: {text}"
+    def gpt_bloom_classification(self, texts):
+        # 여러 문장을 한 번에 처리해 API 호출 최적화
+        prompt = "\n\n".join([f"Classify the following text into Bloom's Taxonomy stages: {text}" for text in texts])
         response = openai.Completion.create(
             engine="gpt-3.5-turbo",
             prompt=prompt,
-            max_tokens=50,
+            max_tokens=50 * len(texts),
             temperature=0.7
         )
-        return response.choices[0].text.strip()
+        return [choice.text.strip() for choice in response.choices]
 
-    def compare_bloom_stage(self, word, language, sentence):
-        # 단어 기반 결과
+    def determine_final_bloom_stage(self, word, language, segment):
+        # 단어 및 문장 기반 Bloom 단계 결정
         word_based_stage = self.tag_bloom_stage(word, language)
-        
-        # GPT 기반 결과
-        sentence_based_stage = self.gpt_bloom_classification(sentence)
-        
-        # 두 결과를 우선순위에 따라 비교
+        sentence = self.sentence_data[self.sentence_data['segment'] == segment]['text'].values
+
+        if len(sentence) > 0:
+            sentence_based_stage = self.gpt_bloom_classification(sentence)[0]
+        else:
+            sentence_based_stage = 'unknown'
+
+        # 최종 단계 결정 (우선순위 비교)
         if word_based_stage == 'unknown':
             return sentence_based_stage
         elif sentence_based_stage == 'unknown':
             return word_based_stage
         else:
-            # 우선순위가 높은 단계 선택
             return self.choose_better_stage(word_based_stage, sentence_based_stage)
 
     def choose_better_stage(self, word_stage, sentence_stage):
-        # Bloom 단계 우선순위에 따른 비교
+        # 우선순위에 따라 더 나은 Bloom 단계 선택
         if self.bloom_priority[word_stage] < self.bloom_priority[sentence_stage]:
             return word_stage
         else:
@@ -84,17 +88,17 @@ class BloomAnalysisWithGPTandDictionary:
         self.bloom_distribution['decided_stage'] = self.bloom_distribution.apply(self.decide_bloom_stage, axis=1)
 
     def decide_bloom_stage(self, row):
-        # 각 구간에서 우세한 단계 결정
+        # 각 구간에서 가장 빈도가 높은 Bloom 단계 결정
         stages = row.drop('unknown').to_dict()
         if not stages:
             return 'unknown'
         return max(stages, key=lambda stage: (stages[stage], -self.bloom_priority[stage]))
 
     def merge_segments(self):
-        # 연속된 동일 단계 구간 병합
+        # 동일 Bloom 단계를 갖는 구간 병합
         merged_segments = []
         start_segment, prev_stage = None, None
-    
+
         for segment, row in self.bloom_distribution.iterrows():
             stage = row['decided_stage']
             if stage != prev_stage:
@@ -102,7 +106,7 @@ class BloomAnalysisWithGPTandDictionary:
                     merged_segments.append((start_segment, segment, prev_stage))
                 start_segment = segment
             prev_stage = stage
-    
+
         if prev_stage is not None:
             merged_segments.append((start_segment, segment + 60, prev_stage))
 
@@ -115,36 +119,27 @@ class BloomAnalysisWithGPTandDictionary:
         bloom_counts = bloom_counts[bloom_counts['bloom_stage'] != 'unknown']
 
         color_map = {
-            'remember': '#8290c4',     
-            'understand': '#88c1e8',   
-            'apply': '#74ac80',        
-            'analyze': '#b1d984',      
-            'evaluate': '#fae373',     
-            'create': '#fb8976'        
+            'remember': '#8290c4', 'understand': '#88c1e8',
+            'apply': '#74ac80', 'analyze': '#b1d984',
+            'evaluate': '#fae373', 'create': '#fb8976'
         }
 
-        fig = px.pie(bloom_counts, names='bloom_stage', values='counts', hole=0.5,
-                     color='bloom_stage',  
-                     color_discrete_map=color_map)
+        fig = px.pie(
+            bloom_counts, names='bloom_stage', values='counts', hole=0.5,
+            color='bloom_stage', color_discrete_map=color_map
+        )
         fig.show()
 
     def plot_dot_graph(self, merged_segments):
-        # Bloom 단계별 시간 흐름 그래프
+        # 시간 흐름에 따른 Bloom 단계 그래프
         bloom_stage_mapping = {
-            'remember': 1,
-            'understand': 2,
-            'apply': 3,
-            'analyze': 4,
-            'evaluate': 5,
-            'create': 6
+            'remember': 1, 'understand': 2, 'apply': 3,
+            'analyze': 4, 'evaluate': 5, 'create': 6
         }
         color_map = {
-            'remember': '#8290c4',
-            'understand': '#88c1e8',
-            'apply': '#74ac80',
-            'analyze': '#b1d984',
-            'evaluate': '#fae373',
-            'create': '#fb8976'
+            'remember': '#8290c4', 'understand': '#88c1e8',
+            'apply': '#74ac80', 'analyze': '#b1d984',
+            'evaluate': '#fae373', 'create': '#fb8976'
         }
 
         final_result = pd.DataFrame(merged_segments, columns=['start_segment', 'end_segment', 'bloom_stage'])
@@ -152,32 +147,20 @@ class BloomAnalysisWithGPTandDictionary:
         final_result['bloom_color'] = final_result['bloom_stage'].map(color_map)
 
         dot_trace = go.Scatter(
-            x=final_result['start_segment'],  
-            y=final_result['bloom_stage_numeric'],  
-            mode='markers+lines',  
-            marker=dict(
-                size=10,
-                color=final_result['bloom_color']  
-            ),
-            line=dict(
-                width=2,
-                color='gray'  
-            ),  
-            name='Bloom Stages'
+            x=final_result['start_segment'], y=final_result['bloom_stage_numeric'],
+            mode='markers+lines', marker=dict(size=10, color=final_result['bloom_color']),
+            line=dict(width=2, color='gray'), name='Bloom Stages'
         )
 
         layout = go.Layout(
-            title='Bloom Stages Over Time',
-            xaxis_title='Time (seconds)',
-            yaxis_title='Bloom Stage (numeric)',
-            yaxis=dict(
-                tickvals=[1, 2, 3, 4, 5, 6], 
-                ticktext=['remember', 'understand', 'apply', 'analyze', 'evaluate', 'create']
-            ),
+            title='Bloom Stages Over Time', xaxis_title='Time (seconds)', yaxis_title='Bloom Stage (numeric)',
+            yaxis=dict(tickvals=[1, 2, 3, 4, 5, 6], ticktext=['remember', 'understand', 'apply', 'analyze', 'evaluate', 'create']),
             showlegend=False
         )
+
         fig = go.Figure(data=[dot_trace], layout=layout)
         fig.show()
+
 
     def format_stage_segments(self, merged_segments):
         # 각 Bloom 단계의 시작-종료 시간 구간 포맷팅
