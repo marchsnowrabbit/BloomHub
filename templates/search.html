@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <header>
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
+        </a>
+        <nav>
+            <a href="{% url 'guide' %}">Guides</a>
+            <a href="{% url 'search' %}">Search</a>
+            <a href="{% url 'mypage' %}">My profile</a>
+            <div class="dropdown-container">
+                <a href="#" class="classing">Classing</a>
+                <div class="dropdown">
+                    <a href="{% url 'learning' %}">Learning Video</a>
+                    <a href="{% url 'learned' %}">Learned Video</a>
+                </div>
+            </div>
+        </nav>
+        <div class="auth">
+            <div class="language-container">
+                <a href="#" class="language">Language</a>
+                <div class="language-dropdown">
+                    <a href="{% url 'searchresultkor' %}?lang=ko">Korean</a>
+                    <a href="{% url 'searchresult' %}?lang=en">English</a>
+                </div>
+            </div>
+            <a href="{% url 'login' %}" id="login-link">Login</a>
+            <a href="{% url 'signup' %}" id="signup-link">Sign up</a>
+            <a href="#" id="logout-link" style="display: none;">Logout</a>
+        </div>
+    </header>
+    
+    <main>
+        <div class="search-wrapper">
+            <h2 class="search-text">Your learning assistant</h2>
+            <p class="prompt">Ask Bloom HUB :D</p>
+            <div class="search-box">
+                <form id="searchForm" action="{% url 'searchresult' %}" method="GET">
+                    <div class="search-input-container">
+                        <input type="text" id="searchText" class="search-input" placeholder="Search..." name="searchResult" required>
+                        <button type="submit" class="search-button">
+                            <img src="{% static 'img/search_icon.jpg' %}" alt="Search Icon" class="search-icon">
+                        </button>
+                    </div>
+                </form>                        
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // JavaScript 코드에서 form을 직접 제출하도록 설정
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            // 추가적인 처리가 필요 없다면 이 코드는 삭제해도 좋습니다.
+            // event.preventDefault(); // 이 부분을 주석처리하여 기본 제출 방식 사용
+            
+            // 검색어를 입력받고 폼이 제출됩니다.
+            // const searchResult = document.getElementById('searchText').value;
+            // window.location.href = `searchresult.html?searchResult=${encodeURIComponent(searchResult)}`;
+        });
+
+        // 로그인 상태 확인
+        $(document).ready(function() {
+            $.get('/check-login', function(data) {
+                if (data.loggedIn) {
+                    $('#login-link').hide();
+                    $('#signup-link').hide();
+                    $('#logout-link').show();
+                } else {
+                    $('#login-link').show();
+                    $('#signup-link').show();
+                    $('#logout-link').hide();
+                }
+            });
+
+            // 로그아웃 처리
+            $('#logout-link').on('click', function(e) {
+                e.preventDefault();
+                $.get('/logout', function(data) {
+                    if (data.success) {
+                        alert('로그아웃 되었습니다.');
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>

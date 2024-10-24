@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom Hub</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    
+    <!-- jQuery and FontAwesome -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<header>
+    <!-- 로고 링크를 Django URL로 변경 -->
+    <a href="{% url 'home' %}" class="logo">
+        <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
+    </a>
+
+    <div class="auth">
+        <div class="language-container">
+            <a href="#" class="language">Language</a>
+            <div class="language-dropdown">
+                <!-- 하드코딩된 한국어/영어 링크 수정 -->
+                <a href="{% url 'homekor' %}">Korean</a>
+                <a href="{% url 'home' %}">English</a>
+            </div>
+        </div>
+
+        <!-- 로그인/회원가입 링크 Django URL로 변경 -->
+        <a href="{% url 'login' %}" id="login-link">Login</a>
+        <a href="{% url 'signup' %}" id="signup-link">Sign up</a>
+        <a href="#" id="logout-link" style="display: none;">Logout</a>
+    </div>
+
+    <nav>
+        <!-- 네비게이션 링크들도 Django URL로 변경 -->
+        <a href="{% url 'guide' %}">Guides</a>
+        <a href="{% url 'search' %}">Search</a>
+        <a href="{% url 'mypage' %}">My profile</a>
+        <div class="dropdown-container">
+            <a href="#" class="classing">Classing</a>
+            <div class="dropdown">
+                <a href="{% url 'learning' %}">Learning Video</a>
+                <a href="{% url 'learned' %}">Learned Video</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="card-container">
+        <!-- 카드 클릭 시 이동하는 링크들도 Django URL로 변경 -->
+        <div class="card" id="guide-card" onclick="location.href='{% url 'guide' %}'">
+            <img class="card__background" src="{% static 'img/guide.png' %}">
+            <div class="card-content">
+                <div class="card__content--container">
+                    <!-- 카드 내용 여기에 추가 가능 -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="search-card" onclick="location.href='{% url 'search' %}'">
+            <img class="card__background" src="{% static 'img/search.png' %}">
+            <div class="card-content">
+                <div class="card__content--container">
+                    <!-- 카드 내용 여기에 추가 가능 -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="profile-card" onclick="location.href='{% url 'mypage' %}'">
+            <img class="card__background" src="{% static 'img/profile.png' %}">
+            <div class="card-content">
+                <div class="card__content--container">
+                    <!-- 카드 내용 여기에 추가 가능 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    $(document).ready(function() {
+        // 로그인 상태 확인
+        $.get('{% url "check_login" %}', function(data) {
+            if (data.loggedIn) {
+                $('#login-link').hide();
+                $('#signup-link').hide();
+                $('#logout-link').show();
+            } else {
+                $('#login-link').show();
+                $('#signup-link').show();
+                $('#logout-link').hide();
+            }
+        });
+
+        // 로그아웃 처리
+        $('#logout-link').on('click', function(e) {
+            e.preventDefault();
+            $.get('{% url "logout" %}', function(data) {
+                if (data.success) {
+                    alert('로그아웃 되었습니다.');
+                    location.reload();
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
