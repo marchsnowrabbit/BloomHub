@@ -6,7 +6,7 @@
     font-style: normal;
   }
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     background-color: rgb(11, 36, 60);
 
     margin: 0;
@@ -152,14 +152,13 @@ nav a.classing:hover {
 /*^ 로그인창 */
 /* 초록색 선 */
 #hr-green {
+    width: 450px;
+    border: none;
+    border-top: 2px solid #72BA84;
+    margin: 10px auto;
     position: relative;
-    
-    left:0px;
-    width:450px;
-    border-color: #72BA84;
-
-    border-top: 2px solid #72BA84; /* 굵기와 색상 설정 */
-    
+    right: calc(0% - -47px);
+    top: -160px;
 }
 
 /* Description styling */
@@ -167,12 +166,12 @@ nav a.classing:hover {
 
 /*^ 설명부분 */
 .description-container {
-    text-align: center;
-    padding: 20px;
-    font-family: Helvetica, Arial, sans-serif;
+    text-align: left; /* 왼쪽 정렬로 변경 */
+    padding: 10px 0;
+    font-family: 'KCC-Hanbit', sans-serif;
     position: relative;
-    top:-140px;
-    right: calc(10% - 0px);
+    right: calc(0% - 15px);
+    top: -135px;
 
 
 
@@ -181,7 +180,8 @@ nav a.classing:hover {
 .container #description {
     font-size: 18px;
     color: #000000;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
+    padding: 10px;
 }
 
 
@@ -197,7 +197,7 @@ nav a.classing:hover {
     padding: 10px;
     border-radius: 70px;
     position: relative;
-	 top: -105px;
+	top: -105px;
 
 }
 
@@ -308,7 +308,7 @@ form {
     color: rgba(38, 19, 115, 0.999);
     padding: 0 0 0 15px;
     font-size: 14px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     
 
 }
@@ -360,7 +360,7 @@ form {
     border: none;
     cursor: pointer;
     font-size: 18px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     /* box-shadow: 0 15px 30px rgba(233, 30, 99, .36); */
     transition: .2s linear;
     position: relative;
@@ -419,7 +419,7 @@ form {
     height: 50px;
     cursor: pointer;
     font-size: 14px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     border-radius: 8px;
     border: none;
     line-height: 40px;
@@ -651,9 +651,12 @@ top:-132px;
         top: 10px;
         right: 10px;
     }
-   .description-container {
-    right: calc(20% - 85px);
-}
+    #hr-green {
+        right: calc(0% - -32px);
+    }
+    .description-container {
+        right: calc(0% - 13px);    
+    }
 .links li {
     display: none;
     display: inline-block;
