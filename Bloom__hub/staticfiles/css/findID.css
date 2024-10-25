@@ -1,4 +1,11 @@
-
+@font-face {
+    font-family: 'KCC-Hanbit';
+    src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
+         url('/static/fonts/KCC-Hanbit.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: rgb(11, 36, 60);

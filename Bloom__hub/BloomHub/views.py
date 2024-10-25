@@ -22,7 +22,7 @@ def hi_view(request):
     return render(request, 'hi.html') 
 
 def login_view(request):
-    return render(request, 'loginnew.html')
+    return render(request, 'login.html')
 
 def login_kor_view(request):
     return render(request, 'loginkor.html')

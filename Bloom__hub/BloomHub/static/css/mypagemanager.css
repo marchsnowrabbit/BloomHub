@@ -1,61 +1,61 @@
+@font-face {
+    font-family: 'KCC-Hanbit';
+    src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
+         url('/static/fonts/KCC-Hanbit.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     background-color: rgb(11,36,60);
-
-    /* background-image: url(./hero-bg.jpg);  */
-
-
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
 }
 
+
+    
 
 header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: rgb(11,36,60);
+    flex-direction: row;               
+    justify-content: flex-start;       
+    align-items: center;               
+    padding: 0 20px;
+    height: 100px;
+    background-color: rgb(11, 36, 60);
+    position: relative;
 }
-
 
 header .logo {
-    margin-left: 10px;
-    color: #ffdf00;
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: none;
+    margin-right: 10px;               
+    color: white; 
 }
 
-header .logo span {
-
-display: block;
-
-}
-
-/* ^ 헤더 나브  */
 
 header nav {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    margin-left: 50px;
-    position: absolute;
-    transform: translateX(100%);
-
-}
-
-
+    display: flex;              
+    gap: 35px;                 
+    align-items: center;        
+    margin: 0;  
+    }
 
 header nav a {
     color: white;
-    margin: 0 10px;
+    font-size: 23px;
     text-decoration: none;
-}
+
+} 
 
 header .auth {
     display: flex;
     align-items: center;
-    margin-left: auto;
+    gap: 15px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+
 }
 
 header .auth a {
@@ -64,48 +64,23 @@ header .auth a {
     text-decoration: none;
 }
 
-.nav-left {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.bottom-link {
-    color: white;
-    text-decoration: none;
-    font-size: 1em;
-    margin-left: 20px;
-}
-
-
-
-
-
-.top-nav {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-}
-
-.top-link {
-    color: white;
-    text-decoration: none;
-    font-size: 0.8em;
-    margin-left: 20px;
-}
-
+/** Dropdown styling */
 .language-container {
     position: relative;
 }
 
-
+.language {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    }
 
 .language-dropdown {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: rgb(11,36,60);
+    background-color: rgb(11, 36, 60);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
@@ -115,61 +90,30 @@ header .auth a {
     padding: 10px 20px;
     white-space: nowrap;
     display: block;
- 
+    font-size: 16px;
 }
 
 .language-container:hover .language-dropdown {
     display: block;
 }
 
-.bottom-nav {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
+nav a.classing:hover, nav a.language:hover {
+    color: rgb(11, 36, 60);
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    margin-right: 20px;
-}
-
-.nav-left {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.classing {
-    color: white;
-    text-decoration: none;
-    font-size: 1em;
-    margin-left: 20px;
-}
-
-.bottom-link {
-    color: white;
-    text-decoration: none;
-    font-size: 1em;
-    margin-left: 20px;
-}
-
-nav a.classing:hover,
-nav a.language:hover {
-    color: #FCFFC2;
-}
-
+/* classing 드롭다운 */
 .dropdown-container {
     position: relative;
 }
 
-.dropdown {                 /* 클래싱 드랍다운   */
+.dropdown {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: rgb(11,36,60);
+    background-color: rgb(11, 36, 60);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
 }
 
 .dropdown a {
@@ -178,41 +122,18 @@ nav a.language:hover {
     padding: 10px 20px;
     white-space: nowrap;
     display: block;
+    font-size: 18px;
+}
+
+nav a.classing:hover {
+    color: white; 
+    display: inline; 
+
 }
 
 .dropdown-container:hover .dropdown {
     display: block;
-}
-
-.language {
-    color: white;
-    text-decoration: none;
-    margin-left: 20px;
-}
-
-.bottom-nav {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    margin-right: 20px;
-}
-
-.nav-left {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.bottom-link {
-    color: white;
-    text-decoration: none;
-    font-size: 1em;
-    margin-left: 20px;
+    
 }
 
 .container {
@@ -248,6 +169,7 @@ nav a.language:hover {
     color: black;
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .content-section {
@@ -257,53 +179,57 @@ nav a.language:hover {
 .content-section.active {
     display: block;
 }
-
-.profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-weight: bold;
-    margin-bottom: 10px;
+/* input 필드 길이 늘리기 */
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%; /* 입력 필드의 너비를 100%로 설정 */
+    padding: 10px; /* 적당한 패딩 추가 */
+    border-radius: 5px; /* 테두리 둥글게 */
+    border: 1px solid #ccc; /* 연한 테두리 색상 */
 }
 
-.back-button {
-    margin-top: 10px;
-    background: none;
+/* 버튼 크기 조정 */
+.green-button {
+    padding: 10px 20px; /* 버튼의 패딩 조정 */
+    font-size: 16px; /* 버튼 폰트 크기 조정 */
+}
+
+.green-button {
+    background-color: #6ab04c; /* 메뉴와 동일한 초록색 */
+    color: white;
     border: none;
-    color: #0a3d62;
+    padding: 8px 16px;
     cursor: pointer;
-    font-size: 1em;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
-.profile-container {
-    display: flex;
-    gap: 20px;
+.green-button:hover {
+    background-color: #5a8f3a; /* hover 시 어두운 초록색 */
 }
 
-.profile-box {
-    background-color: #f1f2f6;
-    padding: 20px;
-    border-radius: 10px;
-    color: black;
-}
+ /* 전체 회원 리스트 보기 버튼 스타일 */
+        #allMembersButton {
+            background-color: white; /* 흰색 배경 */
+            color: blue; /* 파란색 글자 */
+            border: 1px solid blue; /* 파란색 테두리 */
+            padding: 8px 16px; /* 적당한 패딩 */
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-left: 10px; /* 버튼과 텍스트 간의 간격 */
+        }
 
-.profile-left {
-    width: 65%;
-}
+        #allMembersButton:hover {
+            background-color: lightblue; /* hover 시 색상 변경 */
+        }
 
-.profile-right {
-    width: 30%;
-}
+        /* input 필드 스타일 조정 */
+        input[type="email"], 
+        input[type="text"], 
+        input[type="password"] {
+            width: 250px; /* 적당한 너비로 조정 */
+            padding: 8px; /* 패딩 추가 */
+            border-radius: 5px; /* 모서리 둥글게 */
+            border: 1px solid #ccc; /* 테두리 색상 */
+        }
 
-.profile-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.profile-image img {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-}
