@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const bcrypt = require('bcrypt'); // Password hashing library
 const session = require('express-session');
-const nodemailer = require('nodemailer'); 
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -23,15 +22,26 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static files
-app.use(express.static(path.join(__dirname)));
+
+
+
+
+
+
+// static 폴더를 정적 파일 제공 폴더로 설정
+app.use(express.static(path.join(__dirname, 'static'))); // server.js 파일의 경로를 기준으로 설정
+
+
+
+
+
 
 //^ MongoDB 연결
 mongoose.connect('mongodb://127.0.0.1:27017/magatia', {
 }).then(() => console.log('MongoDB connected...'))
   .catch(err => console.log(err));
 
-// 유저 스키마 
+//^ 유저 스키마 
 
 
 const UserSchema = new mongoose.Schema({
@@ -39,8 +49,8 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true }, // Hashed password
     joinDate: { type: Date, default: Date.now }, // Join date
     name : {type: String, required: true},
-    wikiApi : {type:String,required:true, unique:true},
-    youtubeApi: {type:String,required:true ,unique:true},
+    wikiApi : {type:String,required:true },
+    youtubeApi: {type:String,required:true },
    
     watchedVideos: [ // Schema for storing watch history
         {
@@ -104,11 +114,26 @@ app.get('/get-watched-videos', async (req, res) => {
     }
 });
 
+
+
+
+
 //^회원가입
 app.post('/signup', async (req, res) => {
-    const { email, password, repeat_password } = req.body;
+    const { email, password, repeat_password, name,wikiApi, youtubeApi } = req.body;
 
-   
+   // 모든필드 입력 확인
+   if (!email || !password || !repeat_password || !name) {
+    return res.status(400).json({ success: false, message: '모든 필드를 입력해주세요.' });
+}
+
+
+
+const apiKeyPattern = /^[A-Za-z0-9-_]{20,}$/; // 예시 정규 표현식
+    if (!apiKeyPattern.test(wikiApi) || !apiKeyPattern.test(youtubeApi)) {
+        return res.status(400).json({ message: '유효하지 않은 API 키 형식입니다.' });
+    }
+
 
     try {
 
@@ -121,10 +146,10 @@ app.post('/signup', async (req, res) => {
         // 이미 존재 하는 아이디 확인
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ success: false, message: '오류' });
+            return res.status(400).json({ success: false, message: '이미 존재하는 이메일입니다- 서버오류(index.js)' });
             }
-
-             
+                
+  
 
 
 
@@ -132,7 +157,14 @@ app.post('/signup', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create new user
-        const newUser = new User({ email, password: hashedPassword });
+        const newUser = new User({
+            email,
+            password: hashedPassword,
+            name: req.body.name,
+            wikiApi: req.body.wikiApi,
+            youtubeApi: req.body.youtubeApi
+        });
+        
         await newUser.save();
 
         return res.status(200).json({ success: true, message: '회원가입에 성공했습니다!' });
@@ -311,14 +343,7 @@ app.post('/send-verification-code', async (req, res) => {
     }
 });
 
-// Nodemailer를 사용하여 이메일 전송을 위한 트랜스포터 설정
-const transporter = nodemailer.createTransport({
-    service: 'gmail', // 사용 중인 이메일 서비스
-    auth: {
-        user: 'leehiesoo@gmail.com', // 본인 이메일
-        pass: 'lasrkobfklxkszgq' // 본인 이메일 비밀번호 또는 앱 비밀번호
-    }
-});
+
 
 //! 이메일 보내기ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
