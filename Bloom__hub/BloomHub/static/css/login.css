@@ -652,10 +652,13 @@ top:-132px;
         right: 10px;
     }
     #hr-green {
-        right: calc(0% - -32px);
+        right: calc(-1% - -5px);
     }
     .description-container {
-        right: calc(0% - 13px);    
+        right: calc(0% - 0px);  
+    }
+    h1 {
+        right: calc(35% - -5px);
     }
 .links li {
     display: none;

@@ -612,16 +612,14 @@ pointer-events: none; /*^ 마우스포인터로 클릭 불가 */
         top: 10px;
         right: 10px;
     }
+    #hr-green {
+        right: calc(-1% - -5px);
+    }
 h1 {
-    right: calc(10% - 0px);
+    right: calc(12% - 0px);
 }
 .description-container {
-    text-align: center;
-    padding: 10px;
-    font-family: 'KCC-Hanbit', sans-serif;
-    position: relative;
-    top:-130px;
-    right: calc(22% - 0px);
+    right: calc(-2% - 0px);
 }
 /*^ 아이디,이메일 인풋블럭 위치  */
 .input__block {

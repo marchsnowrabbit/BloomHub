@@ -1,4 +1,4 @@
-/* 문구와 초록색 선 수정하기 */
+/*반응형 수정*/
 
 @font-face {
     font-family: 'KCC-Hanbit';
@@ -609,11 +609,14 @@ pointer-events: none; /*^ 마우스포인터로 클릭 불가 */
         top: 10px;
         right: 10px;
     }
+    #hr-green {
+        right: calc(-1% - -5px);
+    }
 h1 {
     right: calc(27% - 0px);
 }
 .description-container {
-    right: calc(25% - 0px);
+    right: calc(-2% - 0px);
 }
 .input__block {
     right: calc(10% - -10px); 
