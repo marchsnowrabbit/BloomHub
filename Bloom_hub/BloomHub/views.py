@@ -1,15 +1,87 @@
 import json
-from pyexpat.errors import messages
+import os
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.hashers import make_password
 from django.core.files.images import ImageFile
-from django.views.decorators.csrf import csrf_exempt
-import os
+from django.views.decorators.csrf import csrf_protect
+from googleapiclient.discovery import build
+import isodate
+from django.contrib import messages
 
-@csrf_exempt  
+class YoutubeVideoapi:
+    def __init__(self):
+        self.developer_key = 'AIzaSyA7Qn-gNPnDQ4xgpDemtU0OzArCzL0zqvI'  # 여기에 실제 API 키를 입력하세요.
+        self.youtube_api_service_name = "youtube"
+        self.youtube_api_version = 'v3'
+
+    def videolist(self, keyword):
+        youtube = build(self.youtube_api_service_name, self.youtube_api_version, developerKey=self.developer_key)
+
+        try:
+            search_response = youtube.search().list(
+                q=keyword,
+                order='viewCount',
+                part='snippet',
+                maxResults=20
+            ).execute()
+
+            video_ids = []
+            videos = []
+            for item in search_response['items']:
+                video_id = item['id'].get('videoId')
+                if video_id:
+                    video_ids.append(video_id)
+                    videos.append({
+                        'title': item['snippet']['title'],
+                        'videoId': video_id,
+                        'thumbnail': item['snippet']['thumbnails']['default']['url'],
+                        'channelTitle': item['snippet']['channelTitle']
+                    })
+
+            if video_ids:
+                videos_response = youtube.videos().list(
+                    id=','.join(video_ids),
+                    part='contentDetails,statistics'
+                ).execute()
+
+                for i, video in enumerate(videos_response['items']):
+                    duration = self.convert_duration(video['contentDetails']['duration'])
+                    view_count = video['statistics'].get('viewCount', 0)
+                    videos[i]['duration'] = duration
+                    videos[i]['viewCount'] = view_count
+
+            return videos
+
+        except Exception as e:
+            print(f"오류 발생: {e}")
+            return []
+
+    def convert_duration(self, duration):
+        duration_obj = isodate.parse_duration(duration)
+        total_minutes = int(duration_obj.total_seconds() // 60)
+        hours = total_minutes // 60
+        minutes = total_minutes % 60
+        return f"{hours}시간 {minutes}분" if hours > 0 else f"{minutes}분"
+
+def search(request):
+    return render(request, 'search.html')
+
+def search(request):
+    if request.method == 'POST':
+        keyword = request.POST.get('keyword', '')
+        video_api = YoutubeVideoapi()
+        videos = video_api.videolist(keyword)
+
+        if not videos:
+            messages.error(request, '비디오를 찾을 수 없습니다.')
+
+        return render(request, 'searchresult.html', {'videos': videos, 'keyword': keyword})
+    return render(request, 'search.html')
+
+@csrf_protect
 def signup_view(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -77,18 +149,13 @@ def login_view(request):
 def check_login_view(request):
     if request.user.is_authenticated:
         return JsonResponse({'loggedIn': True})
-        
-    else:
-        return JsonResponse({'loggedIn': False})
+    return JsonResponse({'loggedIn': False})
+
 def check_session(request):
-    # 세션 체크 로직
-    if request.user.is_authenticated:  # 사용자 인증 상태 체크
+    if request.user.is_authenticated:
         return JsonResponse({'status': 'success', 'user': request.user.username})
-    else:
-        return JsonResponse({'status': 'failure', 'message': 'User is not authenticated.'})    
+    return JsonResponse({'status': 'failure', 'message': 'User is not authenticated.'})
 
-
-# 나머지 뷰 함수들은 그대로 유지
 def home(request):
     return render(request, 'home.html')
 
@@ -133,9 +200,6 @@ def mypage_kor(request):
 
 def mypage_manager(request):
     return render(request, 'mypagemanager.html')
-
-def search_page(request):
-    return render(request, 'search.html')
 
 def search_kor(request):
     return render(request, 'searchkor.html')

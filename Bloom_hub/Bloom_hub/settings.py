@@ -78,13 +78,15 @@ WSGI_APPLICATION = "Bloom_hub.wsgi.application"
 DATABASES = {
     "default": {
         'ENGINE': 'djongo',
-        'NAME' : 'BloomHub',
+        'NAME': 'BloomHub',  # 데이터베이스 이름
         'ENFORCE_SCHEMA': False,
-        'CLIENT':{
-            'host':'mongodb+srv://beansu:2001?Ssb0@bloomcluster.a84bi.mongodb.net/?retryWrites=true&w=majority&appName=BloomCluster'
+        'CLIENT': {
+            'host': 'mongodb+srv://beansu:2001%3FSsb0@bloomcluster.a84bi.mongodb.net/BloomHub?retryWrites=true&w=majority'
         }
     }
 }
+
+
 
 
 # Password validation
