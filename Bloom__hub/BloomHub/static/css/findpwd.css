@@ -1,4 +1,4 @@
-/* 문구와 초록색 선 수정하기 */
+/*input block 위치 수정하기 */
 
 @font-face {
     font-family: 'KCC-Hanbit';
@@ -157,14 +157,13 @@ nav a.classing:hover {
 /*^ 로그인창 */
 /* 초록색 선 */
 #hr-green {
+    width: 450px;
+    border: none;
+    border-top: 2px solid #72BA84;
+    margin: 10px auto;
     position: relative;
-    
-    left:110px;
-    width:450px;
-    border-color: #72BA84;
-
-    border-top: 2px solid #72BA84; /* 굵기와 색상 설정 */
-    
+    right: calc(0% - -47px);
+    top: -142px;
 }
 
 /* Description styling */
@@ -172,15 +171,12 @@ nav a.classing:hover {
 
 /*^ 설명부분 */
 .description-container {
-    text-align: center;
-    padding: 20px;
+    text-align: left; 
+    padding: 10px 0;
     font-family: 'KCC-Hanbit', sans-serif;
     position: relative;
-    top:-140px;
-    right: calc(27% - 0px);
-
-
-
+    right: calc(0% - 24px);
+    top: -125px;
 }
 /*^ 설명 색깔 */
 .container #description {
@@ -223,7 +219,7 @@ h1 {
     transition: .2s linear;
     
     position:relative;
-    top:-50px;
+    top:-45px;
      right: calc(17% - 0px);
 
 

@@ -166,7 +166,7 @@ nav a.classing:hover {
 
 /*^ 설명부분 */
 .description-container {
-    text-align: left; /* 왼쪽 정렬로 변경 */
+    text-align: left; 
     padding: 10px 0;
     font-family: 'KCC-Hanbit', sans-serif;
     position: relative;
