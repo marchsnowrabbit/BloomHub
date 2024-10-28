@@ -21,7 +21,7 @@ class KoreanScriptExtractor:
         self.video_title = self.get_video_title()
 
     def load_stopwords(self):
-        with open('stopwords-ko.txt', 'r', encoding='utf-8') as file:
+        with open('KR_bloom_dictionary/stopwords-ko.txt', 'r', encoding='utf-8') as file:
             return set(line.strip() for line in file)
 
     def get_video_title(self):

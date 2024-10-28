@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,18 +12,18 @@
 
 <body>
     <header>
-        <a href="index.html" class="logo">
+        <a href="{% url 'homekor' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
         <nav>
-            <a href="guide.html">Guides</a>
-            <a href="search.html">Search</a>
-            <a href="mypage.html">My profile</a>
+            <a href="{% url 'guidekor' %}">Guides</a>
+            <a href="{% url 'searchkor' %}">Search</a>
+            <a href="{% url 'mypagekor' %}">My profile</a>
             <div class="dropdown-container">
                 <a href="#" class="classing">Classing</a>
                 <div class="dropdown">
-                    <a href="#">Learning Video</a>
-                    <a href="#">Learned Video</a>
+                    <a href="{% url 'learningkor' %}">Learning Video</a>
+                    <a href="{% url 'learnedkor' %}">Learned Video</a>
                 </div>
             </div>
         </nav>
@@ -30,18 +31,18 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="/로그인한국어.html">Korean</a>
-                    <a href="#">English</a>
+                    <a href="{% url 'loginkor' %}?lang=ko">Korean</a>
+                    <a href="{% url 'login' %}?lang=en">English</a>
                 
                 </div>
             </div>
-            <a href="loginnew.html">Login</a>
-            <a href="회원가입newnew.html">Sign up</a>
+            <a href="{% url 'loginkor' %}">Login</a>
+            <a href="{% url 'signupkor' %}">Sign up</a>
         </div>
     </header>
     
     <div class="container">
-        <h1>Login</h1>
+        <h1>로그인</h1>
         <div class="description-container">
             <div id="description"> 로그인 후 당신을 위한 맞춤 서비스를 이용해 보세요 </div>
             
@@ -50,10 +51,10 @@
 
         <ul class="links">
             <li>
-                <a href="로그인.html" id="ID">ID :</a>
+                <a href="{% url 'loginkor' %}" id="ID">ID :</a>
             </li>
             <li>
-                <a href="회원가입.html" id="PassWord">PassWord :</a>
+                <a href="{% url 'signupkor' %}" id="PassWord">PassWord :</a>
             </li>
         </ul>
         <form action="" method="post">
@@ -71,11 +72,11 @@
             </div>
             
             <div class="password-links">
-                <a href="./회원가입new.html" id="find-signup">가입하기 |</a>
-                <a href="./아이디찾기.html" id="find-id-link">아이디 찾기 |</a>
-                <a href="#" id="find-password-link">비밀번호 찾기</a>
+                <a href="{% url 'signupkor' %}" id="find-signup">가입하기 |</a>
+                <a href="{% url 'findIDkor' %}" id="find-id-link">아이디 찾기 |</a>
+                <a href="{% url 'findpwdkor' %}" id="find-password-link">비밀번호 찾기</a>
             </div>
-            <button class="signin__btn">Login</button>
+            <button class="signin__btn">로그인</button>
         </form>
        
 <!--        

@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이 페이지</title>
+    <title>My Page</title>
     <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
 
 
@@ -19,18 +20,18 @@
 <body>
 
     <header>
-        <a href="index.html" class="logo">
-            <img src="logo.png" alt="logo" style="height: 100px;">
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
         <nav>
-            <a href="guide.html">Guides</a>
-            <a href="search.html">Search</a>
-            <a href="mypage.html">My profile</a>
+            <a href="{% url 'guide' %}">Guides</a>
+            <a href="{% url 'search' %}">Search</a>
+            <a href="{% url 'mypage' %}">My profile</a>
             <div class="dropdown-container">
                 <a href="#" class="classing">Classing</a>
                 <div class="dropdown">
-                    <a href="learning.html">Learning Video</a>
-                    <a href="learned.html">Learned Video</a>
+                    <a href="{% url 'learning' %}">Learning Video</a>
+                    <a href="{% url 'learned' %}">Learned Video</a>
                 </div>
             </div>
         </nav>
@@ -38,12 +39,12 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="index한국어.html">Korean</a>
-                    <a href="index.html">English</a>
+                    <a href="{% url 'mypagekor' %}">Korean</a>
+                    <a href="{% url 'mypage' %}">English</a>
                 </div>
             </div>
-            <a href="로그인.html" id="login-link">Login</a>
-            <a href="회원가입.html" id="signup-link">Sign up</a>
+            <a href="{% url 'login' %}" id="login-link">Login</a>
+            <a href="{% url 'signup' %}" id="signup-link">Sign uo</a>
             <a href="#" id="logout-link" style="display: none;">Logout</a>
         </div>
     </header>
@@ -51,14 +52,14 @@
     <div class="container">
         <div class="sidebar">
             <ul>
-                <li><a href="#" onclick="showContent('myInfo')">내 정보</a></li>
-                <li><a href="#" onclick="showContent('personalInfo')">개인정보 관리</a></li>
+                <li><a href="#" onclick="showContent('myInfo')">My Information</a></li>
+                <li><a href="#" onclick="showContent('personalInfo')">Manage Personal Information</a></li>
             </ul>
         </div>
         <div class="content">
             <div id="myInfo" class="content-section active">
                 <div class="profile-header">
-                    <strong>내 정보</strong>
+                    <strong>My Information</strong>
                     <button onclick="showContent('')" class="back-button">← </button>
                 </div>
                 <div class="profile-container">
@@ -69,26 +70,26 @@
                         <div class="profile-info">
                             <p>회원 정보</p>
                             
-                            <p>이메일: <span id="userEmail">Loading...</span></p>
-                            <p>최근로그인: <span id="userJoinDate">Loading...</span></p>
+                            <p>E-mail: <span id="userEmail">Loading...</span></p>
+                            <p>Last Login: <span id="userJoinDate">Loading...</span></p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div id="personalInfo" class="content-section">
-                <h2>개인정보 관리</h2>
+                <h2>Manage Personal Information</h2>
                 <form id="emailForm">
-                    <label for="email">이메일 변경</label>
+                    <label for="email">Change Email</label>
                     <input type="email" id="email" name="email" required>
-                    <button type="button" onclick="updateEmail()">이메일 변경</button>
+                    <button type="button" onclick="updateEmail()">Change Email</button>
                 </form>
                 <form id="passwordForm">
-                    <label for="password">새 비밀번호 입력</label>
+                    <label for="password">Enter New Password</label>
                     <input type="password" id="password" name="password" required>
-                    <label for="confirmPassword">새 비밀번호 확인</label>
+                    <label for="confirmPassword">Confirm New Password</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
-                    <button type="button" onclick="updatePassword()">비밀번호 변경</button>
+                    <button type="button" onclick="updatePassword()">Change Password</button>
                 </form>
             </div>
 

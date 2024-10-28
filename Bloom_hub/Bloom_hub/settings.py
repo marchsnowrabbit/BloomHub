@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'BloomHub' #생성한 앱
+    'BloomHub',  # 생성한 앱
 ]
 
 MIDDLEWARE = [
@@ -124,3 +124,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STATICSFILES_DIR = (
     os.path.join(BASE_DIR,'static')
 )
+
+AUTH_USER_MODEL = 'BloomHub.User'
+

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+
+    <!-- jQuery 라이브러리 로드 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <header>
+      <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
+      </a>
+      <nav>
+          <a href="{% url 'guide' %}">Guides</a>
+          <a href="{% url 'search' %}">Search</a>
+          <a href="{% url 'mypage' %}">My profile</a>
+          <div class="dropdown-container">
+              <a href="#" class="classing">Classing</a>
+              <div class="dropdown">
+                  <a href="{% url 'learning' %}">Learning Video</a>
+                  <a href="{% url 'learned' %}">Learned Video</a>
+              </div>
+          </div>
+      </nav>
+      <div class="auth">
+          <div class="language-container">
+              <a href="#" class="language">Language</a>
+              <div class="language-dropdown">
+                  <a href="{% url 'signupkor' %}">Korean</a>
+                  <a href="{% url 'signup' %}">English</a>
+              </div>
+          </div>
+          <a href="{% url 'login' %}">Login</a>
+          <a href="{% url 'signup' %}">Sign up</a>
+      </div>
+  </header>
+
+  <div class="container"> 
+      <h1>SIGN UP</h1>
+      <div class="description-container">
+          <div id="description">Enjoy personalized services after signing up. </div>
+          <hr id="hr-green">
+      </div>
+
+      <!-- 회원가입 폼 -->
+      <form id="signupForm" action="{% url 'signup' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input__block">
+            <input type="text" placeholder="ID" class="input" name="user_id" required>
+        </div>
+        <div class="input__block">
+            <input type="email" placeholder="Email" class="input" name="email" required>
+        </div>
+        <div class="input__block">
+            <input type="password" placeholder="Password" class="input" name="password" required>
+        </div>
+        <div class="input__block">
+            <input type="password" placeholder="Repeat password" class="input" name="password2" required>
+        </div>
+        <div class="input__block">
+            <input type="text" placeholder="UserName" class="input" name="username" required>
+        </div>
+        <div class="input__block">
+            <input type="text" placeholder="YouTube API Key" class="input" id="youtube_api_key" name="youtube_api_key" />
+        </div>
+        <div class="input__block">
+            <input type="text" placeholder="Wikifier API Key" class="input" id="wikifier_api_key" name="wikifier_api_key" />
+        </div>
+        <div class="input__block">
+            <input type="file" name="profile_image" class="input">
+        </div>
+
+        <button class="signin__btn" type="submit">SignUp</button>
+    </form>
+  </div>
+
+</body>
+
+<script>
+$(document).ready(function() {
+    $('#signupForm').on('submit', function(e) {
+        e.preventDefault();  // 기본 폼 제출 방지
+
+        // FormData 객체 생성
+        var formData = new FormData(this);
+        console.log([...formData]); // 폼 데이터 확인
+
+        // AJAX 요청
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.success) {
+                    // 성공 시 처리할 내용 (예: 메인 페이지로 리다이렉션)
+                    window.location.href = "{% url 'home' %}";
+                } else {
+                    // 실패 시 오류 메시지 표시
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                // AJAX 요청 실패 시 처리
+                alert('회원가입 요청이 실패했습니다.');
+            }
+        });
+    });
+});
+</script>
+
+</html>

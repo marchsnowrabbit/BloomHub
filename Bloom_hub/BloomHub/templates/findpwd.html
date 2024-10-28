@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,19 +13,19 @@
 
 <body>
     <header>
-        <a href="index.html" class="logo">
+        <a href="{% url 'home' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
       </a>
 
         <nav>
-            <a href="guide.html">Guides</a>
-            <a href="search.html">Search</a>
-            <a href="mypage.html">My profile</a>
+            <a href="{% url 'guide' %}">Guides</a>
+            <a href="{% url 'search' %}">Search</a>
+            <a href="{% url 'mypage' %}">My profile</a>
             <div class="dropdown-container">
                 <a href="#" class="classing">Classing</a>
                 <div class="dropdown">
-                    <a href="#">Learning Video</a>
-                    <a href="#">Learned Video</a>
+                    <a href="{% url 'learning' %}">Learning Video</a>
+                    <a href="{% url 'learned' %}">Learned Video</a>
                 </div>
             </div>
         </nav>
@@ -31,19 +33,19 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="/로그인한국어.html">Korean</a>
-                    <a href="#">English</a>
+                    <a href="{% url 'home' %}?lang=ko">Korean</a>
+                    <a href="{% url 'home' %}?lang=en">English</a>
                 </div>
             </div>
-            <a href="로그인.html">Login</a>
-            <a href="회원가입.html">Sign up</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Sign up</a>
         </div>
     </header>
     
     <div class="container">
         <h1>Finding Password</h1>
         <div class="description-container">
-            <div id="description"> 비밀번호를 잊어버리셨나요?</div>
+            <div id="description"> Did you forget your password?</div>
             
             <hr id="hr-green">
         </div>
@@ -61,7 +63,7 @@
 
 
         </ul>
-        <form action="/아이디찾기.html" method="post">
+        <form action="{% url 'findID' %}" method="post">
 
 
             <div class="first-input input__block first-input__block">

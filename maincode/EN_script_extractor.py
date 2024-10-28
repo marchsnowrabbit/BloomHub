@@ -158,7 +158,7 @@ class EnglishScriptExtractor:
 # 5분 기준 -> 38초 정도 소요 됨(명사,동사 분류)
 if __name__ == "__main__":
     # extractor = EnglishScriptExtractor(vid="https://www.youtube.com/watch?v=6i3EGqOBRiU&list=PLdo5W4Nhv31bZSiqiOL5ta39vSnBxpOPT", setTime=600, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
-    newEx = EnglishScriptExtractor(vid="https://www.youtube.com/watch?v=eWRfhZUzrAc&list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB",setTime=18000,wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
+    newEx = EnglishScriptExtractor(vid="https://www.youtube.com/watch?v=e9uSOGsildw",setTime=1320,wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
     # wiki_data = extractor.url_to_wiki()
     # wiki_data.to_csv('en.csv')
     # print(wiki_data)

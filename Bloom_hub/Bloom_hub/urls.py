@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views  # 이 줄을 추가하세요
+
 
 urlpatterns = [
     path('admin/',admin.site.urls),
