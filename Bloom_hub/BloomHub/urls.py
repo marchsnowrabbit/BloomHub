@@ -1,9 +1,8 @@
 from django.urls import path
-from django.shortcuts import render  # Django의 템플릿을 렌더링하기 위한 render 함수를 임포트
 from . import views  # views 모듈을 임포트하여 사용
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.home, name='home'),  # index를 search로 변경
     path('kor/', views.home_kor, name='homekor'),
 
     path('guide/', views.guide, name='guide'),
@@ -17,8 +16,8 @@ urlpatterns = [
 
     path('login/', views.login_page, name='login'),
     path('login/kor/', views.login_kor, name='loginkor'),
-    path('check-login/', views.check_login_view, name='check_login'), #^ 로그인확인 함수
-    path('logout/', views.logout, name='logout'),  # 로그아웃 URL 추가
+    path('check-login/', views.check_login_view, name='check_login'),
+    path('logout/', views.logout, name='logout'),
     path('check-session/', views.check_session, name='check_session'),
 
     path('signup/', views.signup_page, name='signup'),
@@ -28,7 +27,7 @@ urlpatterns = [
     path('mypage/kor/', views.mypage_kor, name='mypagekor'),
     path('mypage/manager/', views.mypage_manager, name='mypage_manager'),
 
-    path('search/', views.search_page, name='search'),
+    path('search/', views.search, name='search'),
     path('search/kor/', views.search_kor, name='searchkor'),
 
     path('search/result/', views.search_result, name='searchresult'),
