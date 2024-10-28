@@ -1,14 +1,16 @@
-Appraise - 평가하다
-Argue - 논쟁하다, 주장하다
-Assess - 평가하다
-Attach - 첨부하다, 붙이다
-Choose - 선택하다
-Compare - 비교하다
-Conclude - 결론짓다
-Consider - 고려하다
-Contrast - 대조하다
-Criticize - 비판하다
-Critique - 비평하다, 평가하다
+평가하다
+논쟁하다
+주장하다
+첨부하다
+덧붙이다
+선택하다
+비교하다
+결론짓다
+고려하다
+대조하다
+비판하다
+비평하다
+평가하다
 Debate - 토론하다, 논쟁하다
 Decide - 결정하다
 Defend - 방어하다, 옹호하다
