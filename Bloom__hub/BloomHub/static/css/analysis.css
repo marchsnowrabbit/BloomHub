@@ -1,3 +1,5 @@
+/*제목, 조회수 등등 그거 왼쪽으로 땡기기*/
+
 @font-face {
     font-family: 'KCC-Hanbit';
     src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
@@ -9,21 +11,26 @@
 body {
     font-family: 'KCC-Hanbit', sans-serif;
     background-color: rgb(11, 36, 60);
-
-    margin: 0;
-    min-height: 100vh;
     padding: 0;
-    overflow: hidden;
-   
+    margin: 0;
+    /* overflow: hidden; */
+    
 }
+
 main {
     display: flex;
+    flex-wrap: wrap; /* 카드가 한 줄에 다 들어가지 않으면 줄 바꿈을 함 */
+    justify-content: space-between;/* 카드를 중앙에 정렬 */
+    align-items: center;
+    padding: 20px;
+    height: auto;
+    /* display: flex;
     justify-content: center;
     align-items: center;
     height: calc(100vh - 60px);
-    position: relative;
-}
+    position: relative; */
 
+}
 
 header {
     display: flex;
@@ -34,11 +41,26 @@ header {
     height: 100px;
     background-color: rgb(11, 36, 60);
     position: relative;
+    /* display: flex;
+    flex-direction: column; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0 20px;
+    height: 100px;
+    background-color: rgb(11, 36, 60);
+    position: relative; */
 }
 
 header .logo {
     margin-right: 10px;               
     color: white; 
+    
+    /* margin-right: auto;
+    /* margin-left: 10px; 
+    color: rgb(11, 36, 60); */
+    
+    
+    /* align-items: center; */
 }
 
 
@@ -47,6 +69,14 @@ header nav {
     gap: 35px;                 
     align-items: center;        
     margin: 0;  
+    
+    /* /* margin-top: 50px; 
+    display: flex;
+    /* justify-content: center; 
+    gap: 35px;
+    align-items: center;
+    /* margin: 0; 
+    font-weight: 545; */
     }
 
 header nav a {
@@ -145,7 +175,22 @@ nav a.classing:hover {
 }
 
 
+/*^ 헤더,드랍다운 */
+/*^ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 
+
+
+
+
+
+
+main {
+    padding: 20px;
+    padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
 
 
 .video-container {
@@ -283,4 +328,122 @@ margin-bottom: 25px;
     border-radius: 10px;
     border: 1px solid black;
     z-index: 1000;
+}
+
+/* Bloom 삼각형 스타일링 */
+.pyramid {
+    width: 200px;
+    height: 300px;
+    position: relative;
+    margin-top: 20px;
+}
+
+.pyramid .level {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    color: white;
+    font-weight: bold;
+}
+
+.pyramid .level-1 {
+    background-color: #6a0dad;
+    height: 20%;
+    bottom: 0;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.pyramid .level-2 {
+    background-color: #6495ed;
+    height: 20%;
+    bottom: 20%;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.pyramid .level-3 {
+    background-color: #3cb371;
+    height: 20%;
+    bottom: 40%;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.pyramid .level-4 {
+    background-color: #9acd32;
+    height: 20%;
+    bottom: 60%;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.pyramid .level-5 {
+    background-color: #ffcc00;
+    height: 20%;
+    bottom: 80%;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.pyramid .level-6 {
+    background-color: #ff6347;
+    height: 20%;
+    bottom: 100%;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+/* 키워드 */
+.keyword-section .keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.keyword {
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+
+@media only screen and (max-width: 768px) {
+    
+    header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+    }
+    
+    header .logo {
+        position: relative;
+        top: 10px; 
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 5px; 
+    }
+
+    header nav {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: -5px; 
+    }
+
+    header nav a {
+        color: white;
+        font-size: 20px; 
+        text-decoration: none;
+    }
+    
+    header .auth {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    /*헤더 밑에
+    영상 썸네일 뜨게 하고
+    그 밑에 버튼들 뜨게 하기
+    그럼 영상 제목이랑 그건..??? */
+    
+
 }
