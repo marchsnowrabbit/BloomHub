@@ -1,0 +1,40 @@
+Act - 행동하다
+Administer - 관리하다
+Articulate - 분명히 표현하다
+Assess - 평가하다
+Change - 변화시키다
+Chart - 도표화하다
+Choose - 선택하다
+Collect - 수집하다
+Compute - 계산하다
+Construct - 구성하다, 만들다
+Contribute - 기여하다
+Control - 제어하다, 통제하다
+Demonstrate - 시연하다, 보여주다
+Determine - 결정하다
+Develop - 개발하다, 발전시키다
+Discover - 발견하다
+Dramatize - 극적으로 표현하다, 연극으로 만들다
+Draw - 그리다
+Establish - 확립하다, 설립하다
+Extend - 확장하다
+Imitate - 모방하다
+Implement - 실행하다
+Interview - 면접하다, 인터뷰하다
+Include - 포함하다
+Inform - 알리다
+Instruct - 지시하다, 가르치다
+Paint - 그리다, 색칠하다
+Participate - 참여하다
+Predict - 예측하다
+Prepare - 준비하다
+Produce - 생산하다, 만들다
+Provide - 제공하다
+Relate - 관련시키다, 연결하다
+Report - 보고하다
+Select - 선택하다
+Show - 보여주다
+Solve - 해결하다
+Transfer - 옮기다, 전송하다
+Use - 사용하다
+Utilize - 활용하다, 이용하다
