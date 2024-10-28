@@ -1,0 +1,403 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: rgb(11, 36, 60);
+    margin: 0;
+    min-height: 100vh;
+    padding: 0;
+    overflow-y: auto; /* 수직 스크롤 허용 */
+}
+
+html {
+    height: 100%;
+    margin: 0;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px);
+    position: relative;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 20px;
+    height: 100px;
+    background-color: rgb(11, 36, 60);
+    position: relative;
+}
+
+header .logo {
+    margin-right: 10px;
+    color: white; 
+}
+
+header nav {
+    display: flex;              
+    gap: 35px;                 
+    align-items: center;        
+    margin: 0;  
+}
+
+header nav a {
+    color: white;
+    font-size: 23px;
+    text-decoration: none;
+} 
+
+header .auth {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+header .auth a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+/** Dropdown styling */
+.language-container {
+    position: relative;
+}
+
+.language {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.language-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgb(11, 36, 60);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.language-dropdown a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    white-space: nowrap;
+    display: block;
+    font-size: 16px;
+}
+
+.language-container:hover .language-dropdown {
+    display: block;
+}
+
+nav a.classing:hover, nav a.language:hover {
+    color: rgb(11, 36, 60);
+}
+
+/* classing 드롭다운 */
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgb(11, 36, 60);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.dropdown a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    white-space: nowrap;
+    display: block;
+    font-size: 18px;
+}
+
+nav a.classing:hover {
+    color: white; 
+    display: inline; 
+}
+
+.dropdown-container:hover .dropdown {
+    display: block;
+}
+
+/*^ 헤더,드랍다운 */
+
+/* 초록색 선 */
+#hr-green {
+    position: relative;
+    left: 0px;
+    width: 450px;
+    border-color: #72BA84;
+    border-top: 2px solid #72BA84; /* 굵기와 색상 설정 */
+}
+
+/* 설명부분 */
+.description-container {
+    text-align: center;
+    padding: 20px;
+    font-family: Helvetica, Arial, sans-serif;
+    position: relative;
+    top: -140px;
+    right: calc(10% - 0px);
+}
+
+/* 설명 색깔 */
+.container {
+    display: block;
+    max-width: 580px;
+    min-height: 400px; /* 최소 높이 설정 */
+    background-color: white;
+    margin: 120px auto;
+    border: 5px solid #FAA0EB;
+    padding: 10px;
+    border-radius: 70px;
+    position: relative;
+    top: -105px;
+}
+
+/* 검정색 상단 로그인 글자 */
+h1 {
+    color: #000000;
+    font-size: 40px;
+    text-align: center;
+    margin: 120px 0 80px 0;
+    transition: .2s linear;
+    position: relative;
+    top: -50px;
+    right: calc(30% - -20px);
+}
+
+/* ID :  인풋창옆 글자 */
+.links {
+    list-style-type: none;
+    padding: 0;
+}
+
+.links li {
+    display: inline-block;
+    margin: 0 20px 0 0;
+    transition: .2s linear;
+}
+
+.links li #ID {
+    position: relative;
+    top: -135px;
+    left: calc(50% - -60px);
+}
+
+.links li #PassWord {
+    position: relative;
+    top: -80px;
+    left: calc(-50% - -10px);
+}
+
+.links li #Repeat-PassWord {
+    position: relative;
+    top: -20px;
+    left: calc(-150% - 8px);
+}
+
+/* ID, PassWord 색깔 */
+.links a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: bolder;
+    text-align: center;
+    cursor: pointer;
+}
+
+form {
+    width: 100%;
+    max-width: 680px;
+    margin: 40px auto 10px;
+}
+
+.signup-input__block::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 150px;
+    display: block;
+    width: 0;
+    height: 0;
+}
+
+/* Password links */
+.password-links {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+/* 가입하기, 아이디찾기, 비밀번호 찾기 */
+.password-links a {
+    color: #000000;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Sign-in button styling */
+.signin__btn {
+    background: #72BA84;
+    color: white;
+    display: block;
+    width: 110px;
+    max-width: 680px;
+    height: 30px;
+    border-radius: 4px;
+    margin: 0 auto;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    transition: .2s linear;
+    position: relative;
+    right: calc(-35% - 10px);
+    top: -310px;
+}
+
+/* 확인버튼 초록색 :확인 */
+#verify-code-btn {
+    background: #72BA84;
+    color: white;
+    display: block;
+    width: 110px;
+    max-width: 680px;
+    height: 30px;
+    border-radius: 4px;
+    margin: 0 auto;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    transition: .2s linear;
+    position: relative;
+    left: 220px;
+    top: -283px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 가입하기 */
+#find-signup {
+    position: relative;
+    top: -250px;
+    left: 360px;
+    font-size: 12px;
+}
+
+/* 아이디찾기 */
+#find-id-link {
+    position: relative;
+    top: -249px;
+    left: 177px;
+    font-size: 12px;
+}
+
+/* 비밀번호 찾기 */
+#find-password-link {
+    position: relative;
+    top: -248px;
+    left: -5px;
+    font-size: 12px;
+}
+
+/* 아이디,이메일 인풋블럭 위치 */
+.input__block {
+    margin: 20px auto;
+    display: block;
+    position: relative;
+    left: calc(0% - 15px);
+    top: -200px;
+}
+
+/* 아이디,이메일 인풋 길이설정 */
+.input__block input {
+    display: block;
+    width: 300px;
+    height: 34px;
+    margin: 0 auto;
+    border: 1px solid black;  /* 테두리 두께와 색상 설정 */
+    background: white;
+    color: rgba(38, 19, 115, 0.999);
+    padding: 0 0 0 15px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* 인풋창 선택시 효과 */
+.input__block input:focus,
+.input__block input:active {  
+    outline: none;
+    color: rgb(0, 0, 0);
+}
+
+/* Email : */
+.links li #Email-input1 {
+    position: relative;
+    left: 25px;
+    top: -135px; 
+}
+
+/* 인증번호 : */
+.links li #verification-input2 {
+    position: relative;
+    left: -456px;
+    top: -78px;
+    pointer-events: none; /* 마우스포인터로 클릭 불가 */
+}
+
+/* 구글, 깃허브 버튼 */
+/* 구글 버튼 스타일은 주석 처리했습니다. 필요시 주석을 해제하세요. */
+
+.google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc; /* 테두리 색상 */
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: white; /* 배경색 */
+}
+
+.google:hover {
+    background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+}
+
+.github {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc; /* 테두리 색상 */
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: white; /* 배경색 */
+}
+
+.github:hover {
+    background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+}

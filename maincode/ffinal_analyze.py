@@ -5,7 +5,7 @@ from collections import Counter
 import re
 import plotly.express as px
 import plotly.graph_objects as go
-
+7869
 class BloomAnalysis:
     def __init__(self, data_path, bloom_dict_ko, bloom_dict_en):
         self.data = pd.read_csv(data_path)
