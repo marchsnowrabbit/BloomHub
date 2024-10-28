@@ -1,0 +1,38 @@
+Appraise - 평가하다
+Argue - 논쟁하다, 주장하다
+Assess - 평가하다
+Attach - 첨부하다, 붙이다
+Choose - 선택하다
+Compare - 비교하다
+Conclude - 결론짓다
+Consider - 고려하다
+Contrast - 대조하다
+Criticize - 비판하다
+Critique - 비평하다, 평가하다
+Debate - 토론하다, 논쟁하다
+Decide - 결정하다
+Defend - 방어하다, 옹호하다
+Describe - 설명하다, 묘사하다
+Determine - 결정하다
+Discuss - 논의하다
+Discriminate - 구별하다, 차별하다
+Estimate - 추정하다
+Evaluate - 평가하다
+Explain - 설명하다
+Interpret - 해석하다
+Judge - 판단하다
+Justify - 정당화하다, 변명하다
+Predict - 예측하다
+Prioritize - 우선순위를 매기다
+Prove - 증명하다
+Rank - 순위를 매기다
+Rate - 평가하다, 등급을 매기다
+Recommend - 추천하다
+Relate - 관련시키다
+Reframe - 다시 표현하다, 재구성하다
+Select - 선택하다
+Summarize - 요약하다
+Support - 지지하다
+Verify - 검증하다, 확인하다
+Value - 가치를 매기다, 평가하다
+Weigh - 평가하다, 저울질하다

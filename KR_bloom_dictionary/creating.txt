@@ -1,0 +1,57 @@
+Adapt - 개선하다
+Anticipate - 기대하다, 예상하다
+Arrange - 마련하다, 정리하다
+Assemble - 모으다, 조립하다
+Categorize - 분류하다
+Collect - 수집하다
+Collaborate - 협력하다
+Combine - 결합하다
+Communicate - 대화하다, 의사소통하다
+Compare - 비교하다
+Compile - 수집하다, 모으다
+Comply - 따르다, 준수하다
+Compose - 구성하다
+Construct - 구축하다, 만들다
+Create - 창조하다
+Design - 설계하다
+Devise - 고안하다, 계획하다
+Develop - 개발하다, 발전시키다
+Express - 표현하다
+Explain - 설명하다
+Formulate - 공식화하다, 구체화하다
+Facilitate - 도와주다, 촉진하다
+Generate - 생성하다, 만들다
+Incorporate - 통합하다, 포함하다
+Individualize - 개별화하다
+Initiate - 시작하다
+Integrate - 통합하다
+Intervene - 개입하다
+Invent - 발명하다
+Makeup - 구성하다
+Model - 모델을 만들다, 본보기를 만들다
+Modify - 수정하다
+Manage - 관리하다, 운영하다
+Negotiate - 협상하다
+Organize - 조직하다, 정리하다
+Perform - 수행하다, 실행하다
+Plan - 계획하다
+Pretend - 가장하다, 흉내 내다
+Produce - 생산하다, 만들다
+Progress - 발전하다, 진보하다
+Prepare - 준비하다
+Propose - 제안하다
+Rearrange - 재배열하다, 다시 정리하다
+Reconstruct - 재구성하다, 복원하다
+Reinforce - 강화하다
+Relate - 관련시키다, 연결하다
+Reorganize - 재조직하다
+Revise - 수정하다
+Rewrite - 다시 쓰다, 개정하다
+Setup - 설정하다, 설치하다
+Structure - 구조화하다
+Substitute - 대체하다, 대신하다
+Summarize - 요약하다
+Synthesize - 종합하다, 합성하다
+Tell - 말하다
+Write - 쓰다
+Validate - 타당성을 확인하다, 검증하다
