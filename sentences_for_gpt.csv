@@ -1,0 +1,487 @@
+title,word,start_time,end_time
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,in this video we will learn about what,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,is the set in Python how we can create,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we will work around its operations using,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,its built-in methods python set,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,basically part of collections in Python,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay that means list tuples dictionary,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and set are the four built-in data types,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,in Python which are used to store,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,collections of data okay whenever you,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,create a set the items are are placed,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,inside curly braces and they are,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,separated by comma python set unordered,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and unchangeable okay unchangeable but,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,you can add a new item to an already,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,credit set with that you can also remove,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,an item from a set okay and remember,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,that duplicate values aren't allowed in,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,a set if you will add duplicate values,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and print it only a single value will,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,get printed let's see,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,at first we will create a setting python,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I told you to create a set the elements,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,are placed inside curly brackets which,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,are separated by comma okay so let's see,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,how to create a set,0,60
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,hey spychom let us create a new project,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,file new project,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,click on create,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we have created a set right click and,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,create a new file python file demo press,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,enter it will convert to demo.pa that,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,that is our python file,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,our first example is how we can create a,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set in Python,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay at first take a set object you can,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,add any name for this,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,curly braces I told you and just add,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,values in it,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so herein we added five items in our set,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,separated by comma and enclosed by curly,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,brackets I told you I'll print it easily,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,using this print method,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,that's it you have created your first,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set in Python right click and run here,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,it is we have printed it,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay so I told you that,60,120
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,python set are an ordered that means the,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,items will appear in a random order okay,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so with that guys we will work around,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,all these examples that will complete,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,your python side concept,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,from scratch to the end let's begin,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so we saw how we can create a set in,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,Python let's see the second example,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now we will see how to create a set,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,with different data types,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay let me create a set again,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so I have created this set again and,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,printed it,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now let me create a second set,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,within that I'll add,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,integer values,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay I'll print this,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now let me create another set with the,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,Boolean values,120,180
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,true true false,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,two,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,false okay,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,print it,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,right click run here you can see we,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,created first second and third I told,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,you it is unordered that is the result,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,will be in random order,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now create a new set we will now create,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,a single set with different data types,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay so for that,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let me first add a string,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,then let me add a Boolean,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,a number,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,number again let's say then I'll add,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,string again,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and let's say string again so now we,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,have,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,our,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set with different data types I'll just,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,print it,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and that's it right click and run let's,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,see what will happen it will display in,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,random order,180,240
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,right displayed in random order so in,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,this way you can create a set with,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,different data types okay now moving,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,further,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now let us see how we can,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,Loop through a set,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,Loop through the set and print all the,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,values,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,Loop through the set and print all the,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,values,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,for this we'll be using a for Loop,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let us create a set first,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we created it and normally printed it,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and now we will print it using Loop we,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,will Loop through the set let's say for,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I in the set name set object my set and,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,just print the value of,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I here that's it add a colon here and,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,right click and run it,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,all right and you can see we printed we,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we iterated and we printed one by one we,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,printed all the values one by one in,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,this way you can also Loop through the,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set and print all the values,240,300
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now let us see another example,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here and what we will do we will get the,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,length of a set,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to get the length of a set,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we will use the alien method let's see,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,at first we will create a set,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so we created a set with the string,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,values,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we printed it now let us print the,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,length I told you we'll be using the Len,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,method,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and within that enter the set object,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,name that's it right click and run the,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,output should be five there are five,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,string values,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here it is output is 5. in this way you,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,can get the length of a set,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,next example,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now we will see how we can access items,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,in Python set,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to access items,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so in Python set you cannot use an index,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to access items but with that you can,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,use a loop to Loop through the set and,300,360
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,print the values with that you can also,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,check if a value is present in the set,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,or not,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so let's see at first we will create a,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set we created a set now let us print it,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so we used a for Loop to print the set,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now let's say we want to check for a,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,specific value for that,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,just choose print and within that we,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,will check using the in operator let's,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,say I want to check for Amit,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so I'll just write Amit in,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the set name that's it if true is,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,returned that means the value is in the,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,else false will get returned,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I ran it you can see it printed the set,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,first one by one using the for Loop then,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,it has given us true why because Amit,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,text is in the set now let me add some,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,other word which is not in the set let's,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,say Jacob,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I'll right click and run and it will,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,display false here it is it displayed,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,false that means Jacob is not in my set,360,420
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let's move further,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now we will see how we can add an item,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to a python set I told you it is,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,unchangeable but you can still add an,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,item,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the items can be added using the add,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,method,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,create a set we created a set then we,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,printed it,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to add item use the add method,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so write the set name the set object,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the set object dot add and within that,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,enter the value you want to add let's,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,have I want to add Jacob if you want to,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,add multiple values add like this KT,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay now you can print,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,updated set,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,updated set and right click run let's,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,see what will happen,420,480
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let's see what will happen here and you,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,can see we had five values now we have,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,seven values in random order I told you,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set is unordered so the output will be,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,in random order okay in this way you can,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,also add an item to a python set let's,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,move further,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,foreign,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,s from another set into the current set,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,that is updating a set,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,for that use the update method simply,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let us create two set,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I'll be creating the first set,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I created first set and printed it now,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I'll create a second set,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay then I'll update the first set,480,540
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay I,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay I have created the second set now,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,what I'll do I'll update the first set,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,for that write the first set dot update,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and within that mention the set two,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,that's it,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,after that print the set one because we,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,have updated the set one you can write,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here updated set one,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay okay I've written updated set one,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and printed it right click run let's see,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,what will happen at first we have,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,printed set one then set 2 then the,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,updated set one now the set one,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set one was having five elements this is,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,having three so,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the updated set one will have eight,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,elements okay in this way you can easily,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,add items from another set into the,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,current set to update the current set,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now let us move further and see how we,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,can remove how we can remove an item,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,from the set using the remove method,540,600
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to remove an item,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,as I have written here I will be using,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the remove method let's create a set,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,first,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so I've created a set and printed it now,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I'll remove it using the remove method,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,it's easy let's mention the same myset,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the myset object dot remove and within,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,that just mention name,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the element you want to remove let's say,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I wanted to remove I want to remove gain,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and that's it now when you will print,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the updated set it will show you all the,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,elements except Kane,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so here it is I have printed the updated,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set right click and run,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so initially we were having five,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,elements then we deleted k n using,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,remove method,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and that's it we now now we have four,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,elements in it okay,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now if you will try to let's say I'll,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,try to remove an element,600,660
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,which is not in the list,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,not in the set okay so I'll remove Jacob,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,but Jacob is not available here then,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,what will happen right click and run,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,it will show an error that,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,Jacob doesn't exist okay so if we'll try,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to remove an element,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,which is not in the set it will create,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,an error so I'll just comment it,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let's move further,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now I'll remove an item from the set,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,using the discard method,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay let us create a set first,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we have created a set and printed it now,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,use the discard method,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,myset.discard and within that mention,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the name you want to remove let's say I,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,want to remove Warner,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I'll add Warner in it and I'll just,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,print the updated set because we've,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,removed one of them,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here it is updated set right click and,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,run,660,720
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here it is we have we were having five,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,elements now we have four elements,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,because we have removed one of them now,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let's say I I'll remove,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,an item which is not in the list let's,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,say I'll remove Jacob,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and on removing it what should happen an,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,error should occur because Jacob is not,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,in the set,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,right click and then you can see there,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,is no error,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay in the remove method we saw that if,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,you,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,try to remove an item which is not in,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the set it will throw an error but this,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,is not the case with,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,discard method,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so this is the difference between,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,discard and remove method,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let's move further,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now we will empty the set,720,780
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to empty the set the clear method is,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,used create a set,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we have created a set and printed it,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now let us clear it remove it completely,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,my set dot clear method,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,myset.clearmethod that's it,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now when I'll try to uh print the set,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let's see what will happen right click,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and run,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,you can see it is showing us the,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,following that means we that means our,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set is empty okay in this way you can,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,clear you can empty the set using the,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,clear method,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now let us see how we can delete the,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,complete set,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to delete the complete set use the Dell,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,keyword,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,create a set,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we created a set with the five elements,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,string elements,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now I'll delete it using Del space my,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,press enter,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now when I'll try to print the set let's,780,840
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,see what will happen right click run,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and you can see name my set is not,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,defined that means we deleted it so we,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,won't be able to print it for obvious,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,reasons because the set does not exist,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let us move further,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,join two sets in Python,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to join two sets,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we can use a union method as well as a,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,update method,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay so let's see the update method,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,create two sets and print them,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so I have created set one now let us,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,create another set,840,900
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,I have created second set also let us,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,right click and run it so here we are,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,with here we are with two set,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now let us join two sets,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,by using the update method so just write,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,my set one dot,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,update,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and within that mention my set 2 that's,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,it print the set one since we have,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,updated set one via join set one with,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set two,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now our set one will have the complete,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,join of both the set,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,right click and run,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here you can see set one set two and the,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,joining of both the set okay in this way,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,you can join two sets in Python,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let us move further,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now let us see how to return the,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,difference between two or more set,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to return the difference between two or,900,960
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,more sets use the difference method,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let's create two set,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here is our set one,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let us now create the second set,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay we have printed both of them now,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let us take a new variable let's say res,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and within that we will find a,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,difference by using myset1 dot,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,difference,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,bracket my set 2,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay now we will print the result which,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,will be the difference right click and,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,run,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and you can see set one,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set two and the result of,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the difference Okay so,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,res returned a set that contains the,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,items which are in,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,which are in first set but not in second,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set okay so this is a difference,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now we will see how we can,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,keep holding the duplicate items into,960,1020
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay for that we'll be using the,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,intersection underscore update method,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay let us create two sets,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the following is set one and,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here is set to now we will use the,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,intersection underscore update method to,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,keep only the items that are present in,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,both sets okay that means duplicate,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,items,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,for that,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,use my set one,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,dot intersection underscore update,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,my set to the second set that's it and,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now I'll print the myset one why because,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the changes were done in my set 1.,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and it will keep only duplicate items in,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,two sets Okay so now John should get,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,printed,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and Steve should get printed let's say,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,right click and run,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now you can see set 1 set 2 and using,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,intersection underscore update we are,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,able to find the duplicate items only,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,that is the that are the items in both,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the set John and Steve,1020,1080
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here it is John is here and John is here,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,Steve is here and Steve is here okay,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now we will,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,keep all items into two set except the,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,duplicates okay that is the opposite,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now we will keep all items in the two,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,except the duplicates,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay to achieve this we'll be using,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,symmetric underscore difference,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,underscore update method let us create,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,two set,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here is a first set let us create the,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,second set,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,this is the second set now what we want,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we just want to keep the elements that,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,are not present in both sets for that,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,use my set 1 the first set Dot symmetric,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,underscore difference underscore update,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,method and mention the set to inside it,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,as a parameter that's it now we will,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,print the first set,1080,1140
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay so this will return the return all,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the items in the two sets except the,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,duplicates so,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,accept John and Steve it will it will,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,print all other six elements right click,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,run,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here it is,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,first set second set and the following,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,are all the items in the two sets except,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the matching values in both the set okay,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now we will see how we can make the copy,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,of a set,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to make a copy we'll be using the copy,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,method,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay let us create a set we created a,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set and printed it now we will create a,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,copy let's say under res new variable,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,right uh write the first set write the,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set dot copy that's it,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now res will have a copy of our,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,following set let us print res,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,right click and run,1140,1200
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now the first one is our set here it is,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and the second is the copy that is res,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,is the copy of the set using the copy,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,method,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now last method,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,how we can get the union offset,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so the union method is used to return a,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set that will contain all the items from,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,both the set,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,excluding the duplicates that is Union,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,let us create two set,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here is set 1,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and here is set to okay,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,to get the union let us create a new,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,variable let us add a new variable,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay let us create a new set,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and within that use my set one dot Union,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and in bracket set the second set that's,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,it,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,now print the new set that is our res,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,and right click and run it okay so now,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,it will print the union that is all the,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,items from both the sets excluding the,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,duplicates here it is,1200,1260
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,we have printed set 1 set 2 and all the,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,items from both the set,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay excluding the duplicates okay so,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,here in John,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,was a duplicate,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,okay I'll show it here John was a,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,duplicate and Steve was a duplicate okay,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so it has printed all but it has printed,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,the duplicates only once that means,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,excluding the duplicates in this way you,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,can get Union offset in Python,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so guys in this video we saw what are,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,python set how we can work around it,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,what are the methods available how we,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,can create a set we also worked around,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,more than 15 examples so that we can,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,so that we can cover the entire concept,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,of,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,set in Python thank you for watching the,1260,1320
+Python Sets Tutorial | Tutorial for Beginners  | Lecture 21 | Amit Thinks,video,1260,1320
