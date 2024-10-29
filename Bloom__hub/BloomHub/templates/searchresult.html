@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{% static 'css/searchresult.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>{{ keyword }}에 대한 검색 결과</title>
+    <title>Search results for {{ keyword }}</title>
 </head>
 <body>
     <header>
@@ -41,13 +41,13 @@
         </div>
     </header>
     
-    <h1>"{{ keyword }}"에 대한 검색 결과</h1>
+    <h1>Search results for "{{ keyword }}"</h1>
     
     <!-- 검색 기능 추가 -->
     <div class="search-container">
         <form action="{% url 'search' %}" method="POST">  <!-- Django URL 패턴을 사용 -->
             {% csrf_token %}  <!-- CSRF 토큰 추가 -->
-            <input type="text" name="keyword" placeholder="검색어를 입력하세요" required>
+            <input type="text" name="keyword" placeholder="Please enter a search term" required>
             <button type="submit" class="search-button">
                 <img src="{% static 'img/profile.png' %}" alt="Search Icon" class="search-icon">
             </button>
@@ -61,12 +61,12 @@
     <table>
         <thead>
             <tr>
-                <th>썸네일</th>
-                <th>영상 제목</th>
-                <th>채널명</th>
-                <th>조회수</th>
-                <th>영상 길이</th>
-                <th>학습하기</th>
+                <th>Thumbnail</th>
+                <th>The title of the video</th>
+                <th>Channel name</th>
+                <th>Views</th>
+                <th>Video Length</th>
+                <th>To learn</th>
             </tr>
         </thead>
         <tbody>
@@ -79,16 +79,16 @@
                     <td>{{ video.channelTitle }}</td>
                     <td>{{ video.viewCount }}회</td>
                     <td>{{ video.duration }}</td>
-                    <td><button class="button">학습하기</button></td>
+                    <td><button class="button">Learning</button></td>
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="6">비디오를 찾을 수 없습니다.</td>
+                    <td colspan="6">Video not found.</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'search' %}" class="back-link">검색으로 돌아가기</a>
+    <a href="{% url 'search' %}" class="back-link">Return to search.</a>
 
 </body>
 </html>

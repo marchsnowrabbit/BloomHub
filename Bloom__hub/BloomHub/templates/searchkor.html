@@ -1,30 +1,31 @@
-<!DOCTYPE html>
-<html>
+<!-- youtube_app/templates/index.html -->
 {% load static %}
+<!DOCTYPE html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>검색</title>
-    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    <title>YouTube Video Search</title>
+    <link rel="stylesheet" href="{% static 'css/search.css' %}"> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
+</head>
 <body>
-
     <header>
         <a href="{% url 'homekor' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
+        
         <nav>
             <a href="{% url 'guidekor' %}">가이드</a>
             <a href="{% url 'searchkor' %}">검색</a>
-            <a href="{% url 'mypagekor' %}">마이 프로필</a>
+            <a href="{% url 'mypagekor' %}">마이페이지</a>
             <div class="dropdown-container">
                 <a href="#" class="classing">학습</a>
                 <div class="dropdown">
-                    <a href="{% url 'learningkor' %}">학습중인 비디오</a>
-                    <a href="{% url 'learnedkor' %}">학습했던 비디오</a>
+                    <a href="{% url 'learningkor' %}">학습중인 영상</a>
+                    <a href="{% url 'learnedkor' %}">학습했던 영상</a>
                 </div>
             </div>
         </nav>
@@ -32,8 +33,8 @@
             <div class="language-container">
                 <a href="#" class="language">언어</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'searchkor' %}?lang=ko">한국어</a>
-                    <a href="{% url 'search' %}?lang=en">영어</a>
+                    <a href="{% url 'guidekor' %}">한국어</a>
+                    <a href="{% url 'guide' %}">영어</a>
                 </div>
             </div>
             <a href="{% url 'loginkor' %}" id="login-link">로그인</a>
@@ -43,49 +44,22 @@
     </header>
 
     <main>
-        <div class="search-wrapper">
-            <h2 class="search-text">당신의 학습 도우미</h2>
-            <p class="prompt">Bloom HUB에게 물어보세요 :D</p>
-            <div class="search-box">
-                <form id="searchForm" action="{% url 'searchresultkor' %}" method="GET">
-                    <div class="search-input-container">
-                        <input type="text" id="searchText" class="search-input" placeholder="Search..." name="searchResult" required>
-                        <button type="submit" class="search-button">
-                            <img src="{% static 'img/search_icon.jpg' %}" alt="Search Icon" class="search-icon">
-                        </button>
-                    </div>
-                </form>     
-            </div>
+    <div class="search-wrapper">
+        <h2 class="search-text">당신의 학습 도우미</h2>
+        <p class="prompt">Bloom HUB에게 물어보세요 :D</p>
+        <div class="search-box">
+    <form action="{% url 'search' %}" method="post">
+        <div class="search-input-container">
+        {% csrf_token %}
+        <input type="text" name="keyword" class="search-input" placeholder="검색어 입력" required>
+        <button type="submit" class="search-button">
+            <img src="{% static 'img/searchIcon.jpg' %}" alt="Search Icon" class="search-icon">
+        </button>
         </div>
-    </main>
+    </form>
+    </div>
+    </div>
+</main>
 
-    <script>
-        // 로그인 상태 확인
-        $(document).ready(function() {
-            $.get('/check-login', function(data) {
-                if (data.loggedIn) {
-                    $('#login-link').hide();
-                    $('#signup-link').hide();
-                    $('#logout-link').show();
-                } else {
-                    $('#login-link').show();
-                    $('#signup-link').show();
-                    $('#logout-link').hide();
-                }
-            });
-
-            // 로그아웃 처리
-            $('#logout-link').on('click', function(e) {
-                e.preventDefault();
-                $.get('/logout', function(data) {
-                    if (data.success) {
-                        alert('로그아웃 되었습니다.');
-                        location.reload();
-                    }
-                });
-            });
-        });
-    </script>
-    
 </body>
 </html>
