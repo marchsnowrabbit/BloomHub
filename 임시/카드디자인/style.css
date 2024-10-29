@@ -1,0 +1,78 @@
+/* 모든 요소에 box-sizing을 적용하여 패딩과 테두리가 요소의 전체 너비와 높이에 포함되도록 합니다 */
+
+
+  
+  /*! body 요소에 대한 스타일 설정 */
+  body {
+    display: grid; /* 그리드 레이아웃 사용 */
+    place-items: center; /* 아이템을 수평 및 수직으로 중앙 정렬 */
+    min-height: 100vh; /* body 높이를 뷰포트 높이의 100% 이상으로 설정 */
+  }
+  
+
+
+
+
+  
+  /*^ figure 요소에 대한 스타일 설정 */
+  figure {
+    width: 500px; /* 너비를 500 픽셀로 설정 */
+    aspect-ratio: 8 / 5; /** 가로 세로 비율을 8:5로 설정 */
+    --bg: hsl(330 80% calc(90% - (var(--hover) * 10%))); /** 배경색에 대한 사용자 정의 속성 정의 */
+    --accent: hsl(280 80% 40%); /* 강조 색상에 대한 사용자 정의 속성 정의 */
+    transition: background 0.2s; /** 배경 변화에 0.2초의 전환 효과 설정 */                           
+    background: 
+      radial-gradient(circle at top left, var(--accent), transparent 75%), /** 원형 그라디언트 배경 */
+      var(--bg); /** 단색 배경 */
+    margin: 0; /** 기본 여백 제거 */
+    position: relative; /** 상대적 위치 설정 */
+    overflow: hidden; /** 넘치는 콘텐츠 숨기기 */
+    border-radius: 1.5rem; /** 모서리를 1.5rem 반경으로 둥글게 설정 */
+  }
+  
+  /*? figure의 가상 요소에 대한 스타일 설정 */
+  figure:after {
+    content: ""; /* 콘텐츠 없음, 스타일링 용도로 사용 */
+    position: absolute; /* 절대 위치 설정 */
+    width: 20%; /* 너비를 figure의 20%로 설정 */
+    aspect-ratio: 1; /* 가로 세로 비율을 1:1로 설정 (정사각형) */
+    border-radius: 50%; /* 요소를 원형으로 설정 */
+    
+    background: linear-gradient(-65deg, var(--bg) 50%, var(--accent) 50%); /* 선형 그라디언트 배경 */
+    filter: blur(25px); /* 블러 효과 적용 */
+    transform: 
+      translateX(calc(var(--hover) * 15%)) /* --hover 값에 따라 수평 이동 */
+      scale(calc(1 + (var(--hover) * 0.2))); /* --hover 값에 따라 크기 조정 */
+    transition: transform 0.2s, background 0.2s; /* 변형과 배경 변화에 0.2초의 전환 효과 설정 */
+    
+    
+
+    
+    bottom: 0%; /* 하단에 위치 */
+    left: 10%; /* 왼쪽에서 10% 위치 */
+
+
+  }
+  
+  /*? figure 내부의 img 요소에 대한 스타일 설정 */
+  img {
+    position: absolute; /* 절대 위치 설정 */
+    left: 20%; /* 왼쪽에서 20% 위치 */
+    top: 15%; /* 위쪽에서 15% 위치 */
+    width: 40%; /* 너비를 figure의 40%로 설정 */
+    transform: 
+      translateX(calc(var(--hover) * -15%)) /* --hover 값에 따라 수평 이동 (반대 방향) */
+      scale(calc(1 + (var(--hover) * 0.2))); /* --hover 값에 따라 크기 조정 */
+    transition: transform 0.2s; /* 변형 변화에 0.2초의 전환 효과 설정 */
+  }
+  
+  /*? 기본적으로 article 요소에 --hover 사용자 정의 속성을 0으로 설정 */
+  article {
+    --hover: 0;
+  }
+  
+  /*? article 요소에 마우스를 올리면 --hover 사용자 정의 속성을 1로 변경 */
+  article:hover {
+    --hover: 1;
+  }
+  
