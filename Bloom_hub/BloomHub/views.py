@@ -67,6 +67,9 @@ class YoutubeVideoapi:
         return f"{hours}시간 {minutes}분" if hours > 0 else f"{minutes}분"
 
 def search(request):
+    return render(request, 'search.html')
+
+def search(request):
     if request.method == 'POST':
         keyword = request.POST.get('keyword', '')
         video_api = YoutubeVideoapi()
