@@ -1,0 +1,35 @@
+Classify - 분류하다
+Conclude - 결론짓다
+Convert - 변환하다
+Compare - 비교하다
+Defend - 옹호하다, 방어하다
+Describe - 설명하다, 묘사하다
+Discuss - 논의하다
+Distinguish - 구별하다
+Estimate - 추정하다
+Explain - 설명하다
+Express - 표현하다
+Extend - 확장하다
+Generalize - 일반화하다
+Give examples - 예를 제시하다
+Identify - 식별하다, 확인하다
+Indicate - 나타내다, 표시하다
+Infer - 추론하다
+Interpret - 해석하다
+Illustrate - 예시하다, 설명하다
+Learn - 배우다
+Locate - 위치를 찾다
+Outline - 개요를 작성하다
+Paraphrase - 바꿔 말하다, 의역하다
+Predict - 예측하다
+Report - 보고하다
+Recognize - 인식하다, 알아보다
+Rewrite - 다시 쓰다, 고쳐 쓰다
+Review - 검토하다, 복습하다
+Restate - 다시 진술하다
+Select - 선택하다
+Summarize - 요약하다
+Tell - 말하다
+Trace - 추적하다
+Translate - 번역하다
+Understand - 이해하다

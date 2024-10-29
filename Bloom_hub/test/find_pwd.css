@@ -1,0 +1,168 @@
+
+.img-content {
+    background-image: url('/images/kdh/loginimg2.jpg');
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.img-cover {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    /* background-color: rgba(0, 0, 0, 0.3); */
+}
+
+.login-box {
+    position: absolute;
+    top: 13%;
+    left: 51%;
+    width: 550px;
+    height: 700px;
+
+    opacity: 0.9;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+    border-radius: 8px;
+    background-color: rgb(255, 255, 255);
+}
+
+.login-header {
+    border-bottom: 1px solid rgb(219, 216, 216);
+}
+
+.login-header h3 {
+    font-size: 26px;
+    height: 55px;
+    text-align: center;
+    line-height: 55px;
+    letter-spacing: -1px;
+}
+
+.login-header h3 i {
+    position: relative;
+    left: -31%;
+    cursor: pointer;
+}
+
+.login-title {
+    margin-top: 28px;
+    margin-bottom: 30px;
+    padding-top: 10px;
+}
+
+.login-title h3 {
+    padding-left: 18px;
+    font-size: 20px;
+    text-align: left;
+    padding-bottom: 10px;
+}
+
+.login-title p {
+    font-size: 14px;
+    text-align: center;
+}
+
+.login-info {
+    padding: 35px 35px 50px;
+}
+
+.input-type {
+    flex-direction: column;
+}
+
+.input-type label h3 {
+    font-size: 13px;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+
+.input-type input {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-bottom: 8px;
+    
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
+    color: #7c7c7c;
+}
+
+input:focus {
+    outline: none;
+    border-width: 0 0 1px;
+    border-bottom: 1px solid #a1a1a1;
+}
+
+.id-info {
+    margin-bottom: 37px;
+}
+
+#userEmail {
+    width: 75%;
+}
+
+.cert_Num {
+    width: 22%;
+    height: 34px;
+    line-height: 34px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    
+    position: relative;
+    top: 7px;
+    left: 7px;
+}
+
+.find_userPwd {
+    width: 100%;
+    margin-top: 35px;
+    padding: 12px 8px;
+    outline: none;
+    cursor: pointer;
+    
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background-color: rgb(196, 206, 223);
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.select-box {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.select-box li {
+    height: 17px;
+    line-height: 17px;
+}
+
+.select-box li:nth-child(1):after {
+    content: "";
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid #d3d3d3
+}
+
+.select-box li:nth-child(2):after {
+    content: "";
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid #d3d3d3
+}
+
+.select-box li a {
+    font-size: 13px;
+    letter-spacing: -1px;
+    padding: 0 40px;
+    color: inherit;
+}
