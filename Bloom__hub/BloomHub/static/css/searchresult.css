@@ -1,20 +1,138 @@
 @font-face {
     font-family: 'KCC-Hanbit';
     src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
-         url('/static/fonts/KCC-Hanbit.woff') format('woff');
+        url('/static/fonts/KCC-Hanbit.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-  }
-  
-/* 돋보기 사진 받아서 수정!!*/
+}
 
 body {
     font-family: 'KCC-Hanbit', sans-serif;
-    background-color: rgb(11,36,60);
+    background-color: rgb(11, 36, 60);
+    padding: 0;
     margin: 0;
-    
 }
 
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    height: auto;
+}
+
+header {
+    display: flex;
+    flex-direction: row;               
+    justify-content: flex-start;       
+    align-items: center;               
+    padding: 0 20px;
+    height: 100px;
+    background-color: rgb(11, 36, 60);
+    position: relative;
+}
+
+header .logo {
+    margin-right: 10px;               
+    color: white; 
+}
+
+header nav {
+    display: flex;              
+    gap: 35px;                 
+    align-items: center;        
+    margin: 0;  
+}
+
+header nav a {
+    color: white;
+    font-size: 23px;
+    text-decoration: none;
+} 
+
+header .auth {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+header .auth a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.language-container {
+    position: relative;
+}
+
+.language {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.language-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgb(11, 36, 60);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.language-dropdown a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    white-space: nowrap;
+    display: block;
+    font-size: 16px;
+}
+
+.language-container:hover .language-dropdown {
+    display: block;
+}
+
+nav a.classing:hover, nav a.language:hover {
+    color: rgb(11, 36, 60);
+}
+
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgb(11, 36, 60);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.dropdown a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    white-space: nowrap;
+    display: block;
+    font-size: 18px;
+}
+
+nav a.classing:hover {
+    color: white; 
+    display: inline; 
+}
+
+.dropdown-container:hover .dropdown {
+    display: block; 
+}
 
 header {
     display: flex;
@@ -63,7 +181,6 @@ header .auth a {
     text-decoration: none;
 }
 
-/** Dropdown styling */
 .language-container {
     position: relative;
 }
@@ -100,7 +217,6 @@ nav a.classing:hover, nav a.language:hover {
     color: rgb(11, 36, 60);
 }
 
-/* classing 드롭다운 */
 .dropdown-container {
     position: relative;
 }
@@ -135,93 +251,158 @@ nav a.classing:hover {
     
 }
 
-
-
-/*^ 헤더,드랍다운 */
-/*^ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-
-
-main {
-    padding: 20px;
-    padding-top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: left;
+h1 {
+    color: white;
+    font-size: 35px;
+    margin-left: 20px;
 }
 
-.search-bar {
-    position:relative;
-    display: flex;
-    margin-bottom: 30px;
-    left: auto;
-    bottom: auto;
-}
-
-.search-bar input {
-    width: 600px;
-    padding: 10px;
-    border: 2px solid red;
-    border-radius: 5px 0 0 5px;
-}
-
-.search-btn {
-    padding: 10px;
-    background-color: white;
-    cursor: pointer;
-    border-radius: 0 5px 5px 0;
+.search-container {
     display: flex;
     align-items: center;
-    margin-left: 10px;
+    margin: 20px 0;
+    width: 500px; 
+    max-width: 700px; 
+    margin-left: 20px;
 }
 
-.search-icon {
-    width: 25px;
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+.search-container input[type="text"] {
+    padding: 10px;
+    width: 400px;
+    border: 2px solid rgb(235, 49, 49);
+    border-radius: 5px 5px 5px 5px;
+    font-size: 16px;
     height: 20px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 15px;
-    /* border-radius : 20px; */
+.search-container input[type="text"]:hover {
+    border-color: rgb(235, 49, 49);
 }
 
-table th, table td {
-    padding: 10px;
-    text-align: left;
-}
-
-table th {
-    /* background-color:#0e2d3d; */
-    background-color: rgba(249, 226, 226, 0.53);
+.search-container .search-button {
+    background-color: rgb(11,36,60);
+    padding: 10px; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px; 
+    position: absolute;
+    left: 450px;
+    top: 191px; 
+    margin-left: 10px;
     
 }
 
-
-
-
-table tbody tr:nth-child(even) {
-    background-color: #3c6382;
+.search-container .search-button img {
+    width: 40px;
+    height: 43px;
 }
 
-table tbody tr:nth-child(odd) {
-    background-color: #0a3d62;
+
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table tbody td a {
+    color: white; 
+    text-decoration: none;
+}
+
+table tbody td a:hover {
+    font-weight: bold; 
+}
+
+
+th, td {
+    padding: 8px;
+    text-align: center;
+    color: white;
+}
+
+th {
+    background-color: rgb(11,36,60);
 }
 
 .thumbnail {
-    width: 100px;
-    height: 60px;
-    background-size: cover;
-    background-position: center;
+    width: 180px; 
+    height: 150px; 
+    object-fit: cover; 
 }
 
-.learn-btn {
+.button {
     padding: 5px 10px;
-    background-color: red;
+    background-color: rgb(235, 49, 49);
     color: white;
     border: none;
-    cursor: pointer;
     border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'KCC-Hanbit', sans-serif;
+}
+
+/* 썸네일 */
+table td:nth-child(1), 
+table th:nth-child(1) {
+    width: 150px; 
+}
+
+/* 영상 제목 */
+table td:nth-child(2), 
+table th:nth-child(2) {
+    width: 390px; 
+}
+
+/* 채널명 */
+table td:nth-child(3), 
+table th:nth-child(3) {
+    width: 120px;
+}
+
+/* 조회수 */
+table td:nth-child(4), 
+table th:nth-child(4) {
+    width: 100px;
+}
+
+/* 영상 길이 */
+table td:nth-child(5), 
+table th:nth-child(5) {
+    width: 60px;
+    white-space: nowrap; 
+}
+
+/* 학습하기 버튼 */
+table td:nth-child(6), 
+table th:nth-child(6) {
+    width: 65px; 
+}
+
+/* 썸네일 크기 조정 */
+.thumbnail {
+    height: auto;
+}
+
+.back-link {
+    color: white; 
+    text-decoration: none; 
+    margin-left: 20px;
+}
+
+.back-link:hover {
+    font-weight: bold;
 }
 
 @media only screen and (max-width: 768px) {
@@ -261,15 +442,12 @@ table tbody tr:nth-child(odd) {
         top: 10px;
         right: 10px;
     }
-
-    .banner {
-        flex-direction: column;
-        text-align: center;
+    .search-container .search-button {
+        left: 450px;
+        top: 215px; 
+        margin-left: -7px;
     }
-    
-    .text-content {
-        margin-right: 0; 
-        max-width: 100%; 
-        margin-bottom: 20px;
+    .search-container {
+        margin-left: 15px;
     }
 }
