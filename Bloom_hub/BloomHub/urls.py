@@ -41,3 +41,4 @@ urlpatterns = [
 
     path('analysis/', views.analysis, name='analysis'),
 ]
+
