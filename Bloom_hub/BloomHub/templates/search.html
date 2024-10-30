@@ -1,17 +1,14 @@
-<!-- youtube_app/templates/index.html -->
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title>YouTube Video Search</title>
 </head>
 <body>
     <h1>YouTube Video Search</h1>
-    <form action="{% url 'search' %}" method="post">
-        {% csrf_token %}
-        <input type="text" name="keyword" placeholder="검색어 입력" required>
+    <form action="/search/" method="post"> <!-- action에 슬래시 추가 -->
+        {% csrf_token %} <!-- CSRF 토큰 추가 -->
+        <input type="text" name="keyword" placeholder="검색어를 입력하세요" required>
         <button type="submit">검색</button>
     </form>
 </body>

@@ -1,23 +1,31 @@
+import os
+import logging
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .models import BloomUser
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import make_password
-from django.core.files.images import ImageFile
+from django.contrib import messages
 from googleapiclient.discovery import build
 import isodate
-from django.contrib import messages
-import logging
+from .models import BloomUser
+
+logger = logging.getLogger(__name__)
+
+class YoutubeVideoapi:
+    import os
 
 class YoutubeVideoapi:
     def __init__(self):
-        self.developer_key = 'AIzaSyA7Qn-gNPnDQ4xgpDemtU0OzArCzL0zqvI'  # 여기에 실제 API 키를 입력하세요.
+        # 환경 변수에서 API 키를 불러오거나 명시적으로 키를 설정합니다.
+        self.developer_key = os.getenv('YOUTUBE_API_KEY', 'AIzaSyA7Qn-gNPnDQ4xgpDemtU0OzArCzL0zqvI')
         self.youtube_api_service_name = "youtube"
         self.youtube_api_version = 'v3'
+        
+        # YouTube API 호출 로직
 
     def videolist(self, keyword):
         youtube = build(self.youtube_api_service_name, self.youtube_api_version, developerKey=self.developer_key)
-
+        
         try:
             search_response = youtube.search().list(
                 q=keyword,
@@ -54,7 +62,7 @@ class YoutubeVideoapi:
             return videos
 
         except Exception as e:
-            print(f"오류 발생: {e}")
+            logger.error(f"오류 발생: {e}")
             return []
 
     def convert_duration(self, duration):
@@ -64,9 +72,7 @@ class YoutubeVideoapi:
         minutes = total_minutes % 60
         return f"{hours}시간 {minutes}분" if hours > 0 else f"{minutes}분"
 
-def search(request):
-    return render(request, 'search.html')
-
+# 검색 페이지 뷰
 def search(request):
     if request.method == 'POST':
         keyword = request.POST.get('keyword', '')
@@ -79,9 +85,7 @@ def search(request):
         return render(request, 'searchresult.html', {'videos': videos, 'keyword': keyword})
     return render(request, 'search.html')
 
-#######################회원가입###############################
-logger = logging.getLogger(__name__)
-
+# 중복 체크 API 뷰
 def check_duplicate(request):
     field = request.GET.get('field')
     value = request.GET.get('value')
@@ -102,8 +106,7 @@ def check_duplicate(request):
 
     return JsonResponse({'exists': exists})
 
-logger = logging.getLogger(__name__)
-
+# 회원가입 뷰
 def signup_view(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
@@ -116,21 +119,18 @@ def signup_view(request):
 
         logger.info(f"Signup attempt: user_id={user_id}, email={email}")
 
-        # 비밀번호 확인
         if password != password_confirm:
             messages.error(request, "비밀번호가 일치하지 않습니다.")
             return render(request, 'signup.html')
 
-        # 비밀번호 해시화 처리
         hashed_password = make_password(password)
 
-        # 회원 생성 및 저장
         try:
             user = BloomUser.objects.create(
                 user_id=user_id,
                 username=username,
                 email=email,
-                password=hashed_password,  # 해시된 비밀번호 저장
+                password=hashed_password,
                 youtube_api_key=youtube_api_key,
                 wikifier_api_key=wikifier_api_key,
             )
@@ -143,7 +143,7 @@ def signup_view(request):
 
     return render(request, 'signup.html')
 
-#######################로그인 로그아웃######################################
+# 로그인 뷰
 def login_view(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
@@ -162,17 +162,18 @@ def login_view(request):
 
     return render(request, 'login.html')
 
+# 로그인 상태 확인 API 뷰
 def check_login(request):
     is_logged_in = request.user.is_authenticated
     username = request.user.username if is_logged_in else ""
     return JsonResponse({'is_logged_in': is_logged_in, 'username': username})
 
-
+# 로그아웃 뷰
 def logout_view(request):
     logout(request)
     return redirect('home')
-###################################################################
 
+# 페이지 렌더링 뷰들
 def home(request):
     return render(request, 'home.html')
 
@@ -241,7 +242,3 @@ def find_pwd_kor(request):
 
 def analysis(request):
     return render(request, 'analysis.html')
-
-def logout(request):
-    request.session.flush()
-    return redirect('home')
