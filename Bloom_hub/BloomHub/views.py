@@ -1,15 +1,13 @@
-import json
-import os
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
+from .models import BloomUser
+from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password
 from django.core.files.images import ImageFile
-from django.views.decorators.csrf import csrf_protect
 from googleapiclient.discovery import build
 import isodate
 from django.contrib import messages
+import logging
 
 class YoutubeVideoapi:
     def __init__(self):
@@ -81,80 +79,99 @@ def search(request):
         return render(request, 'searchresult.html', {'videos': videos, 'keyword': keyword})
     return render(request, 'search.html')
 
-@csrf_protect
+#######################회원가입###############################
+logger = logging.getLogger(__name__)
+
+def check_duplicate(request):
+    field = request.GET.get('field')
+    value = request.GET.get('value')
+    
+    logger.info(f"Received check_duplicate request with field: {field}, value: {value}")
+
+    if not field or not value:
+        logger.error("필드 또는 값이 전달되지 않았습니다.")
+        return JsonResponse({'error': '필드 또는 값이 전달되지 않았습니다.'}, status=400)
+
+    if field == 'user_id':
+        exists = bool(BloomUser.objects.filter(user_id=value).values('user_id').first())
+    elif field == 'email':
+        exists = bool(BloomUser.objects.filter(email=value).values('email').first())
+    else:
+        logger.error("잘못된 필드가 요청되었습니다.")
+        return JsonResponse({'error': '잘못된 필드입니다.'}, status=400)
+
+    return JsonResponse({'exists': exists})
+
+logger = logging.getLogger(__name__)
+
 def signup_view(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
+        user_id = request.POST.get('user_id')
+        username = request.POST.get('username')
+        password = request.POST.get('password1')
+        password_confirm = request.POST.get('password2')
+        email = request.POST.get('email')
+        youtube_api_key = request.POST.get('youtube_api_key')
+        wikifier_api_key = request.POST.get('wikifier_api_key')
 
-        # 폼 데이터
-        user_id = data.get('user_id')
-        password = data.get('password')
-        password2 = data.get('password2')  # 비밀번호 확인 추가
-        email = data.get('email')
-        username = data.get('username')
-        youtube_api_key = data.get('youtube_api_key')
-        wikifier_api_key = data.get('wikifier_api_key')
-        profile_image = request.FILES.get('profile_image') if 'profile_image' in request.FILES else None
+        logger.info(f"Signup attempt: user_id={user_id}, email={email}")
 
-        # 아이디 중복 확인
-        if User.objects.filter(username=user_id).exists():
-            return JsonResponse({'success': False, 'message': '이미 존재하는 아이디입니다.'})
+        # 비밀번호 확인
+        if password != password_confirm:
+            messages.error(request, "비밀번호가 일치하지 않습니다.")
+            return render(request, 'signup.html')
 
-        # 비밀번호 조건 확인
-        if not any(char.isupper() for char in password) or not any(not char.isalnum() for char in password):
-            return JsonResponse({'success': False, 'message': '비밀번호에는 대문자와 특수문자가 각각 하나 이상 필요합니다.'})
+        # 비밀번호 해시화 처리
+        hashed_password = make_password(password)
 
-        # 비밀번호 일치 확인
-        if password != password2:
-            return JsonResponse({'success': False, 'message': '비밀번호가 일치하지 않습니다.'})
-
-        # 프로필 이미지가 없으면 기본 이미지 설정
-        if not profile_image:
-            default_image_path = os.path.join('static', 'img', 'profile.png')
-            profile_image = ImageFile(open(default_image_path, 'rb'))
-
-        # User 객체 생성
-        user = User.objects.create(
-            username=user_id,
-            email=email,
-            password=make_password(password),
-            first_name=username
-        )
-
-        # UserProfile 모델에 추가 정보 저장
-        user.youtube_api_key = youtube_api_key
-        user.wikifier_api_key = wikifier_api_key
-        user.profile_image = profile_image
-        user.save()  # 사용자 정보 저장
-
-        login(request, user)
-        return JsonResponse({'success': True})
+        # 회원 생성 및 저장
+        try:
+            user = BloomUser.objects.create(
+                user_id=user_id,
+                username=username,
+                email=email,
+                password=hashed_password,  # 해시된 비밀번호 저장
+                youtube_api_key=youtube_api_key,
+                wikifier_api_key=wikifier_api_key,
+            )
+            messages.success(request, "회원가입이 완료되었습니다.")
+            logger.info("User created successfully.")
+            return redirect('login')
+        except Exception as e:
+            logger.error(f"오류가 발생했습니다: {e}")
+            messages.error(request, f"오류가 발생했습니다: {str(e)}")
 
     return render(request, 'signup.html')
 
+#######################로그인 로그아웃######################################
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        user_id = request.POST.get('user_id')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
 
-        if user is not None:
+        try:
+            user = BloomUser.objects.get(user_id=user_id)
+        except BloomUser.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'user_id'})
+
+        if user.check_password(password):
             login(request, user)
-            return redirect('home')
+            return JsonResponse({'success': True})
         else:
-            messages.error(request, '로그인 실패: 잘못된 사용자명 또는 비밀번호.')
-            return redirect('login')
+            return JsonResponse({'success': False, 'error': 'password'})
+
     return render(request, 'login.html')
 
-def check_login_view(request):
-    if request.user.is_authenticated:
-        return JsonResponse({'loggedIn': True})
-    return JsonResponse({'loggedIn': False})
+def check_login(request):
+    is_logged_in = request.user.is_authenticated
+    username = request.user.username if is_logged_in else ""
+    return JsonResponse({'is_logged_in': is_logged_in, 'username': username})
 
-def check_session(request):
-    if request.user.is_authenticated:
-        return JsonResponse({'status': 'success', 'user': request.user.username})
-    return JsonResponse({'status': 'failure', 'message': 'User is not authenticated.'})
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+###################################################################
 
 def home(request):
     return render(request, 'home.html')

@@ -100,7 +100,7 @@
         // 로그아웃 처리
         $('#logout-link').on('click', function(e) {
             e.preventDefault();
-            $.get('{% url "logout" %}', function(data) {
+            $.get('{% url "logout_view" %}', function(data) {
                 if (data.success) {
                     alert('로그아웃 되었습니다.');
                     location.reload();

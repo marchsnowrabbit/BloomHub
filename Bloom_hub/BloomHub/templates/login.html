@@ -1,5 +1,5 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,7 +40,6 @@
                 <div class="language-dropdown">
                     <a href="{% url 'loginkor' %}">Korean</a>
                     <a href="{% url 'login' %}">English</a>
-                
                 </div>
             </div>
             <a href="{% url 'login' %}">Login</a>
@@ -44,110 +50,64 @@
     <div class="container">
         <h1>Login</h1>
         <div class="description-container">
-            <div id="description"> Enjoy personalized services after logging in. </div>
-            
+            <div id="description">Enjoy personalized services after logging in.</div>
             <hr id="hr-green">
         </div>
 
-        <ul class="links">
-            <li>
-                <a href="{% url 'login' %}" id="ID">ID :</a>
-            </li>
-            <li>
-                <a href="{% url 'signup' %}" id="PassWord">PassWord :</a>
-            </li>
-        </ul>
-        <form action="" method="post">
-            <div class="first-input input__block first-input__block">
-
-                <input type="id" placeholder="id" class="input" id="id" />
+        <!-- 로그인 폼 -->
+        <form method="POST" id="loginForm">
+            {% csrf_token %}
+            
+            <div class="input__block">
+                <label for="user_id">ID:</label>
+                <input type="text" name="user_id" id="user_id" placeholder="ID" required>
             </div>
 
             <div class="input__block">
-                <input type="password" placeholder="Password" class="input" id="password" />
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <div id="error_message" class="error"></div>
             </div>
            
-            <div class="input__block">
-                <input type="password" placeholder="Repeat password" class="input repeat__password" id="repeat__password" />
-            </div>
-            
-            <div class="password-links">
-                <a href="{% url 'signup' %}" id="find-signup">Sign Up |</a>
-                <a href="{% url 'findID' %}" id="find-id-link"> Find ID |</a>
-                <a href="{% url 'findpwd' %}" id="find-password-link">Find Password</a>
-            </div>
-            <button class="signin__btn">Login</button>
+            <button type="submit" class="signin__btn">Login</button>
         </form>
-       
-<!--        
-        <div class="separator">
-            <p>SIGN IN WITH</p>
+
+        <div class="password-links">
+            <a href="{% url 'signup' %}" id="find-signup">Sign Up |</a>
+            <a href="{% url 'findID' %}" id="find-id-link"> Find ID |</a>
+            <a href="{% url 'findpwd' %}" id="find-password-link">Find Password</a>
         </div>
-
-        <button class="google__btn">
-            <i class="fa fa-google"></i>
-            Sign in with Google
-        </button>
-        <button class="github__btn">
-            <i class="fa fa-github"></i>
-            Sign in with GitHub
-        </button>
-    </div> -->
-
-    <!-- Find ID Modal -->
-   
+    </div>
 
     <script>
         $(document).ready(function() {
-            // 세션을 통해 로그인 상태를 확인
-            $.get('/check-session', function(response) {
-                if (response.loggedIn) {
-                    $('.login-link').hide();
-                    $('.signup-link').hide();
-                    $('.logout-link').show();
-                } else {
-                    $('.login-link').show();
-                    $('.signup-link').show();
-                    $('.logout-link').hide();
-                }
-            });
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault(); // 기본 폼 제출 방지
 
-            $('.signin__btn').on('click', function(e) {
-                e.preventDefault();
-
-                const email = $('#email').val();
+                const userId = $('#user_id').val();
                 const password = $('#password').val();
 
                 $.ajax({
-                    type: 'POST',
-                    url: '/login',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ email: email, password: password }),
+                    url: "{% url 'login' %}",
+                    method: 'POST',
+                    data: {
+                        'user_id': userId,
+                        'password': password,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
                     success: function(response) {
                         if (response.success) {
-                            alert('로그인 되었습니다.');
-                            window.location.href = 'index.html'; // 로그인 성공 후 메인 페이지로 이동
+                            window.location.href = "{% url 'home' %}";
                         } else {
-                            alert(response.message);
+                            if (response.error === 'user_id') {
+                                $('#error_message').text("계정이 존재하지 않습니다.");
+                            } else if (response.error === 'password') {
+                                $('#error_message').text("비밀번호가 잘못되었습니다.");
+                            }
                         }
-                    },
-                    error: function() {
-                        alert('아이디 또는 비밀번호가 일치하지 않습니다. 다시 시도해주세요.');
                     }
                 });
             });
-
-            $('.logout-link').on('click', function(e) {
-                e.preventDefault();
-                $.post('/logout', function(response) {
-                    if (response.success) {
-                        alert('로그아웃 되었습니다.');
-                        window.location.href = 'index.html';
-                    }
-                });
-            });
-
-           
         });
     </script>
 </body>

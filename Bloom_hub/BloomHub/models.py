@@ -1,17 +1,30 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
-from django.contrib.auth.models import AbstractUser
-from django.db import models
+class BloomUserManager(BaseUserManager):
+    def create_user(self, user_id, username, password=None, **extra_fields):
+        if not user_id:
+            raise ValueError('The User ID is required')
+        user = self.model(user_id=user_id, username=username, **extra_fields)
+        user.set_password(password)  # 비밀번호 해시화 처리
+        user.save(using=self._db)
+        return user
 
-class User(AbstractUser):
-    user_id = models.CharField(max_length=255, unique=True)  # user_id 필드 추가
-    youtube_api_key = models.CharField(max_length=255, blank=True)
-    wikifier_api_key = models.CharField(max_length=255, blank=True)
-    profile_image = models.ImageField(upload_to='profile_images/', blank=False)
-    # first_name, last_name 필드 제거
-    first_name = None
-    last_name = None
+class BloomUser(AbstractBaseUser):
+    user_id = models.CharField(max_length=50, unique=True)
+    username = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    youtube_api_key = models.CharField(max_length=255, blank=True, null=True)
+    wikifier_api_key = models.CharField(max_length=255, blank=True, null=True)
+    profileImg = models.ImageField(upload_to='profiles/', blank=True, null=True)
+
+    USERNAME_FIELD = 'user_id'
+    REQUIRED_FIELDS = ['email']
+
+    objects = BloomUserManager()
+
+    def __str__(self):
+        return self.username
 
 # # 유튜브 비디오 모델 정의
 # class YouTubeVideo(models.Model):

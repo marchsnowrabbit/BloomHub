@@ -14,14 +14,16 @@ urlpatterns = [
     path('learned/', views.learned, name='learned'),
     path('learned/kor/', views.learned_kor, name='learnedkor'),
 
-    path('login/', views.login_page, name='login'),
-    path('login/kor/', views.login_kor, name='loginkor'),
-    path('check-login/', views.check_login_view, name='check_login'),
-    path('logout/', views.logout, name='logout'),
-    path('check-session/', views.check_session, name='check_session'),
 
-    path('signup/', views.signup_page, name='signup'),
+    #############로그인 관련 urls###############
+    path('login/', views.login_view, name='login'),
+    path('login/kor/', views.login_kor, name='loginkor'),
+    path('logout/', views.logout_view, name='logout_view'),
+    path('signup/', views.signup_view, name='signup'),
     path('signup/kor/', views.signup_kor, name='signupkor'),
+    path('check-duplicate/', views.check_duplicate, name='check_duplicate'),
+    path('check-login/', views.check_login, name='check_login'),
+    #################################################
 
     path('mypage/', views.mypage, name='mypage'),
     path('mypage/kor/', views.mypage_kor, name='mypagekor'),
