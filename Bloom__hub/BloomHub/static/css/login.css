@@ -1,3 +1,7 @@
+/*반응형에서 박스 크기 자체를 줄일때 
+max width를 줄이거나 --> 그럼 다 수정해야됨
+padding을 수정하거나..*/
+
 @font-face {
     font-family: 'KCC-Hanbit';
     src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
@@ -286,11 +290,11 @@ form {
 
 /*^ 아이디,이메일 인풋블럭 위치  */
 .input__block {
-    margin: 20px auto;
+    margin: 8px auto;
     display: block;
     position: relative;
     left: calc(0% - 15px);
-    top:-200px;
+    top: -190px;
 }
 
 
@@ -298,27 +302,43 @@ form {
 .input__block input {
     display: block;
     width:300px;
-    
     height: 34px;
     margin: 0 auto;
     /* border-radius: 8px; */
-
     border: 1px solid black;  /* 테두리 두께와 색상 설정 */
     background: white;
     color: rgba(38, 19, 115, 0.999);
     padding: 0 0 0 15px;
     font-size: 14px;
     font-family: 'KCC-Hanbit', sans-serif;
-    
-
 }
 
+.input__block input:hover {
+    border-color: rgba(38, 19, 115, 0.8); 
+}
 
 /* 인풋창 선택시 효과 */
 .input__block input:focus,
 .input__block input:active {  
     outline: none;
     /* border: none; */
+    color: rgb(0, 0, 0);
+}
+
+.id-label{
+    position: relative;
+    top: 28px;
+    right: -100px;
+}
+.password-label {
+    position: relative;
+    top: 28px;
+    right: -47px;
+}
+
+.input__block input:focus,
+.input__block input:active {
+    outline: none;
     color: rgb(0, 0, 0);
 }
 
@@ -333,7 +353,6 @@ form {
     display: flex;
     justify-content: space-between;
     margin: 10px 0;
-
 }
 
 
@@ -364,15 +383,13 @@ form {
     /* box-shadow: 0 15px 30px rgba(233, 30, 99, .36); */
     transition: .2s linear;
     position: relative;
-    right: calc(-35% - 20px);
-
-    top:-380px;
+    right: calc(-35% - 10px);
+    top:-290px;
     font-weight: bold;
-
 }
 
 .signin__btn:hover {
-    /* box-shadow: 0 0 0 rgba(91, 144, 240, .0); */
+    background: rgb(102, 177, 33);
 }
 
 
@@ -538,20 +555,6 @@ font-size:12px;
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .close:hover,
 .close:focus {
     color: black;
@@ -679,5 +682,31 @@ top:-132px;
     justify-content: space-between;
     margin: 10px -5px 10px -110px;
 }
+.signin__btn {
+    right: calc(-35% - 10px);
+    top:-310px;
+}
+.id-label{
+    right: -170px;
+    position: relative;
+    z-index: 0;
+}
+.password-label {
+    right: -147px;
+    position: relative;
+    z-index: 0;
+}
+.input__block {
+    margin: 7px auto;
+}
+.password-input{
+    position: relative;
+    z-index: 1;
+}
+.id-input{
+    position: relative;
+    z-index: 1;
+}
 
 }
+

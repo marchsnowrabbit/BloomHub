@@ -1,13 +1,20 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인 페이지</title>
-    <link rel="stylesheet" href="{% static 'css/loginnew.css' %}">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -15,139 +22,97 @@
         <a href="{% url 'homekor' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
+        
         <nav>
-            <a href="{% url 'guidekor' %}">Guides</a>
-            <a href="{% url 'searchkor' %}">Search</a>
-            <a href="{% url 'mypagekor' %}">My profile</a>
+            <a href="{% url 'guidekor' %}">가이드</a>
+            <a href="{% url 'searchkor' %}">검색</a>
+            <a href="{% url 'mypagekor' %}">마이페이지</a>
             <div class="dropdown-container">
-                <a href="#" class="classing">Classing</a>
+                <a href="#" class="classing">학습</a>
                 <div class="dropdown">
-                    <a href="{% url 'learningkor' %}">Learning Video</a>
-                    <a href="{% url 'learnedkor' %}">Learned Video</a>
+                    <a href="{% url 'learningkor' %}">학습중인 영상</a>
+                    <a href="{% url 'learnedkor' %}">학습했던 영상</a>
                 </div>
             </div>
         </nav>
         <div class="auth">
             <div class="language-container">
-                <a href="#" class="language">Language</a>
+                <a href="#" class="language">언어</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'loginkor' %}?lang=ko">Korean</a>
-                    <a href="{% url 'login' %}?lang=en">English</a>
-                
+                    <a href="{% url 'guidekor' %}">한국어</a>
+                    <a href="{% url 'guide' %}">영어</a>
                 </div>
             </div>
-            <a href="{% url 'loginkor' %}">Login</a>
-            <a href="{% url 'signupkor' %}">Sign up</a>
+            <a href="{% url 'loginkor' %}" id="login-link">로그인</a>
+            <a href="{% url 'signupkor' %}" id="signup-link">회원가입</a>
+            <a href="#" id="logout-link" style="display: none;">로그아웃</a>
         </div>
     </header>
     
     <div class="container">
         <h1>로그인</h1>
         <div class="description-container">
-            <div id="description"> 로그인 후 당신을 위한 맞춤 서비스를 이용해 보세요 </div>
-            
+            <div id="description"> 로그인 후 개인화된 서비스를 즐기세요. </div>
+            </div>
+            <div class="line-container">
             <hr id="hr-green">
         </div>
 
-        <ul class="links">
-            <li>
-                <a href="{% url 'loginkor' %}" id="ID">ID :</a>
-            </li>
-            <li>
-                <a href="{% url 'signupkor' %}" id="PassWord">PassWord :</a>
-            </li>
-        </ul>
-        <form action="" method="post">
-            <div class="first-input input__block first-input__block">
 
-                <input type="id" placeholder="id" class="input" id="id" />
-            </div>
-
-            <div class="input__block">
-                <input type="password" placeholder="Password" class="input" id="password" />
-            </div>
-           
-            <div class="input__block">
-                <input type="password" placeholder="Repeat password" class="input repeat__password" id="repeat__password" />
-            </div>
+        <!-- 로그인 폼 -->
+        <form method="POST" id="loginForm">
+            {% csrf_token %}
             
-            <div class="password-links">
-                <a href="{% url 'signupkor' %}" id="find-signup">가입하기 |</a>
-                <a href="{% url 'findIDkor' %}" id="find-id-link">아이디 찾기 |</a>
-                <a href="{% url 'findpwdkor' %}" id="find-password-link">비밀번호 찾기</a>
+            <div class="input__block">
+                <label for="user_id" class="id-label">ID:</label>
+                <input type="text" name="user_id" id="user_id" class="id-input" placeholder="아이디" required>
             </div>
-            <button class="signin__btn">로그인</button>
+
+            <div class="input__block">
+                <label for="password" class="password-label">Password:</label>
+                <input type="password" name="password" id="password" class="password-input" placeholder="비밀번호" required>
+                <div id="error_message" class="error"></div>
+            </div>
+        
+            <button type="submit" class="signin__btn">로그인</button>
         </form>
-       
-<!--        
-        <div class="separator">
-            <p>SIGN IN WITH</p>
+
+        <div class="password-links">
+            <a href="{% url 'signup' %}" id="find-signup">Sign Up |</a>
+            <a href="{% url 'findID' %}" id="find-id-link"> Find ID |</a>
+            <a href="{% url 'findpwd' %}" id="find-password-link">Find Password</a>
         </div>
-
-        <button class="google__btn">
-            <i class="fa fa-google"></i>
-            Sign in with Google
-        </button>
-        <button class="github__btn">
-            <i class="fa fa-github"></i>
-            Sign in with GitHub
-        </button>
-    </div> -->
-
-    <!-- Find ID Modal -->
-   
+    </div>
 
     <script>
         $(document).ready(function() {
-            // 세션을 통해 로그인 상태를 확인
-            $.get('/check-session', function(response) {
-                if (response.loggedIn) {
-                    $('.login-link').hide();
-                    $('.signup-link').hide();
-                    $('.logout-link').show();
-                } else {
-                    $('.login-link').show();
-                    $('.signup-link').show();
-                    $('.logout-link').hide();
-                }
-            });
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault(); // 기본 폼 제출 방지
 
-            $('.signin__btn').on('click', function(e) {
-                e.preventDefault();
-
-                const email = $('#email').val();
+                const userId = $('#user_id').val();
                 const password = $('#password').val();
 
                 $.ajax({
-                    type: 'POST',
-                    url: '/login',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ email: email, password: password }),
+                    url: "{% url 'login' %}",
+                    method: 'POST',
+                    data: {
+                        'user_id': userId,
+                        'password': password,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
                     success: function(response) {
                         if (response.success) {
-                            alert('로그인 되었습니다.');
-                            window.location.href = 'index.html'; // 로그인 성공 후 메인 페이지로 이동
+                            window.location.href = "{% url 'home' %}";
                         } else {
-                            alert(response.message);
+                            if (response.error === 'user_id') {
+                                $('#error_message').text("계정이 존재하지 않습니다.");
+                            } else if (response.error === 'password') {
+                                $('#error_message').text("비밀번호가 잘못되었습니다.");
+                            }
                         }
-                    },
-                    error: function() {
-                        alert('아이디 또는 비밀번호가 일치하지 않습니다. 다시 시도해주세요.');
                     }
                 });
             });
-
-            $('.logout-link').on('click', function(e) {
-                e.preventDefault();
-                $.post('/logout', function(response) {
-                    if (response.success) {
-                        alert('로그아웃 되었습니다.');
-                        window.location.href = 'index.html';
-                    }
-                });
-            });
-
-           
         });
     </script>
 </body>

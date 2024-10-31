@@ -1,24 +1,32 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원가입</title>
+    <title>Sign Up</title>>
     <link rel="stylesheet" href="{% static 'css/signup.css' %}">
-
-    <!-- jQuery 라이브러리 로드 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .message {
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .valid {
+            color: green;
+        }
+        .invalid {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <header>
         <a href="{% url 'home' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
-        
         <nav>
             <a href="{% url 'guide' %}">Guides</a>
             <a href="{% url 'search' %}">Search</a>
@@ -35,126 +43,138 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'guidekor' %}">Korean</a>
-                    <a href="{% url 'guide' %}">English</a>
+                    <a href="{% url 'loginkor' %}">Korean</a>
+                    <a href="{% url 'login' %}">English</a>
                 </div>
             </div>
-            <a href="{% url 'login' %}" id="login-link">Login</a>
-            <a href="{% url 'signup' %}" id="signup-link">Sign up</a>
-            <a href="#" id="logout-link" style="display: none;">Logout</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Sign up</a>
         </div>
     </header>
 
+    <div class="container">
+    <h1>Sign Up</h1>
+    <div id="description">Enjoy personalized services tailored for you after signing up. </div>
+    <form method="POST">
+        {% csrf_token %}
 
-  <div class="box-container"> 
-      <h1>SIGN UP</h1>
-      <div class="description-container">
-        <div id="description"> 회원가입을 하고 당신을 위한 맞춤서비스를 이용해 보세요  </div>
-        </div>
-        <div class="line-container">
-        <hr id="hr-green">
-    </div>
+        <label for="user_id">ID:</label>
+        <input type="text" id="user_id" name="user_id" placeholder="ID" required>
+        <span id="user_id_msg" class="message"></span><br><br>
+
+        <label for="username">User name:</label>
+        <input type="text" name="username" placeholder="username" required><br><br>
+
+        <label for="password1">Password:</label>
+        <input type="password" id="password1" name="password1" placeholder="password" required>
+        <span id="password_msg" class="message"></span><br><br>
+
+        <label for="password2">Confirm Password:</label>
+        <input type="password" id="password2" name="password2" placeholder="confirm Password" required>
+        <span id="password_match_msg" class="message"></span><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="email" required>
+        <span id="email_msg" class="message"></span><br><br>
+
+        <label for="youtube_api_key">YouTube API Key:</label>
+        <input type="text" id="youtube_api_key" name="youtube_api_key" placeholder="YouTube API Key"><br><br>
+
+        <label for="wikifier_api_key">Wikifier API Key:</label>
+        <input type="text" id="wikifier_api_key" name="wikifier_api_key" placeholder="Wikifier API Key:"><br><br>
+
+        <button type="submit" id="submit_btn" disabled>Signup</button>
+    </form>
+</div>
+
+    <script>
+        function checkDuplicate(field, value, msgElement) {
+            // 메시지 초기화
+            $(msgElement).text("확인 중...").removeClass("valid invalid");
     
-      <ul class="links">
-          <li>
-              <!-- <a href="로그인.html" id="signin">SIGN UP</a> -->
-                    <div id="ID">ID :</div>
-          </li>
-          <li>
-                <div id="PassWord">PassWord :</div>
-              <!-- <a href="회원가입.html" id="signup">SIGN UP</a> -->
-          </li>
-            
-       
-               <li> <div id="Repeat-PassWord">Repeat PW :</div></li>
-            
-       
-                <li> <div id="name-inputd">Name :</div> </li>
-            
-            
-                <li>    <div id="wiki-inputd">Wiki Api : </div> </li>
-       
-                <li>    <div id="youtube-inputd">Youtube Api : </div> </li>
-       
-           
-
-      </ul>
-
-      <!-- 회원가입 폼 -->
-      <form id="signupForm"> <!-- action과 method를 제거,id로 전환 -->
-                                    <!--^html에서 form으로보내는 id와 script에서 특정id의 동작이 같게  -->
-        <div class="first-input input__block first-input__block">
-            <input type="email" placeholder="Email" class="input" id="email" name="email" required />
-        </div>
-        <div class="input__block">
-            <input type="password" placeholder="Password" class="input" id="password" name="password" required />
-        </div>
-        <div class="input__block">
-            <input type="password" placeholder="Repeat password" class="input repeat__password" id="repeat__password" name="repeat_password" required />
-        </div>
-        <div class="input__block">
-            <input type="text" placeholder="이름"  id="input-name" name="name">
-        </div>
-        
-        <div class="input__block">
-            <input type="text" placeholder="wikiApi키"  id="input-wikiApi" name="wikiApi">
-        </div>
-
-        <div class="input__block">
-            <input type="text" placeholder="youtubeApi키"  id="input-youtubeApi" name="youtubeApi">
-        </div>
-        
-        
-        
-        <button class="signin__btn" type="submit">가입하기</button>
-      </form>
-
-   
-
-  <script>
-    //^ 회원가입 폼 제출 처리 ->signupForm 으로 
-$('#signupForm').on('submit', function(e) {
-    e.preventDefault();  //^ 폼의 기본 동작(페이지 리로드)을 막음
-
-    const password = $('#password').val();
-    const repeat_password = $('#repeat__password').val();
-
-    //^ 비밀번호와 반복 비밀번호가 동일한지 확인
-    if (password !== repeat_password) {
-        alert('비밀번호를 동일하게 입력해주세요.');
-        return; // 동일하지 않으면 폼 제출 중단
-    }
-
-    const formData = {
-        email: $('#email').val(),
-        password: password,
-        repeat_password: repeat_password,
-        name: $('#input-name').val(),
-        wikiApi:$('#input-wikiApi').val(),
-        youtubeApi:$('#input-youtubeApi').val(),
-    };
-
-    $.ajax({
-        type: 'POST',
-        url: '/signup',
-        data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
-        contentType: 'application/json', // JSON 형식으로 데이터 전송
-        success: function(response) {
-            if (response.success) {
-                alert('회원가입에 성공했습니다!');
-                window.location.href = 'index.html'; // 회원가입 성공 후 index.html로 이동
-            } else {
-                alert(response.message || '회원가입에 실패했습니다. 다시 시도해주세요.');
-            }
-        },
-        error: function(xhr, status, error) {
-            // 서버로부터 받은 오류 메시지 출력
-            const errorMessage = xhr.responseJSON ? xhr.responseJSON.message : '이미 존재하는 아이디입니다.';
-            alert(errorMessage);
+            // AJAX 호출
+            $.ajax({
+                url: "{% url 'check_duplicate' %}",
+                data: { field: field, value: value },
+                success: function(response) {
+                    if (response.exists) {
+                        $(msgElement).text("이미 사용 중입니다.").addClass("invalid").removeClass("valid");
+                        $('#submit_btn').prop('disabled', true);  // 중복 시 버튼 비활성화
+                    } else {
+                        $(msgElement).text("사용 가능합니다.").addClass("valid").removeClass("invalid");
+                        validateForm();  // 유효성 검사 진행
+                    }
+                },
+                error: function() {
+                    $(msgElement).text("오류가 발생했습니다. 다시 시도해 주세요.").addClass("invalid").removeClass("valid");
+                    $('#submit_btn').prop('disabled', true);
+                }
+            });
         }
-    });
-});
-
-  </script>
+    
+        function validatePassword(password) {
+            const specialChar = /[!@#$%^&*(),.?":{}|<>]/;
+            const uppercase = /[A-Z]/;
+            let valid = true;
+            $('#password_msg').text(""); // 초기화
+            $('#password_match_msg').text(""); // 초기화
+    
+            if (!specialChar.test(password)) {
+                $('#password_msg').text("특수문자를 포함해야 합니다.").addClass("invalid").removeClass("valid");
+                valid = false;
+            } 
+            if (!uppercase.test(password)) {
+                $('#password_msg').text("대문자를 포함해야 합니다.").addClass("invalid").removeClass("valid");
+                valid = false;
+            }
+            if (valid) {
+                $('#password_msg').text("사용 가능한 비밀번호입니다.").addClass("valid").removeClass("invalid");
+            }
+            return valid;
+        }
+    
+        function validatePasswordMatch() {
+            const password1 = $('#password1').val();
+            const password2 = $('#password2').val();
+            $('#password_match_msg').text(""); // 초기화
+    
+            if (password1 !== password2) {
+                $('#password_match_msg').text("비밀번호가 일치하지 않습니다.").addClass("invalid").removeClass("valid");
+                return false;
+            } else {
+                $('#password_match_msg').text("비밀번호가 일치합니다.").addClass("valid").removeClass("invalid");
+                return true;
+            }
+        }
+    
+        function validateForm() {
+            const isPasswordValid = validatePassword($('#password1').val());
+            const isPasswordMatch = validatePasswordMatch();
+            const userIdAvailable = $('#user_id_msg').hasClass("valid");
+            const emailAvailable = $('#email_msg').hasClass("valid");
+    
+            $('#submit_btn').prop('disabled', !(isPasswordValid && isPasswordMatch && userIdAvailable && emailAvailable));
+        }
+    
+        $(document).ready(function() {
+            $('#user_id').on('input keyup', function() {
+                checkDuplicate('user_id', $(this).val(), '#user_id_msg');
+            });
+    
+            $('#email').on('input keyup', function() {
+                checkDuplicate('email', $(this).val(), '#email_msg');
+            });
+    
+            $('#password1').on('input keyup', function() {
+                validatePassword($(this).val());
+                validateForm();
+            });
+    
+            $('#password2').on('input keyup', function() {
+                validatePasswordMatch();
+                validateForm();
+            });
+        });
+    </script>
 </body>
 </html>
