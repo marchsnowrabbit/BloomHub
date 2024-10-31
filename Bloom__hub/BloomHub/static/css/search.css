@@ -180,6 +180,8 @@ nav a.classing:hover {
     border-radius: 10px;
     outline: none;
     transition: border-color 0.3s;
+    font-family: 'KCC-Hanbit', sans-serif;
+    font-size: 20px;
 }
 
 .search-button { 
