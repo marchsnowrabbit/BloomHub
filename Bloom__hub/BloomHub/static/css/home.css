@@ -1,4 +1,5 @@
 /*색: rgb(11,36,60)*/
+
 @font-face {
   font-family: 'KCC-Hanbit';
   src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
@@ -6,7 +7,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
 
 
 body {
@@ -211,6 +211,7 @@ nav a.classing:hover {
   justify-content: center;
   align-items: center;
   text-align: center;
+  font-family: 'KCC-Hanbit', sans-serif;
   color: white;
   font-size: 1.5rem;
   font-weight: bold;
@@ -231,7 +232,7 @@ nav a.classing:hover {
 
 
   color: #fff; /* 글자색 흰색 */
-  
+  font-family: 'KCC-Hanbit', sans-serif;
   font-size: 2.3rem;
   font-weight: bold;
   transition: opacity 0.4s; /* 투명도 전환 효과   */
@@ -246,7 +247,7 @@ nav a.classing:hover {
 
 
 #guide-card {       
-  background-image:  url('./카드이미지/guide_withicon.png');
+  
   background-size:cover;         
     /* 이미지를 카드의 크기에 맞춤 */
     background-position: center;  
@@ -290,7 +291,7 @@ nav a.classing:hover {
 
 
 #search-card {
-  background-image:  url(./카드이미지/search_withicon.png);
+  
   
   background-size:cover;         
   /* 이미지를 카드의 크기에 맞춤 */
@@ -307,15 +308,15 @@ nav a.classing:hover {
   cursor: pointer;
 }
 
+#username {
+  color: white
+}
 
 
 
 
 
-
-#profile-card {
-  background-image:  url('./카드이미지/profile_withicon.png');
-  
+#profile-card {  
   background-size:cover;         
   /* 이미지를 카드의 크기에 맞춤 */
   background-position: center;  
