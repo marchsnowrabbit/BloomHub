@@ -8,13 +8,6 @@
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .error {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-    </style>
 </head>
 
 <body>
@@ -22,6 +15,7 @@
         <a href="{% url 'home' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
+        
         <nav>
             <a href="{% url 'guide' %}">Guides</a>
             <a href="{% url 'search' %}">Search</a>
@@ -38,12 +32,13 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'loginkor' %}">Korean</a>
-                    <a href="{% url 'login' %}">English</a>
+                    <a href="{% url 'guidekor' %}">Korean</a>
+                    <a href="{% url 'guide' %}">English</a>
                 </div>
             </div>
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'signup' %}">Sign up</a>
+            <a href="{% url 'login' %}" id="login-link">Login</a>
+            <a href="{% url 'signup' %}" id="signup-link">Sign up</a>
+            <a href="#" id="logout-link" style="display: none;">Logout</a>
         </div>
     </header>
     

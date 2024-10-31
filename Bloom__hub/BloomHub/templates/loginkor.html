@@ -8,44 +8,35 @@
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .error {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-    </style>
 </head>
 
 <body>
     <header>
-        <a href="{% url 'homekor' %}" class="logo">
+        <a href="{% url 'home' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
-        
         <nav>
-            <a href="{% url 'guidekor' %}">가이드</a>
-            <a href="{% url 'searchkor' %}">검색</a>
-            <a href="{% url 'mypagekor' %}">마이페이지</a>
+            <a href="{% url 'guide' %}">Guides</a>
+            <a href="{% url 'search' %}">Search</a>
+            <a href="{% url 'mypage' %}">My profile</a>
             <div class="dropdown-container">
-                <a href="#" class="classing">학습</a>
+                <a href="#" class="classing">Classing</a>
                 <div class="dropdown">
-                    <a href="{% url 'learningkor' %}">학습중인 영상</a>
-                    <a href="{% url 'learnedkor' %}">학습했던 영상</a>
+                    <a href="{% url 'learning' %}">Learning Video</a>
+                    <a href="{% url 'learned' %}">Learned Video</a>
                 </div>
             </div>
         </nav>
         <div class="auth">
             <div class="language-container">
-                <a href="#" class="language">언어</a>
+                <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'loginkor' %}">한국어</a>
-                    <a href="{% url 'login' %}">영어</a>
+                    <a href="{% url 'loginkor' %}">Korean</a>
+                    <a href="{% url 'login' %}">English</a>
                 </div>
             </div>
-            <a href="{% url 'loginkor' %}" id="login-link">로그인</a>
-            <a href="{% url 'signupkor' %}" id="signup-link">회원가입</a>
-            <a href="#" id="logout-link" style="display: none;">로그아웃</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Sign up</a>
         </div>
     </header>
     
