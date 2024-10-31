@@ -1,17 +1,16 @@
 @font-face {
     font-family: 'KCC-Hanbit';
     src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
-         url('/static/fonts/KCC-Hanbit.woff') format('woff');
+        url('/static/fonts/KCC-Hanbit.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-  }
+}
 body {
     font-family: 'KCC-Hanbit', sans-serif;
     background-color: rgb(11, 36, 60);
     margin: 0;
     min-height: 100vh;
     padding: 0;
-   
 }
 main {
     display: flex;
@@ -20,7 +19,6 @@ main {
     height: calc(100vh - 60px);
     position: relative;
 }
-
 header {
     display: flex;
     flex-direction: row;               
@@ -31,27 +29,21 @@ header {
     background-color: rgb(11, 36, 60);
     position: relative;
 }
-
 header .logo {
     margin-right: 10px;               
     color: white; 
 }
-
-
 header nav {
     display: flex;              
     gap: 35px;                 
     align-items: center;        
     margin: 0;  
-    }
-
+}
 header nav a {
     color: white;
     font-size: 23px;
     text-decoration: none;
-
 } 
-
 header .auth {
     display: flex;
     align-items: center;
@@ -59,26 +51,20 @@ header .auth {
     position: absolute;
     right: 0px;
     top: 0px;
-
 }
-
 header .auth a {
     color: white;
     margin: 0 10px;
     text-decoration: none;
 }
-
-/** Dropdown styling */
 .language-container {
     position: relative;
 }
-
 .language {
     color: white;
     text-decoration: none;
     font-size: 16px;
-    }
-
+}
 .language-dropdown {
     display: none;
     position: absolute;
@@ -87,7 +73,6 @@ header .auth a {
     background-color: rgb(11, 36, 60);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-
 .language-dropdown a {
     color: white;
     text-decoration: none;
@@ -96,20 +81,15 @@ header .auth a {
     display: block;
     font-size: 16px;
 }
-
 .language-container:hover .language-dropdown {
     display: block;
 }
-
 nav a.classing:hover, nav a.language:hover {
     color: rgb(11, 36, 60);
 }
-
-/* classing 드롭다운 */
 .dropdown-container {
     position: relative;
 }
-
 .dropdown {
     display: none;
     position: absolute;
@@ -119,7 +99,6 @@ nav a.classing:hover, nav a.language:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
-
 .dropdown a {
     color: white;
     text-decoration: none;
@@ -128,33 +107,26 @@ nav a.classing:hover, nav a.language:hover {
     display: block;
     font-size: 18px;
 }
-
 nav a.classing:hover {
     color: white; 
     display: inline; 
-
 }
-
 .dropdown-container:hover .dropdown {
     display: block;
-    
 }
-
 .container {
     display: block;
-    max-width: 580px; /* 컨테이너 너비 */
-    height: 880px; /* 컨테이너 높이 */
-    background-color: white; /* 흰색 배경 */
-    margin: 120px auto; /* 상단과 하단 여백 */
-    border: 5px solid #FAA0EB; /* 분홍색 테두리 */
+    max-width: 580px; 
+    height: auto; 
+    background-color: white; 
+    margin: 120px auto; 
+    border: 5px solid #FAA0EB; 
     padding: 10px;
-    border-radius: 70px; /* 둥근 모서리 */
+    border-radius: 70px; 
     position: relative;
-    top: -105px; /* 폼 위치 조정 */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    top: -105px; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
 }
-
-/* 폼 제목 스타일 */
 h1 {
     color: #333333;
     font-size: 40px;
@@ -163,8 +135,6 @@ h1 {
     position: relative;
     right: calc(-3% - 0px);
 }
-
-/* 제목 아래의 녹색 줄 */
 h1:after {
     content: '';
     display: block;
@@ -176,131 +146,107 @@ h1:after {
     position: relative;
     right: calc(14% - 0px);
 }
-/* 수정 */
 .description {
     font-size: 18px;
     color: #000000;
     font-family: 'KCC-Hanbit', sans-serif;
 }
-
-
-/* 입력 필드와 레이블 스타일 */
 label {
     color: #333333;
     font-size: 16px;
-    display: inline-block; /* 인라인 블록으로 설정 */
-    width: 25%; /* 라벨의 고정 너비 */
-    vertical-align: middle; /* 수직 가운데 정렬 */
+    display: inline-block;
+    width: 25%;
+    vertical-align: middle;
     margin-right: 11px;
     margin-top: 10px;
-    margin-bottom: 5px; /* 레이블과 입력 필드 간의 간격 */
+    margin-bottom: 5px;
 }
-
-
 label[for="user_id"] {
     right: calc(-17% - 0px);
     position: relative;
 }
-
 label[for="username"] {
     right: calc(-15% - 0px);
     position: relative;
 }
-
 label[for="password1"] {
     right: calc(-15% - 0px);
     position: relative;
 }
-
 label[for="password2"] {
     right: calc(-9% - 0px);
     position: relative;
 }
-
 label[for="email"] {
     right: calc(-17% - 0px);
     position: relative;
 }
-
 label[for="youtube_api_key"] {
     right: calc(-3% - -3px);;
     position: relative;
 }
-
 label[for="wikifier_api_key"] {
     right: calc(-2% - 12px);
     position: relative;
 }
-
-input{
+input {
     font-family: 'KCC-Hanbit', sans-serif;
 }
-
 input[type="text"],
 input[type="password"],
 input[type="email"] {
-    width: 70%; /* 입력 칸 너비를 조정 */
+    width: 70%; 
     padding: 8px;
     font-size: 16px;
-    border: 1px solid #000000; /* 검정색 테두리 */
+    border: 1px solid #000000; 
     box-sizing: border-box;
     display: inline-block;
-    vertical-align: middle; /* 수직 가운데 정렬 */
+    vertical-align: middle;
     margin-top: 10px;
     right: 0px;
     position: relative;
 }
-
-
-/* 유효성 검사 메시지 스타일 */
 .message {
     font-size: 12px;
     margin-top: 5px;
     margin-left: 5px;
 }
-
-/* 유효한 메시지 (녹색) */
 .valid {
     color: #72BA84;
     right: calc(-25% - 10px);
     top: 5px;
     position: relative;
 }
-
-/* 유효하지 않은 메시지 (빨간색) */
 .invalid {
     color: red;
     right: calc(-25% - 10px);
     top: 5px;
     position: relative;
 }
-
-/* 버튼 스타일 */
 button {
-    width: 100%;
+    width: 80%;
     padding: 10px;
     font-size: 16px;
-    background-color: #72BA84; /* 녹색 버튼 */
+    background-color: #72BA84;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 10px;
+    position: relative;
+    right: calc(-9% - 2px);
 }
-
-/* 비활성화된 버튼 스타일 */
 button:disabled {
     background-color: #CCCCCC;
     cursor: not-allowed;
 }
-
-/* 입력 필드 간의 간격 */
+.button:hover {
+    background: rgb(79, 131, 30);
+}
 .form-group {
     margin-bottom: 15px;
 }
-
 @media only screen and (max-width: 768px) {
-    
     header {
         display: flex;
         flex-direction: column;
@@ -308,7 +254,6 @@ button:disabled {
         justify-content: center;
         height: auto;
     }
-    
     header .logo {
         position: relative;
         top: 10px; 
@@ -317,64 +262,51 @@ button:disabled {
         justify-content: center;
         margin-bottom: 5px; 
     }
-
     header nav {
         display: flex;
         justify-content: center;
         gap: 20px;
         margin-top: -5px; 
     }
-
     header nav a {
         color: white;
         font-size: 20px; 
         text-decoration: none;
     }
-    
     header .auth {
         position: absolute;
         top: 10px;
         right: 10px;
     }
-
-    
-label[for="user_id"] {
-    right: calc(-15% - 0px);
-    position: relative;
-}
-
-label[for="username"] {
-    right: calc(-12% - 0px);
-    position: relative;
-}
-
-label[for="password1"] {
-    right: calc(-12% - 0px);
-    position: relative;
-}
-
-label[for="password2"] {
-    right: calc(-5% - 0px);
-    position: relative;
-}
-
-label[for="email"] {
-    right: calc(-16% - 0px);
-    position: relative;
-}
-
-label[for="youtube_api_key"] {
-    right: calc(-4% - -3px);;
-    position: relative;
-}
-
-label[for="wikifier_api_key"] {
-    right: calc(-2% - 13px);
-    position: relative;
-}
-
-h1:after {
-    right: calc(2% - -5px);
-}
-    
+    label[for="user_id"] {
+        right: calc(-15% - 0px);
+        position: relative;
+    }
+    label[for="username"] {
+        right: calc(-12% - 0px);
+        position: relative;
+    }
+    label[for="password1"] {
+        right: calc(-12% - 0px);
+        position: relative;
+    }
+    label[for="password2"] {
+        right: calc(-5% - 0px);
+        position: relative;
+    }
+    label[for="email"] {
+        right: calc(-16% - 0px);
+        position: relative;
+    }
+    label[for="youtube_api_key"] {
+        right: calc(-4% - -3px);;
+        position: relative;
+    }
+    label[for="wikifier_api_key"] {
+        right: calc(-2% - 13px);
+        position: relative;
+    }
+    h1:after {
+        right: calc(2% - -5px);
+    }
 }
