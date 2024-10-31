@@ -28,6 +28,7 @@ header {
     height: 100px;
     background-color: rgb(11, 36, 60);
     position: relative;
+    margin-top: -20px;
 }
 header .logo {
     margin-right: 10px;               

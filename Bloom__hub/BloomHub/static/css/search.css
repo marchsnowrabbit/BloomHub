@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: 'KCC-Hanbit';
     src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
@@ -11,8 +12,8 @@ body {
     font-family: 'KCC-Hanbit', sans-serif;
     background-color: rgb(11,36,60);
     margin: 0;
+    padding: 0;
     overflow: hidden;
-    
 }
 
 main {
@@ -33,6 +34,7 @@ header {
     height: 100px;
     background-color: rgb(11, 36, 60);
     position: relative;
+    margin-top: -20px;
 }
 
 header .logo {
@@ -222,7 +224,7 @@ nav a.classing:hover {
     height: 60px;
     background-color: white;
     margin-left: 43px;                      /* 서치칸이랑 폭길이 수정  */
-    border-radius: 0 5px 5px 0;
+    border-radius: 7px 7px 7px 7px;
 }
 
 
