@@ -251,6 +251,10 @@ nav a.classing:hover {
     
 }
 
+#username {
+    color: white;
+}
+
 h1 {
     color: white;
     font-size: 35px;
@@ -278,6 +282,7 @@ h1 {
     border-radius: 5px 5px 5px 5px;
     font-size: 16px;
     height: 20px;
+    font-family: 'KCC-Hanbit', sans-serif;
 }
 
 .search-container input[type="text"]:hover {
