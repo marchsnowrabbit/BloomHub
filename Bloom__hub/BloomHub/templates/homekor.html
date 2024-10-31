@@ -13,47 +13,51 @@
 </head>
 <body>
 
-<header>
-    <!-- 로고 링크를 Django URL로 변경 -->
-    <a href="{% url 'home' %}" class="logo">
-        <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
-    </a>
-
-    <div class="auth">
-        <div class="language-container">
-            <a href="#" class="language">언어</a>
-            <div class="language-dropdown">
-                <!-- 하드코딩된 한국어/영어 링크 수정 -->
-                <a href="{% url 'homekor' %}">한국어</a>
-                <a href="{% url 'home' %}?">영어</a>
+    <header>
+        <!-- 로고 링크를 Django URL로 변경 -->
+        <a href="{% url 'homekor' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
+        </a>
+    
+        <div class="auth">
+            <div class="language-container">
+                <a href="#" class="language">언어</a>
+                <div class="language-dropdown">
+                    <a href="{% url 'homekor' %}">한국어</a>
+                    <a href="{% url 'home' %}">영어</a>
+                </div>
             </div>
+    
+            <span id="auth-options">
+                <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
+                <a href="{% url 'loginkor' %}" id="login-link" style="display: none;">로그인</a>
+                <a href="{% url 'signupkor' %}" id="signup-link" style="display: none;">회원가입</a>
+                <span id="username" style="display: none;"></span>
+                <a href="#" id="logout-link" style="display: none;">로그아웃</a>
+            </span>
         </div>
-
-        <!-- 로그인/회원가입 링크 Django URL로 변경 -->
-        <a href="{% url 'loginkor' %}" id="login-link">로그인</a>
-        <a href="{% url 'signupkor' %}" id="signup-link">회원가입</a>
-        <a href="#" id="logout-link" style="display: none;">로그아웃</a>
-    </div>
-
-    <nav>
-        <!-- 네비게이션 링크들도 Django URL로 변경 -->
-        <a href="{% url 'guidekor' %}">가이드</a>
-        <a href="{% url 'searchkor' %}">검색</a>
-        <a href="{% url 'mypagekor' %}">마이페이지</a>
-        <div class="dropdown-container">
-            <a href="#" class="classing">학습</a>
-            <div class="dropdown">
-                <a href="{% url 'learningkor' %}">학습중인 비디오</a>
-                <a href="{% url 'learnedkor' %}">학습했던 비디오</a>
+    
+        <nav>
+            <!-- 네비게이션 링크들도 Django URL로 변경 -->
+            <a href="{% url 'guidekor' %}">가이드</a>
+            <a href="{% url 'searchkor' %}">검색</a>
+            <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
+            <a href="#" id="mypage-link">마이 페이지</a>
+            <div class="dropdown-container">
+                <a href="#" class="classing">클래싱</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-link" data-url="{% url 'learningkor' %}">학습중인 영상</a>
+                    <a href="#" class="dropdown-link" data-url="{% url 'learnedkor' %}">학습했던 영상</a>
+                </div>
             </div>
-        </div>
-    </nav>
-</header>
+            
+        </nav>
+    </header>
 
 <main>
     <div class="card-container">
         <!-- 카드 클릭 시 이동하는 링크들도 Django URL로 변경 -->
-        <div class="card" id="guide-card" onclick="location.href='{% url 'guidekor' %}'">
+        <div class="card" id="guide-card" onclick="location.href='{% url 'guide' %}'">
             <img class="card__background" src="{% static 'img/guide.png' %}">
             <div class="card-content">
                 <div class="card__content--container">
@@ -62,7 +66,7 @@
             </div>
         </div>
 
-        <div class="card" id="search-card" onclick="location.href='{% url 'searchkor' %}'">
+        <div class="card" id="search-card" onclick="location.href='{% url 'search' %}'">
             <img class="card__background" src="{% static 'img/search.png' %}">
             <div class="card-content">
                 <div class="card__content--container">
@@ -71,7 +75,7 @@
             </div>
         </div>
 
-        <div class="card" id="profile-card" onclick="location.href='{% url 'mypagekor' %}'">
+        <div class="card" id="profile-card" onclick="location.href='{% url 'mypage' %}'">
             <img class="card__background" src="{% static 'img/profile.png' %}">
             <div class="card-content">
                 <div class="card__content--container">
@@ -82,33 +86,75 @@
     </div>
 </main>
 
+<!-- 로그인 로그아웃 구현 부분!-->
 <script>
     $(document).ready(function() {
         // 로그인 상태 확인
-        $.get('{% url "check_login" %}', function(data) {
-            if (data.loggedIn) {
-                $('#login-link').hide();
-                $('#signup-link').hide();
-                $('#logout-link').show();
-            } else {
-                $('#login-link').show();
-                $('#signup-link').show();
-                $('#logout-link').hide();
+        $.ajax({
+            url: "{% url 'check_login' %}",
+            method: "GET",
+            success: function(response) {
+                if (response.is_logged_in) {
+                    // 로그인 상태일 때
+                    $('#username').text(response.username + '님').show();
+                    $('#logout-link').show();
+                } else {
+                    // 비로그인 상태일 때
+                    $('#login-link').show();
+                    $('#signup-link').show();
+                }
+            },
+            error: function() {
+                alert("로그인 상태를 확인하는 중 오류가 발생했습니다.");
             }
         });
 
         // 로그아웃 처리
         $('#logout-link').on('click', function(e) {
             e.preventDefault();
-            $.get('{% url "logout" %}', function(data) {
-                if (data.success) {
-                    alert('로그아웃 되었습니다.');
-                    location.reload();
+            $.ajax({
+                url: "{% url 'logout_view' %}",
+                method: "GET",
+                success: function() {
+                    window.location.href = "{% url 'home' %}"; // 홈으로 리다이렉트
+                },
+                error: function() {
+                    alert("로그아웃에 실패했습니다.");
+                }
+            });
+        });
+
+        // 마이페이지 링크 클릭 시 로그인 확인
+        $('#mypage-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = "{% url 'mypage' %}";
+                    } else {
+                        alert("로그인이 필요합니다. 로그인 해주세요.");
+                    }
+                }
+            });
+        });
+
+        // 드롭다운 링크 클릭 시 로그인 확인
+        $('.dropdown-link').on('click', function(e) {
+            e.preventDefault();
+            const url = $(this).data('url');
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = url;
+                    } else {
+                        alert("로그인이 필요합니다. 로그인 해주세요.");
+                    }
                 }
             });
         });
     });
 </script>
-
-</body>
-</html>

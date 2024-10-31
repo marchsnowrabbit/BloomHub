@@ -12,25 +12,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-
-
     <header>
+        <!-- 로고 링크를 Django URL로 변경 -->
         <a href="{% url 'home' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
-        
-        <nav>
-            <a href="{% url 'guide' %}">Guides</a>
-            <a href="{% url 'search' %}">Search</a>
-            <a href="{% url 'mypage' %}">My profile</a>
-            <div class="dropdown-container">
-                <a href="#" class="classing">Classing</a>
-                <div class="dropdown">
-                    <a href="{% url 'learning' %}">Learning Video</a>
-                    <a href="{% url 'learned' %}">Learned Video</a>
-                </div>
-            </div>
-        </nav>
+    
         <div class="auth">
             <div class="language-container">
                 <a href="#" class="language">Language</a>
@@ -39,10 +26,31 @@
                     <a href="{% url 'guide' %}">English</a>
                 </div>
             </div>
-            <a href="{% url 'login' %}" id="login-link">Login</a>
-            <a href="{% url 'signup' %}" id="signup-link">Sign up</a>
-            <a href="#" id="logout-link" style="display: none;">Logout</a>
+    
+            <span id="auth-options">
+                <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
+                <a href="{% url 'login' %}" id="login-link" style="display: none;">Login</a>
+                <a href="{% url 'signup' %}" id="signup-link" style="display: none;">Sign up</a>
+                <span id="username" style="display: none;"></span>
+                <a href="#" id="logout-link" style="display: none;">Logout</a>
+            </span>
         </div>
+    
+        <nav>
+            <!-- 네비게이션 링크들도 Django URL로 변경 -->
+            <a href="{% url 'guide' %}">Guides</a>
+            <a href="{% url 'search' %}">Search</a>
+            <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
+            <a href="#" id="mypage-link">My profile</a>
+            <div class="dropdown-container">
+                <a href="#" class="classing">Classing</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">Learning Video</a>
+                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">Learned Video</a>
+                </div>
+            </div>
+            
+        </nav>
     </header>
     
     <h2>How to Issue API Keys During Sign up</h2>
@@ -128,57 +136,60 @@
         <span class="close" onclick="closePopup()">&times;</span>
         <img class="popup-content" id="popup-img">
     </div>
-<script>
-
-
-function openPopup(imgElement) {
-    var popup = document.getElementById("popup");
-    var popupImg = document.getElementById("popup-img");
-
-    popup.style.display = "block";
-    popupImg.src = imgElement.src;
-}
-
-function closePopup() {
-    var popup = document.getElementById("popup");
-    popup.style.display = "none";
-}
-
-
-
-            //^ 로그인 상태 확인
-            $(document).ready(function() {
-            
-            $.get('/check-login', function(data) {
-                if (data.loggedIn) {
-            $('#login-link').hide();
-            $('#signup-link').hide();
-            $('#logout-link').show();
-        } else {
-            $('#login-link').show();
-            $('#signup-link').show();
-            $('#logout-link').hide();
+    <script>
+        function openPopup(imgElement) {
+            var popup = document.getElementById("popup");
+            var popupImg = document.getElementById("popup-img");
+            popup.style.display = "block";
+            popupImg.src = imgElement.src;
         }
-            });
+
+        function closePopup() {
+            var popup = document.getElementById("popup");
+            popup.style.display = "none";
+        }
+
+        $(document).ready(function() {
+            checkLoginStatus();
 
             // 로그아웃 처리
             $('#logout-link').on('click', function(e) {
                 e.preventDefault();
-                $.get('/logout', function(data) {
-                    if (data.success) {
-                        alert('로그아웃 되었습니다.');
-                        location.reload();
+                $.ajax({
+                    url: "{% url 'logout_view' %}",
+                    method: "GET",
+                    success: function() {
+                        window.location.href = "{% url 'home' %}"; // 홈으로 리다이렉트
+                    },
+                    error: function() {
+                        alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
                     }
                 });
             });
         });
 
-
-
-
-
-
-
-</script>
+        function checkLoginStatus() {
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        $('#username').text(response.username).show();
+                        $('#logout-link').show();
+                        $('#login-link').hide(); // 로그인 링크 숨기기
+                        $('#signup-link').hide(); // 회원가입 링크 숨기기
+                    } else {
+                        $('#login-link').show();
+                        $('#signup-link').show();
+                        $('#username').hide(); // 사용자 이름 숨기기
+                        $('#logout-link').hide(); // 로그아웃 링크 숨기기
+                    }
+                },
+                error: function() {
+                    alert("로그인 상태를 확인하는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+                }
+            });
+        }
+    </script>
 </body>
 </html>
