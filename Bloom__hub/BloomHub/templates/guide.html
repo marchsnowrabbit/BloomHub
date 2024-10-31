@@ -41,7 +41,7 @@
             <a href="{% url 'guide' %}">Guides</a>
             <a href="{% url 'search' %}">Search</a>
             <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
-            <a href="#" id="mypage-link">My profile</a>
+            <a href="{% url 'mypage' %}" id="mypage-link">My profile</a>
             <div class="dropdown-container">
                 <a href="#" class="classing">Classing</a>
                 <div class="dropdown">

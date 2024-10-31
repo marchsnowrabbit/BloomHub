@@ -43,7 +43,7 @@
             <a href="{% url 'guidekor' %}">가이드</a>
             <a href="{% url 'searchkor' %}">검색</a>
             <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
-            <a href="#" id="mypage-link">마이 페이지</a>
+            <a href="{% url 'mypagekor' %}" id="mypage-link">마이 페이지</a>
             <div class="dropdown-container">
                 <a href="#" class="classing">클래싱</a>
                 <div class="dropdown">
