@@ -12,26 +12,21 @@ from .models import BloomUser
 logger = logging.getLogger(__name__)
 
 class YoutubeVideoapi:
-    import os
-
-class YoutubeVideoapi:
     def __init__(self):
-        # 환경 변수에서 API 키를 불러오거나 명시적으로 키를 설정합니다.
         self.developer_key = os.getenv('YOUTUBE_API_KEY', 'AIzaSyA7Qn-gNPnDQ4xgpDemtU0OzArCzL0zqvI')
         self.youtube_api_service_name = "youtube"
         self.youtube_api_version = 'v3'
-        
-        # YouTube API 호출 로직
 
-    def videolist(self, keyword):
+    def videolist(self, keyword, page_token=None):
         youtube = build(self.youtube_api_service_name, self.youtube_api_version, developerKey=self.developer_key)
-        
+
         try:
             search_response = youtube.search().list(
                 q=keyword,
                 order='viewCount',
                 part='snippet',
-                maxResults=20
+                maxResults=50,
+                pageToken=page_token
             ).execute()
 
             video_ids = []
@@ -40,30 +35,63 @@ class YoutubeVideoapi:
                 video_id = item['id'].get('videoId')
                 if video_id:
                     video_ids.append(video_id)
-                    videos.append({
-                        'title': item['snippet']['title'],
-                        'videoId': video_id,
-                        'thumbnail': item['snippet']['thumbnails']['default']['url'],
-                        'channelTitle': item['snippet']['channelTitle']
-                    })
 
             if video_ids:
                 videos_response = youtube.videos().list(
                     id=','.join(video_ids),
-                    part='contentDetails,statistics'
+                    part='snippet,contentDetails,statistics'
                 ).execute()
 
-                for i, video in enumerate(videos_response['items']):
-                    duration = self.convert_duration(video['contentDetails']['duration'])
-                    view_count = video['statistics'].get('viewCount', 0)
-                    videos[i]['duration'] = duration
-                    videos[i]['viewCount'] = view_count
+                for video in videos_response['items']:
+                    duration = video['contentDetails']['duration']
+                    duration_obj = isodate.parse_duration(duration)
 
-            return videos
+                    # 90초 이하인 동영상 필터링
+                    if duration_obj.total_seconds() <= 90:
+                        continue
+
+                    videos.append({
+                        'title': video['snippet']['title'],
+                        'videoId': video['id'],
+                        'thumbnail': video['snippet']['thumbnails']['default']['url'],
+                        'channelTitle': video['snippet']['channelTitle'],
+                        'duration': self.convert_duration(duration),
+                        'viewCount': video['statistics'].get('viewCount', 0),
+                    })
+
+            next_page_token = search_response.get('nextPageToken')
+            prev_page_token = search_response.get('prevPageToken')
+
+            return videos, next_page_token, prev_page_token
 
         except Exception as e:
             logger.error(f"오류 발생: {e}")
-            return []
+            return [], None, None
+
+    def get_video_details(self, video_id):
+        youtube = build(self.youtube_api_service_name, self.youtube_api_version, developerKey=self.developer_key)
+        
+        try:
+            video_response = youtube.videos().list(
+                id=video_id,
+                part='snippet,statistics,contentDetails'
+            ).execute()
+
+            if video_response['items']:
+                video = video_response['items'][0]
+                has_caption = video['contentDetails'].get('caption') == 'true'  # 자막 유무 확인
+                return {
+                    'title': video['snippet']['title'],
+                    'thumbnail': video['snippet']['thumbnails']['default']['url'],
+                    'viewCount': video['statistics'].get('viewCount', 0),
+                    'channelTitle': video['snippet']['channelTitle'],
+                    'videoId': video_id,
+                    'hasCaption': has_caption
+                }
+        except Exception as e:
+            logger.error(f"비디오 세부 정보 조회 오류: {e}")
+        
+        return None
 
     def convert_duration(self, duration):
         duration_obj = isodate.parse_duration(duration)
@@ -72,18 +100,36 @@ class YoutubeVideoapi:
         minutes = total_minutes % 60
         return f"{hours}시간 {minutes}분" if hours > 0 else f"{minutes}분"
 
-# 검색 페이지 뷰
 def search(request):
-    if request.method == 'POST':
-        keyword = request.POST.get('keyword', '')
+    keyword = request.POST.get('keyword') or request.GET.get('keyword', '')
+    page_token = request.GET.get('pageToken')  # 페이지 토큰 추가
+
+    videos, next_page_token, prev_page_token = [], None, None
+    if keyword:  # 검색어가 있을 때만 API 호출
         video_api = YoutubeVideoapi()
-        videos = video_api.videolist(keyword)
+        videos, next_page_token, prev_page_token = video_api.videolist(keyword, page_token)
 
         if not videos:
             messages.error(request, '비디오를 찾을 수 없습니다.')
 
-        return render(request, 'searchresult.html', {'videos': videos, 'keyword': keyword})
-    return render(request, 'search.html')
+    return render(request, 'searchresult.html', {
+        'videos': videos,
+        'keyword': keyword,
+        'next_page_token': next_page_token,
+        'prev_page_token': prev_page_token
+    })
+
+
+def study(request, video_id):
+    video_api = YoutubeVideoapi()
+    video_info = video_api.get_video_details(video_id)
+
+    if video_info is None:
+        return render(request, 'study.html', {'error': '비디오 정보를 불러올 수 없습니다.'})
+
+    video_info['videoId'] = video_id  # video ID가 추가로 전달되는지 확인
+    return render(request, 'study.html', {'video': video_info})
+
 
 # 중복 체크 API 뷰
 def check_duplicate(request):

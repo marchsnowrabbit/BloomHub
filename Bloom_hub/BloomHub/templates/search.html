@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>YouTube Video Search</h1>
-    <form action="/search/" method="post"> <!-- action에 슬래시 추가 -->
+    <form action="/search" method="post">
         {% csrf_token %} <!-- CSRF 토큰 추가 -->
         <input type="text" name="keyword" placeholder="검색어를 입력하세요" required>
         <button type="submit">검색</button>

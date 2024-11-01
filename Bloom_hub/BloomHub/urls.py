@@ -28,12 +28,11 @@ urlpatterns = [
     path('mypage/', views.mypage, name='mypage'),
     path('mypage/kor/', views.mypage_kor, name='mypagekor'),
     path('mypage/manager/', views.mypage_manager, name='mypage_manager'),
-
-    path('search/', views.search, name='search'),
-    path('search/kor/', views.search_kor, name='searchkor'),
-
-    path('search/result/', views.search_result, name='searchresult'),
-    path('search/result/kor/', views.search_result_kor, name='searchresultkor'),
+    
+    path('search', views.search, name='search'),  # 슬래시 없이 URL 작성
+    path('search/result', views.search_result, name='searchresult'),
+    path('search/result/kor', views.search_result_kor, name='searchresultkor'),
+    path('study/<str:video_id>', views.study, name='study'),  # video_id를 인자로 받는 study URL
 
     path('find-id/', views.find_id, name='findID'),
     path('find-id/kor/', views.find_id_kor, name='find_id_kor'),

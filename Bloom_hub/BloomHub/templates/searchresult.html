@@ -53,19 +53,15 @@
 </head>
 <body>
     <h1>"{{ keyword }}"에 대한 검색 결과</h1>
-    
-    <!-- 검색 기능 추가 -->
-    <div class="search-container">
-        <form action="/search" method="POST">  <!-- action을 '/search'로 수정 -->
-            <input type="text" name="keyword" placeholder="검색어를 입력하세요" required>
-            <input type="submit" value="검색">
-        </form>
-    </div>
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-    
+    <!-- 검색 기능 -->
+    <form action="/search" method="post">
+        {% csrf_token %}
+        <input type="text" name="keyword" value="{{ keyword }}" placeholder="검색어를 입력하세요" required>
+        <button type="submit">검색</button>
+    </form>
+
+    {% if videos %}
     <table>
         <thead>
             <tr>
@@ -80,20 +76,36 @@
         <tbody>
             {% for video in videos %}
                 <tr>
-                    <td><img class="thumbnail" src="{{ video.thumbnail }}" alt="썸네일"></td>
-                    <td><a href="https://www.youtube.com/watch?v={{ video.videoId }}">{{ video.title }}</a></td>
+                    <td><img src="{{ video.thumbnail }}" alt="썸네일"></td>
+                    <td><a href="https://www.youtube.com/watch?v={{ video.videoId }}" target="_blank">{{ video.title }}</a></td>
                     <td>{{ video.channelTitle }}</td>
                     <td>{{ video.viewCount }}회</td>
                     <td>{{ video.duration }}</td>
-                    <td><button class="button">학습하기</button></td>
+                    <td><a href="{% url 'study' video.videoId %}">학습하기</a></td>
                 </tr>
-            {% empty %} <!-- else 대신 empty 사용 -->
+            {% empty %}
                 <tr>
                     <td colspan="6">비디오를 찾을 수 없습니다.</td>
                 </tr>
             {% endfor %}
-        </tbody>        
+        </tbody>
     </table>
+    {% else %}
+        {% if keyword %}
+            <p style="color: red;">검색 결과가 없습니다.</p>
+        {% endif %}
+    {% endif %}
+
+    <!-- 페이지 네비게이션 -->
+    <div class="pagination">
+        {% if prev_page_token %}
+            <a href="?keyword={{ keyword }}&pageToken={{ prev_page_token }}">이전 페이지</a>
+        {% endif %}
+        {% if next_page_token %}
+            <a href="?keyword={{ keyword }}&pageToken={{ next_page_token }}">다음 페이지</a>
+        {% endif %}
+    </div>
+
     <a href="/">검색으로 돌아가기</a>
 </body>
 </html>
