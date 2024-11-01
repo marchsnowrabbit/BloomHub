@@ -265,7 +265,7 @@ def mypage_kor(request):
 def mypage_manager(request):
     return render(request, 'mypagemanager.html')
 
-def searchkor(request):
+def search_kor(request):
     return render(request, 'searchkor.html')
 
 def search_result(request):
