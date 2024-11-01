@@ -270,7 +270,72 @@ def verify_code_and_find_id(request):
             return JsonResponse({'success': False, 'message': '인증번호가 일치하지 않습니다.'})
     return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
 
+#######################비밀번호 찾기용 #####################################################ㄸ#
+# 비밀번호 찾기용 인증번호 발송 뷰
+def send_verification_code_for_password_reset(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        email = request.POST.get('email')
 
+        # ID와 이메일이 모두 일치하는 사용자를 조회
+        try:
+            user = BloomUser.objects.get(user_id=user_id, email=email)
+            verification_code = generate_verification_code()
+            request.session['password_reset_verification_code'] = verification_code
+            request.session['verification_expiry'] = (timezone.now() + timedelta(minutes=10)).timestamp()
+
+            # 이메일 발송
+            send_mail(
+                'Password Reset Verification Code',
+                f'Your password reset verification code is {verification_code}.',
+                'noreply@example.com',
+                [email],
+                fail_silently=False,
+            )
+            return JsonResponse({'success': True, 'message': '인증번호가 발송되었습니다.'})
+        except BloomUser.DoesNotExist:
+            # ID 또는 이메일이 잘못된 경우 오류 메시지 반환
+            return JsonResponse({'success': False, 'message': '입력한 ID와 이메일이 일치하지 않습니다.'})
+    return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
+
+# 인증번호 확인 뷰 (비밀번호 찾기)
+def verify_code_for_password_reset(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        email = request.POST.get('email')
+        code = request.POST.get('verification_code')
+        stored_code = request.session.get('password_reset_verification_code')
+        expiry = request.session.get('verification_expiry')
+        
+        if timezone.now().timestamp() > expiry:
+            return JsonResponse({'success': False, 'message': '인증번호가 만료되었습니다.'})
+        
+        if code == stored_code:
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False, 'message': '인증번호가 일치하지 않습니다.'})
+    return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
+
+# 비밀번호 재설정 뷰
+def reset_password(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if new_password != confirm_password:
+            return JsonResponse({'success': False, 'message': '비밀번호가 일치하지 않습니다.'})
+
+        try:
+            user = BloomUser.objects.get(user_id=user_id)
+            user.set_password(new_password)
+            user.save()
+            return JsonResponse({'success': True, 'message': '비밀번호가 업데이트되었습니다.'})
+        except BloomUser.DoesNotExist:
+            return JsonResponse({'success': False, 'message': '사용자를 찾을 수 없습니다.'})
+    return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
+
+
+###########################################################################################3
 # 페이지 렌더링 뷰들
 def home(request):
     return render(request, 'home.html')
