@@ -163,18 +163,32 @@ class EnglishScriptExtractor:
         return [{"title": ann["title"], "url": ann["url"], "pageRank": ann["pageRank"]} for ann in sorted_data[:numberOfKCs]]
 
     def save_sentences_for_gpt(self):
-        # GPT 분석용 문장과 시작 시간, 종료 시간을 저장
+        # GPT 분석용 문장을 시간대별로 결합하여 시작 시간과 종료 시간을 포함해 저장, 문장에 줄바꿈 문자도 추가
         with open('sentences_for_gpt.csv', 'w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
             writer.writerow(["title", "word", "start_time", "end_time"])
+    
+            # 시간대별로 문장 결합
+            time_segments = {}
             for sentence in self.sentences_for_gpt:
+                time_key = (sentence['start_time'], sentence['end_time'])
+                if time_key not in time_segments:
+                    time_segments[time_key] = []
+            
+                # 줄바꿈 문자 제거 후 저장
                 cleaned_text = sentence['word'].replace('\n', ' ').replace('\r', ' ')
-                writer.writerow([self.video_title, cleaned_text, sentence['start_time'], sentence['end_time']])
+                time_segments[time_key].append(cleaned_text)
+    
+            # 각 시간대별 문장들을 줄바꿈으로 결합하여 저장
+            for (start_time, end_time), texts in time_segments.items():
+                combined_text = "".join(texts)
+                writer.writerow([self.video_title, combined_text, start_time, end_time])
+
 
 # 최종 결과는 타이틀 제목/url/페이지 랭크/단어/품사/시작 시간/종료 시간의 형태로 저장됨
 if __name__ == "__main__":
     extractor = EnglishScriptExtractor(vid="https://www.youtube.com/watch?v=e9uSOGsildw", setTime=1320, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
     wiki_data = extractor.url_to_wiki()
-    wiki_data.to_csv('new.csv')
+    wiki_data.to_csv('en_words.csv')
     extractor.save_sentences_for_gpt()  # GPT 분석용 문장과 타임스탬프 저장
     print(wiki_data)

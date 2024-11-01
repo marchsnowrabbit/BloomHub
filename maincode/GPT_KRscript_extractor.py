@@ -162,20 +162,37 @@ class KoreanScriptExtractor:
 
         sorted_data = sorted(response.get('annotations', []), key=lambda x: x['pageRank'], reverse=True)
         return [{"title": ann["title"], "url": ann["url"], "pageRank": ann["pageRank"]} for ann in sorted_data[:numberOfKCs]]
-    def save_sentences_for_gpt(self):
-        # gpt 분석용 문장과 시작 시간, 종료 시간을 저장
-        with open('sentences_for_gpt.csv', 'w', encoding='utf-8', newline='') as f:
-            writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)  # csv.writer로 파일을 엽니다.
-            writer.writerow(["title", "word", "start_time", "end_time"])  # 제목 포함 구조로 수정
-            for sentence in self.sentences_for_bert:
-                # 텍스트의 줄바꿈 문자 제거 (newline, carriage return)
-                cleaned_text = sentence['word'].replace('\n', ' ').replace('\r', ' ')
-                # 제목 포함하여 CSV 구조로 저장
-                writer.writerow([self.video_title, cleaned_text, sentence['start_time'], sentence['end_time']])
+   
 
+    def save_sentences_for_gpt(self):
+        # GPT 분석용 문장을 시간대별로 결합하여 시작 시간과 종료 시간을 포함해 저장, 문장에 줄바꿈 문자도 추가
+        with open('sentences_for_gpt.csv', 'w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
+            writer.writerow(["title", "word", "start_time", "end_time"])
+    
+            # 시간대별로 문장 결합
+            time_segments = {}
+            for sentence in self.sentences_for_gpt:
+                time_key = (sentence['start_time'], sentence['end_time'])
+                if time_key not in time_segments:
+                    time_segments[time_key] = []
+            
+                # 줄바꿈 문자 제거 후 저장
+                cleaned_text = sentence['word'].replace('\n', ' ').replace('\r', ' ')
+                time_segments[time_key].append(cleaned_text)
+    
+            # 각 시간대별 문장들을 줄바꿈으로 결합하여 저장
+            for (start_time, end_time), texts in time_segments.items():
+                combined_text = "".join(texts)
+                writer.writerow([self.video_title, combined_text, start_time, end_time])
+
+
+
+
+#실행문
 if __name__ == "__main__":
     extractor = KoreanScriptExtractor(vid="https://www.youtube.com/watch?v=3R6vFdb7YI4", setTime=6000, wikiUserKey="eqhfcdvhiwoikruteziguewrqhnkqn")
     wiki_data = extractor.url_to_wiki()
-    wiki_data.to_csv('words.csv')
+    wiki_data.to_csv('kr_words.csv')
     extractor.save_sentences_for_gpt()  # gpt 분석용 문장과 타임스탬프 저장
     print(wiki_data)

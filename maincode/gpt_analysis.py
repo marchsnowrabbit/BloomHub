@@ -1,9 +1,10 @@
+import time
 import pandas as pd
 import re
 import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.feature_extraction.text import TfidfVectorizer
-from openai import OpenAI
+from openai import OpenAI, max_retries
 import os
 
 
@@ -57,51 +58,69 @@ class BloomAnalysisWithGPTandDictionary:
         return 'unknown'
     
     def gpt_bloom_classification(self, grouped_sentences):
-        client = OpenAI(api_key="YourApiKey")
+        client = OpenAI(api_key="your-api-key")
        
         # 시스템 메시지 설정으로 Bloom 단계 분류 유도
         messages = [
             {"role": "system", "content": "You are a helpful assistant that classifies text into Bloom's Taxonomy stages."}
         ]
 
-        # 그룹화된 구간별 문장들을 하나의 입력으로 구성
         """
         블룸텍소노미 동사표를 csv파일로 만들고, combined_sentences + csv를 함께 gpt에 입력으로 사용
         (dictionary text file을 csv로 구성해서 유지)
         gpt 출력형식 지정
         e.g. 
         """
-        for (start_time, end_time), sentences in grouped_sentences.items():
-            combined_sentences = "\n".join(sentences)
+        results = {}  # 결과를 저장할 딕셔너리
+        for (start_time, end_time), combined_text in grouped_sentences.items():
             user_content = (
-                f"Classify the following sentences from {start_time}s to {end_time}s "
-                f"into their respective Bloom's Taxonomy stage:\n{combined_sentences}\n"
-                "Please respond with only the corresponding stages for each sentence."
+                f"The following text is from {start_time}s to {end_time}s:\n\n"
+                f"{combined_text}\n\n"
+                "Please break this text into complete sentences. Then, classify each sentence "
+                "according to Bloom's Taxonomy as one of the following stages: 'Remember', 'Understand', "
+                "'Apply', 'Analyze', 'Evaluate', or 'Create'.\n\n"
+                "Format each sentence with its classification like this:\n"
+                "- Sentence: <Complete Sentence>\n- Stage: <Bloom's Taxonomy Stage>"
             )
             messages.append({"role": "user", "content": user_content})
 
-        # GPT 모델에 요청 전송 및 응답 처리
-        completion = client.chat.completions.create(
-            model="gpt-4o",
-            messages=messages,
-            temperature=0.0
-        )
+            for attempt in range(max_retries):
+                try:
+                    # GPT 모델에 요청 전송
+                    completion = client.chat.completions.create(
+                        model="gpt-4o",
+                        messages=messages,
+                        temperature=0.0,
+                        timeout=30
+                    )
+                
+                    # 올바른 형식으로 응답 추출
+                    raw_response = completion.choices[0].message.content
+                    print("\nGPT Processed Response:\n", raw_response)
 
-         # 응답이 제대로 왔는지 확인 후 불필요한 설명 텍스트를 제거
-        try:
-            raw_response = completion.choices[0].message.content.split('\n')
-            # Bloom 단계 필터링: 실제 단계만 남기고 설명 부분은 제거
-            results = [line.strip() for line in raw_response if line.strip() and "classification" not in line.lower()]
-        except (KeyError, IndexError, AttributeError):
-            print("Error: GPT response is missing or invalid.")
-            return ['unknown'] * len(grouped_sentences)
+                    # 응답을 줄 단위로 나누고, 빈 줄 제거
+                    response_lines = [line.strip() for line in raw_response.split('\n') if line.strip()]
+                
+                    # 필요한 부분만 추출하여 결과 저장
+                    results[(start_time, end_time)] = response_lines if response_lines else 'unknown'
+                    break  # 성공적으로 처리된 경우 루프 종료
 
-         # 응답 길이와 구간 수를 일치시켜 반환
-        return [result if result in self.bloom_priority else 'unknown' for result in results]
+                except (KeyError, IndexError, AttributeError) as e:
+                    print(f"Error for segment {start_time}-{end_time}: {e}.")
+                    results[(start_time, end_time)] = 'unknown'
+                    break
+            
+                except Exception as e:
+                    print(f"Attempt {attempt + 1} for segment {start_time}-{end_time} failed with error: {e}. Retrying...")
+                    time.sleep(2 ** attempt)
 
+        # 구간에 대한 결과를 반환
+        return [results.get((start_time, end_time), 'unknown') for (start_time, end_time) in grouped_sentences.keys()]
+    
     def determine_final_bloom_stage(self, word, language, start_time, end_time):
         # 단어 및 문장 기반 Bloom 단계 결정
         word_based_stage = self.tag_bloom_stage(word, language)
+
         # 해당 시간 구간에 해당하는 문장 필터링
         sentences = self.sentence_data[
             (self.sentence_data['start_time'] == start_time) & 
@@ -114,8 +133,19 @@ class BloomAnalysisWithGPTandDictionary:
         else:
             # numpy 배열을 리스트로 변환 후 GPT 호출
             grouped_sentences = {(start_time, end_time): list(sentences)}
-            sentence_based_stage = self.gpt_bloom_classification(grouped_sentences)[0]
+            results = self.gpt_bloom_classification(grouped_sentences)
+        
+            # 모든 문장에 대한 Bloom 단계 결과 수집
+            stages = [result for result in results if isinstance(result, str)]
 
+            if not stages:
+                sentence_based_stage = 'unknown'
+            else:
+                # 각 단계의 빈도를 계산
+                from collections import Counter
+                stage_counts = Counter(stages)
+                # 가장 빈도가 높은 단계 선택
+                sentence_based_stage = stage_counts.most_common(1)[0][0]
 
         # 최종 단계 결정 (우선순위 비교)
         if word_based_stage == 'unknown':
@@ -125,21 +155,14 @@ class BloomAnalysisWithGPTandDictionary:
         else:
             return self.choose_better_stage(word_based_stage, sentence_based_stage)
 
-    def choose_better_stage(self, word_stage, sentence_stage):
-        # 우선순위에 따라 더 나은 Bloom 단계 선택
-        if self.bloom_priority[word_stage] < self.bloom_priority[sentence_stage]:
-            return word_stage
-        else:
-            return sentence_stage
-
     def calculate_bloom_distribution(self):
         # 구간별 Bloom 단계 분포 계산
         self.bloom_distribution = self.verb_counts.groupby(
             ['start_time', 'end_time', 'bloom_stage']
         ).size().unstack(fill_value=0)
-
+    
         # 각 구간에서 가장 빈도가 높은 Bloom 단계 결정
-        self.bloom_distribution['decided_stage'] = self.bloom_distribution.apply(self.decide_bloom_stage, axis=1)
+        self.bloom_distribution['decided_stage'] = self.bloom_distribution.drop(columns='unknown').idxmax(axis=1)
 
     def decide_bloom_stage(self, row):
         # 각 구간에서 가장 빈도가 높은 Bloom 단계 결정
@@ -210,10 +233,10 @@ class BloomAnalysisWithGPTandDictionary:
         final_result['bloom_stage_numeric'] = final_result['bloom_stage'].map(bloom_stage_mapping)
         final_result['bloom_color'] = final_result['bloom_stage'].map(color_map)
 
+        #선없는 도트 그래프
         dot_trace = go.Scatter(
             x=final_result['start_segment'], y=final_result['bloom_stage_numeric'],
-            mode='markers+lines', marker=dict(size=10, color=final_result['bloom_color']),
-            line=dict(width=2, color='gray'), name='Bloom Stages'
+            mode='markers', marker=dict(size=10, color=final_result['bloom_color']), name='Bloom Stages'
         )
 
         layout = go.Layout(
@@ -236,7 +259,8 @@ class BloomAnalysisWithGPTandDictionary:
             stage_dict[stage].append(f"{start_time}-{end_time}")
         stage_segments = {stage: ', '.join(segments) for stage, segments in stage_dict.items()}
         return stage_segments
-
+    
+    #명사 분석 함수
     def analyze_nouns(self, top_n=5):
         nouns = self.word_data[self.word_data['pos'] == 'noun']
         nouns_text = ' '.join(nouns['word'])
@@ -244,7 +268,7 @@ class BloomAnalysisWithGPTandDictionary:
         vectorizer = TfidfVectorizer()
         tfidf_matrix = vectorizer.fit_transform([nouns_text])
 
-        feature_names = vectorizer.get_feature_names_out()
+        feature_names = vectorizer.get_feature_names()
         tfidf_scores = tfidf_matrix.toarray()[0]
         top_n_indices = tfidf_scores.argsort()[-top_n:][::-1]
 
@@ -278,7 +302,7 @@ bloom_dict_en = {
 }
 
 # 사용 예시
-bloom_analysis = BloomAnalysisWithGPTandDictionary('new.csv','sentences_for_gpt.csv', bloom_dict_ko, bloom_dict_en)
+bloom_analysis = BloomAnalysisWithGPTandDictionary('words.csv','sentences_for_gpt.csv', bloom_dict_ko, bloom_dict_en)
 bloom_analysis.process_verbs()
 bloom_analysis.calculate_bloom_distribution()
 merged_segments = bloom_analysis.merge_segments()
