@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학습하기</title>
+    <style>
+        .video-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .info {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>학습하기</h1>
+    <div class="video-container">
+        {% if video %}
+            <!-- YouTube Player API를 사용하여 동영상을 임베드 -->
+            <div id="player"></div>
+            
+            <div class="info">
+                <h2>{{ video.title }}</h2>
+                <p>조회수: {{ video.viewCount }}회</p>
+                <p>채널명: {{ video.channelTitle }}</p>
+            </div>
+        {% else %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    </div>
+    <a href="/search">검색 결과로 돌아가기</a>
+
+    <script>
+        // YouTube Player API 스크립트 로드
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: '{{ video.videoId }}',
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+    </script>
+</body>
+</html>
