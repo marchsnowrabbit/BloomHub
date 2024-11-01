@@ -2,7 +2,7 @@ from django.urls import path
 from . import views  # views 모듈을 임포트하여 사용
 
 urlpatterns = [
-    path('', views.home, name='home'),  # index를 search로 변경
+    path('', views.home, name='home'), 
     path('kor/', views.home_kor, name='homekor'),
 
     path('guide/', views.guide, name='guide'),
@@ -23,23 +23,27 @@ urlpatterns = [
     path('signup/kor/', views.signup_kor, name='signupkor'),
     path('check-duplicate/', views.check_duplicate, name='check_duplicate'),
     path('check-login/', views.check_login, name='check_login'),
-    #################################################
+
+    #################### 아이디 찾기, 비번찾기, 이메일 인증필요 ###################
+
+    path('find-id/', views.find_id, name='findID'),
+    path('find-id/kor/', views.find_id_kor, name='find_id_kor'),
+    path('find-pwd/', views.find_pwd, name='findpwd'),
+    path('find-pwd/kor/', views.find_pwd_kor, name='find_pwd_kor'),
+
+    #############################마이페이지,비번변경,닉넴변경,이메일변경처리 할것######################################
 
     path('mypage/', views.mypage, name='mypage'),
     path('mypage/kor/', views.mypage_kor, name='mypagekor'),
     path('mypage/manager/', views.mypage_manager, name='mypage_manager'),
-    
+
+    ########################### 검색 및 검색 결과 ########################################
+
     path('search', views.search, name='search'),
     path('search', views.search, name='searchkor'), # 슬래시 없이 URL 작성
     path('search/result', views.search_result, name='searchresult'),
     path('search/result/kor', views.search_result_kor, name='searchresultkor'),
     path('study/<str:video_id>', views.study, name='study'),  # video_id를 인자로 받는 study URL
-
-    path('find-id/', views.find_id, name='findID'),
-    path('find-id/kor/', views.find_id_kor, name='find_id_kor'),
-
-    path('find-pwd/', views.find_pwd, name='findpwd'),
-    path('find-pwd/kor/', views.find_pwd_kor, name='find_pwd_kor'),
 
     path('analysis/', views.analysis, name='analysis'),
 ]

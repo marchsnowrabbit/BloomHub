@@ -277,27 +277,27 @@ class BloomAnalysisWithGPTandDictionary:
 
     @staticmethod
     def load_dictionary(file_path):
-        # 사전 로드
-        with open(file_path, 'r', encoding='utf-8') as file:
-            return [line.strip() for line in file]
+        # CSV 사전 파일 로드
+        dictionary_data = pd.read_csv(file_path)
+        return dictionary_data['words'].tolist() 
 
 # 한국어 및 영어 단계별 Bloom 사전 로드
 bloom_dict_ko = {
-    'remember': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/remembering.txt'),
-    'understand': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/understanding.txt'),
-    'apply': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/applying.txt'),
-    'analyze': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/analyzing.txt'),
-    'evaluate': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/evaluating.txt'),
-    'create': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/creating.txt')
+    'remember': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/remembering.csv'),
+    'understand': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/understanding.csv'),
+    'apply': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/applying.csv'),
+    'analyze': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/analyzing.csv'),
+    'evaluate': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/evaluating.csv'),
+    'create': BloomAnalysisWithGPTandDictionary.load_dictionary('KR_bloom_dictionary/creating.csv')
 }
 
 bloom_dict_en = {
-    'remember': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/remembering.txt'),
-    'understand': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/understanding.txt'),
-    'apply': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/applying.txt'),
-    'analyze': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/analyzing.txt'),
-    'evaluate': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/evaluating.txt'),
-    'create': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/creating.txt')
+    'remember': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/remembering.csv'),
+    'understand': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/understanding.csv'),
+    'apply': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/applying.csv'),
+    'analyze': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/analyzing.csv'),
+    'evaluate': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/evaluating.csv'),
+    'create': BloomAnalysisWithGPTandDictionary.load_dictionary('EN_bloom_dictionary/creating.csv')
 
 }
 
