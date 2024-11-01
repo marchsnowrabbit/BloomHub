@@ -24,12 +24,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-tua@+6$5$!pl9t6lm0s^2t7$3$860jk8-d(2er%*y97l=cy6=7"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+
+# settings.py 파일 내
 
 ALLOWED_HOSTS = [
     "localhost",
     "3.36.74.181",
+    "127.0.0.1",  # 추가된 항목
 ]
+
 
 
 # Application definition
@@ -144,3 +148,5 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_COOKIES = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+APPEND_SLASH = False
