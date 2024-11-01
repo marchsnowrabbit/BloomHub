@@ -29,7 +29,8 @@ urlpatterns = [
     path('mypage/kor/', views.mypage_kor, name='mypagekor'),
     path('mypage/manager/', views.mypage_manager, name='mypage_manager'),
     
-    path('search', views.search, name='search'),  # 슬래시 없이 URL 작성
+    path('search', views.search, name='search'),
+    path('search', views.search, name='searchkor'), # 슬래시 없이 URL 작성
     path('search/result', views.search_result, name='searchresult'),
     path('search/result/kor', views.search_result_kor, name='searchresultkor'),
     path('study/<str:video_id>', views.study, name='study'),  # video_id를 인자로 받는 study URL

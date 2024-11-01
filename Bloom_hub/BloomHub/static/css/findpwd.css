@@ -1,6 +1,13 @@
+@font-face {
+    font-family: 'KCC-Hanbit';
+    src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
+         url('/static/fonts/KCC-Hanbit.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     background-color: rgb(11, 36, 60);
 
     margin: 0;
@@ -164,7 +171,7 @@ nav a.classing:hover {
 .description-container {
     text-align: center;
     padding: 20px;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     position: relative;
     top:-140px;
     right: calc(27% - 0px);
@@ -176,7 +183,7 @@ nav a.classing:hover {
 .container #description {
     font-size: 18px;
     color: #000000;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
 }
 
 
@@ -318,7 +325,7 @@ form {
     border: none;
     cursor: pointer;
     font-size: 18px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     /* box-shadow: 0 15px 30px rgba(233, 30, 99, .36); */
     transition: .2s linear;
     position: relative;
@@ -342,7 +349,7 @@ form {
     border: none;
     cursor: pointer;
     font-size: 18px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     transition: .2s linear;
     position: relative;
     left:220px;
@@ -440,7 +447,7 @@ top:-132px;
     color: rgba(38, 19, 115, 0.999);
     padding: 0 0 0 15px;
     font-size: 14px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     
 
 }
@@ -612,7 +619,7 @@ h1 {
 .description-container {
     text-align: center;
     padding: 10px;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     position: relative;
     top:-130px;
     right: calc(22% - 0px);

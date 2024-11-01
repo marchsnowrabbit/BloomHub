@@ -1,9 +1,14 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>>
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .message {
             font-size: 14px;
@@ -18,37 +23,69 @@
     </style>
 </head>
 <body>
-    <h1>회원가입</h1>
+    <header>
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
+        </a>
+        <nav>
+            <a href="{% url 'guide' %}">Guides</a>
+            <a href="{% url 'search' %}">Search</a>
+            <a href="{% url 'mypage' %}">My profile</a>
+            <div class="dropdown-container">
+                <a href="#" class="classing">Classing</a>
+                <div class="dropdown">
+                    <a href="{% url 'learning' %}">Learning Video</a>
+                    <a href="{% url 'learned' %}">Learned Video</a>
+                </div>
+            </div>
+        </nav>
+        <div class="auth">
+            <div class="language-container">
+                <a href="#" class="language">Language</a>
+                <div class="language-dropdown">
+                    <a href="{% url 'signupkor' %}">Korean</a>
+                    <a href="{% url 'signup' %}">English</a>
+                </div>
+            </div>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Sign up</a>
+        </div>
+    </header>
+
+    <div class="container">
+    <h1>Sign Up</h1>
+    <div id="description">Enjoy personalized services tailored for you after signing up. </div>
     <form method="POST">
         {% csrf_token %}
 
-        <label for="user_id">아이디:</label>
-        <input type="text" id="user_id" name="user_id" required>
+        <label for="user_id">ID:</label>
+        <input type="text" id="user_id" name="user_id" placeholder="ID" required>
         <span id="user_id_msg" class="message"></span><br><br>
 
-        <label for="username">유저이름:</label>
-        <input type="text" name="username" required><br><br>
+        <label for="username">User name:</label>
+        <input type="text" name="username" placeholder="username" required><br><br>
 
-        <label for="password1">비밀번호:</label>
-        <input type="password" id="password1" name="password1" required>
+        <label for="password1">Password:</label>
+        <input type="password" id="password1" name="password1" placeholder="password" required>
         <span id="password_msg" class="message"></span><br><br>
 
-        <label for="password2">비밀번호 확인:</label>
-        <input type="password" id="password2" name="password2" required>
+        <label for="password2">Confirm Password:</label>
+        <input type="password" id="password2" name="password2" placeholder="confirm Password" required>
         <span id="password_match_msg" class="message"></span><br><br>
 
-        <label for="email">이메일:</label>
-        <input type="email" id="email" name="email" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="email" required>
         <span id="email_msg" class="message"></span><br><br>
 
         <label for="youtube_api_key">YouTube API Key:</label>
-        <input type="text" id="youtube_api_key" name="youtube_api_key"><br><br>
+        <input type="text" id="youtube_api_key" name="youtube_api_key" placeholder="YouTube API Key"><br><br>
 
         <label for="wikifier_api_key">Wikifier API Key:</label>
-        <input type="text" id="wikifier_api_key" name="wikifier_api_key"><br><br>
+        <input type="text" id="wikifier_api_key" name="wikifier_api_key" placeholder="Wikifier API Key:"><br><br>
 
         <button type="submit" id="submit_btn" disabled>Signup</button>
     </form>
+</div>
 
     <script>
         function checkDuplicate(field, value, msgElement) {

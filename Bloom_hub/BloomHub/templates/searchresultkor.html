@@ -1,139 +1,151 @@
+
+
 {% load static %}
-
 <!DOCTYPE html>
-<html>
-
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>검색 결과</title>
     <link rel="stylesheet" href="{% static 'css/searchresult.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>{{ keyword }}에 대한 검색 결과</title>
 </head>
-
 <body>
-
-
     <header>
+        <!-- 로고 링크를 Django URL로 변경 -->
         <a href="{% url 'homekor' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
-        <nav>
-            <a href="{% url 'guidekor' %}">가이드</a>
-            <a href="{% url 'searchkor' %}">검색</a>
-            <a href="{% url 'mypagekor' %}">마이 페이지</a>
-            <div class="dropdown-container">
-                <a href="#" class="classing">학습</a>
-                <div class="dropdown">
-                    <a href="{% url 'learningkor' %}">학습중인 영상</a>
-                    <a href="{% url 'learnedkor' %}">학습했던 영상</a>
-                </div>
-            </div>
-        </nav>
+    
         <div class="auth">
             <div class="language-container">
                 <a href="#" class="language">언어</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'searchresultkor' %}?lang=ko">한국어</a>
-                    <a href="{% url 'searchresult' %}?lang=en">영어</a>
+                    <a href="{% url 'searchkor' %}">한국어</a>
+                    <a href="{% url 'search' %}">영어</a>
                 </div>
             </div>
-            <a href="{% url 'loginkor' %}">로그인</a>
-            <a href="{% url 'signupkor' %}">회원가입</a>
+    
+            <span id="auth-options">
+                <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
+                <a href="{% url 'loginkor' %}" id="login-link" style="display: none;">로그인</a>
+                <a href="{% url 'signupkor' %}" id="signup-link" style="display: none;">회원가입</a>
+                <span id="username" style="display: none;"></span>
+                <a href="#" id="logout-link" style="display: none;">로그아웃</a>
+            </span>
         </div>
+    
+        <nav>
+            <!-- 네비게이션 링크들도 Django URL로 변경 -->
+            <a href="{% url 'guidekor' %}">가이드</a>
+            <a href="{% url 'searchkor' %}">검색</a>
+            <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
+            <a href="{% url 'mypagekor' %}" id="mypage-link">마이 페이지</a>
+            <div class="dropdown-container">
+                <a href="#" class="classing">클래싱</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">학습중인 영상</a>
+                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">학습했던 영상</a>
+                </div>
+            </div>
+            
+        </nav>
     </header>
     
+    <h1>"{{ keyword }}"에 대한 검색 결과</h1>
     
-    <main>
-        <div class="search-bar">
-            <input type="text" id="search-input" placeholder="검색">
-            <button class="search-btn"><img src="구글서치아이콘.png" alt="Search Icon" class="search-icon"></button>
-        </div>
+    <!-- 검색 기능 추가 -->
+    <div class="search-container">
+        <form action="{% url 'search' %}" method="POST">  <!-- Django URL 패턴을 사용 -->
+            {% csrf_token %}  <!-- CSRF 토큰 추가 -->
+            <input type="text" name="keyword" placeholder="검색어를 입력하세요" required>
+            <button type="submit" class="search-button">
+                <img src="{% static 'img/searchIcon.png' %}" alt="Search Icon" class="search-icon">
+            </button>
+        </form>
+    </div>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
     
-        <!-- 검색 결과 제목과 검색어 표시 -->
-        <h1>검색 결과</h1>
-        <p>"{{ search_query }}"에 대한 검색 결과:</p>
-    
-        <table>
-            <thead>
+    <table>
+        <thead>
+            <tr>
+                <th>썸네일</th>
+                <th>영상 제목</th>
+                <th>채널명</th>
+                <th>조회수</th>
+                <th>영상 길이</th>
+                <th>학습하기</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for video in videos %}
                 <tr>
-                    <th>썸네일</th>
-                    <th>영상제목</th>
-                    <th>영상길이</th>
-                    <th>채널명</th>
-                    <th>조회수</th>
-                    <th>학습하기</th>
-                </tr>
-            </thead>
-            <tbody id="results">
-                {% for result in search_results %}
-                <tr>
-                    <td><div class="thumbnail" style="background-color: yellow;"></div></td>
-                    <td>{{ result.title }}</td>
-                    <td>{{ result.duration }}</td>
-                    <td>{{ result.channel }}</td>
-                    <td>{{ result.views }}</td>
+                    <td><img class="thumbnail" src="{{ video.thumbnail }}" alt="썸네일"></td>
                     <td>
-                        <a href="{% url 'analysis' %}">
-                            <button class="learn-btn">클릭</button>
-                        </a>
+                        <a href="https://www.youtube.com/watch?v={{ video.videoId }}">{{ video.title }}</a>
                     </td>
+                    <td>{{ video.channelTitle }}</td>
+                    <td>{{ video.viewCount }}회</td>
+                    <td>{{ video.duration }}</td>
+                    <td><button class="button">학습하기</button></td>
                 </tr>
-                {% empty %}
+            {% empty %}
                 <tr>
-                    <td colspan="6">검색 결과가 없습니다.</td>
+                    <td colspan="6">비디오를 찾을 수 없습니다.</td>
                 </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </main>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const searchResult = urlParams.get('searchResult');
-
-        if (searchResult) {
-            document.getElementById('search-input').value = searchResult;
-            fetchSearchResults(searchResult);
-        }
-
-        function fetchSearchResults(searchResult) {
-            const resultsContainer = document.getElementById('results');
-            resultsContainer.innerHTML = '';  
-            
-           //추후수정 필요
-            const sampleResults = [
-                {
-                    thumbnail: 'yellow',
-                    title: `파이썬으로 데이터 분석하기[1-1] (${searchResult})`, //수정
-                    duration: '20:30',
-                    channel: '마지막 코딩',
-                    views: '100,000'
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'search' %}" class="back-link">검색으로 돌아가기</a>
+    <script>
+        $(document).ready(function() {
+        // 기본 상태 설정
+        $('#login-link').show();  
+        $('#signup-link').show(); 
+        $('#username').hide();    
+        $('#logout-link').hide();  
+    
+        // 로그인 상태 확인
+        $.ajax({
+            url: "{% url 'check_login' %}",
+            method: "GET",
+            success: function(response) {
+                if (response.is_logged_in) {
+                    $('#username').text(response.username).show(); 
+                    $('#logout-link').show();                      
+                    $('#login-link').hide();                     
+                    $('#signup-link').hide();                   
+                } else {
+                    $('#login-link').show();                     
+                    $('#signup-link').show();                     
+                    $('#username').hide();                      
+                    $('#logout-link').hide();                    
+                }
+            },
+            error: function() {
+                alert("로그인 상태를 확인하는 중 오류가 발생했습니다. ");
+            }
+        });
+    
+        // 로그아웃 처리
+        $('#logout-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'logout_view' %}",
+                method: "GET",
+                success: function() {
+                    window.location.href = "{% url 'home' %}"; 
                 },
-               // 추후수정
-            ];
-
-            sampleResults.forEach(result => {
-                const row = document.createElement('tr');
-                // 수정
-                row.innerHTML = `
-                    <td><div class="thumbnail" style="background-color: ${result.thumbnail};"></div></td>
-                    <td>${result.title}</td>
-                    <td>${result.duration}</td>
-                    <td>${result.channel}</td>
-                    <td>${result.views}</td>
-                    <td>
-    <a href="{% url 'analysis' %}">
-        <button class="learn-btn">클릭</button>
-    </a>
-</td>
-                `;
-                
-                resultsContainer.appendChild(row);
+                error: function() {
+                    alert("로그아웃에 실패했습니다.");
+                }
             });
-        }
+        });
     });
-</script>
-
+    </script>
 </body>
 </html>

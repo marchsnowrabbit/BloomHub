@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'KCC-Hanbit';
     src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
-         url('/static/fonts/KCC-Hanbit.woff') format('woff');
+        url('/static/fonts/KCC-Hanbit.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -10,6 +10,7 @@ body {
     background-color: rgb(11, 36, 60);
     margin: 0;
     min-height: 100vh;
+    padding: 0;
 }
 main {
     display: flex;
@@ -116,16 +117,16 @@ nav a.classing:hover {
 }
 .container {
     display: block;
-    max-width: 580px;
-    height: auto;
-    background-color: white;
-    margin: 120px auto;
-    border: 5px solid #FAA0EB;
+    max-width: 580px; 
+    height: auto; 
+    background-color: white; 
+    margin: 120px auto; 
+    border: 5px solid #FAA0EB; 
     padding: 10px;
-    border-radius: 70px;
+    border-radius: 70px; 
     position: relative;
-    top: -105px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    top: -105px; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
 }
 h1 {
     color: #333333;
@@ -138,13 +139,13 @@ h1 {
 h1:after {
     content: '';
     display: block;
-    width: 463px;
+    width: 450px;
     height: 2px;
     background-color: #72BA84; 
     margin: 5px auto 15px;
     top: 35px;
     position: relative;
-    right: calc(13% - 0px);
+    right: calc(14% - 0px);
 }
 .description {
     font-size: 18px;
@@ -162,27 +163,27 @@ label {
     margin-bottom: 5px;
 }
 label[for="user_id"] {
-    right: calc(-22% - 0px);
+    right: calc(-17% - 0px);
     position: relative;
 }
 label[for="username"] {
-    right: calc(-11% - 0px);
+    right: calc(-15% - 0px);
     position: relative;
 }
 label[for="password1"] {
-    right: calc(-13% - 0px);
+    right: calc(-15% - 0px);
     position: relative;
 }
 label[for="password2"] {
-    right: calc(-1% - 0px);
+    right: calc(-9% - 0px);
     position: relative;
 }
 label[for="email"] {
-    right: calc(-18% - 0px);
+    right: calc(-17% - 0px);
     position: relative;
 }
 label[for="youtube_api_key"] {
-    right: calc(-3% - -3px);
+    right: calc(-3% - -3px);;
     position: relative;
 }
 label[for="wikifier_api_key"] {
@@ -195,10 +196,10 @@ input {
 input[type="text"],
 input[type="password"],
 input[type="email"] {
-    width: 70%;
+    width: 70%; 
     padding: 8px;
     font-size: 16px;
-    border: 1px solid #000000;
+    border: 1px solid #000000; 
     box-sizing: border-box;
     display: inline-block;
     vertical-align: middle;
@@ -244,7 +245,7 @@ button:disabled {
     background: rgb(79, 131, 30);
 }
 .form-group {
-    margin-bottom: 15px; 
+    margin-bottom: 15px;
 }
 @media only screen and (max-width: 768px) {
     header {
@@ -279,27 +280,27 @@ button:disabled {
         right: 10px;
     }
     label[for="user_id"] {
-        right: calc(-20% - 0px);
-        position: relative;
-    }
-    label[for="username"] {
-        right: calc(-6% - 0px);
-        position: relative;
-    }
-    label[for="password1"] {
-        right: calc(-8% - 0px);
-        position: relative;
-    }
-    label[for="password2"] {
-        right: calc(-8% - 6px);
-        position: relative;
-    }
-    label[for="email"] {
         right: calc(-15% - 0px);
         position: relative;
     }
+    label[for="username"] {
+        right: calc(-12% - 0px);
+        position: relative;
+    }
+    label[for="password1"] {
+        right: calc(-12% - 0px);
+        position: relative;
+    }
+    label[for="password2"] {
+        right: calc(-5% - 0px);
+        position: relative;
+    }
+    label[for="email"] {
+        right: calc(-16% - 0px);
+        position: relative;
+    }
     label[for="youtube_api_key"] {
-        right: calc(-4% - -3px);
+        right: calc(-4% - -3px);;
         position: relative;
     }
     label[for="wikifier_api_key"] {

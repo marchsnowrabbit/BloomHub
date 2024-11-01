@@ -1,12 +1,17 @@
-
-/* 모바일 검색창 고치기 */
+@font-face {
+    font-family: 'KCC-Hanbit';
+    src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
+         url('/static/fonts/KCC-Hanbit.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'KCC-Hanbit', sans-serif;
     background-color: rgb(11,36,60);
     margin: 0;
+    padding: 0;
     overflow: hidden;
-    
 }
 
 main {
@@ -15,7 +20,6 @@ main {
     align-items: center;
     height: calc(100vh - 60px);
     position: relative;
-    
 }
 
 header {
@@ -27,6 +31,7 @@ header {
     height: 100px;
     background-color: rgb(11, 36, 60);
     position: relative;
+    margin-top: -20px;
 }
 
 header .logo {
@@ -34,19 +39,17 @@ header .logo {
     color: white; 
 }
 
-
 header nav {
     display: flex;              
     gap: 35px;                 
     align-items: center;        
     margin: 0;  
-    }
+}
 
 header nav a {
     color: white;
     font-size: 23px;
     text-decoration: none;
-
 } 
 
 header .auth {
@@ -56,7 +59,6 @@ header .auth {
     position: absolute;
     right: 0px;
     top: 0px;
-
 }
 
 header .auth a {
@@ -65,7 +67,6 @@ header .auth a {
     text-decoration: none;
 }
 
-/** Dropdown styling */
 .language-container {
     position: relative;
 }
@@ -74,7 +75,7 @@ header .auth a {
     color: white;
     text-decoration: none;
     font-size: 16px;
-    }
+}
 
 .language-dropdown {
     display: none;
@@ -102,7 +103,6 @@ nav a.classing:hover, nav a.language:hover {
     color: rgb(11, 36, 60);
 }
 
-/* classing 드롭다운 */
 .dropdown-container {
     position: relative;
 }
@@ -129,25 +129,18 @@ nav a.classing:hover, nav a.language:hover {
 nav a.classing:hover {
     color: white; 
     display: inline; 
-
 }
 
 .dropdown-container:hover .dropdown {
     display: block;
-    
 }
 
-
-
-/*^ 헤더,드랍다운 */
-/*^ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-
-
-
-
+#username {
+    color: white;
+}
 
 .search-wrapper {
-    margin-top : 500px;
+    margin-top: 500px;
     text-align: center;
     color: white;
 }
@@ -176,76 +169,58 @@ nav a.classing:hover {
     height: 40px;
     display: flex;
     margin-right: 20px; 
-    
     justify-content: center;
-
 }
 
-.search-input {             /*! 서치인풋 */
-
-    
+.search-input {             
     width: 100%;
-    height: 100%;
+    height: 40px;
     padding: 10px;
-    border: 2px solid rgb(212, 99, 99);
-    border-radius: 40px;
+    border: 2px solid rgb(235, 49, 49);
+    border-radius: 10px;
     outline: none;
     transition: border-color 0.3s;
+    font-family: 'KCC-Hanbit', sans-serif;
+    font-size: 20px;
 }
 
-.search-button { /*^ 돋보기모양 버튼  */
-
-
+.search-button { 
     background-color: rgb(11,36,60);
     background: transparent;
     padding: 0;
     cursor: pointer;
     display: flex;
     justify-content: center;
-    height: 65px;
-    width:4px;
+    height: 65px; 
+    width: 4px; 
+    margin-left: 10px; 
     border: none; 
 }
 
-
-
-.search-icon {        /*! 서치아이콘 길이  */
-
-    /*? 서치 아이콘 변경 해줘야함  */
+.search-icon {       
     width: 40px;
     height: 60px;
     background-color: white;
-    margin-left: 43px;                      /* 서치칸이랑 폭길이 수정  */
-    border-radius: 0 5px 5px 0;
+    margin-left: 43px;                      
+    border-radius: 7px 7px 7px 7px;
 }
-
-
-
 
 .search-text {
-
-position:relative;
-bottom:350px;
+    position: relative;
+    bottom: 350px;
 }
-
-
 
 .prompt {
-
-position:relative;
-bottom:350px;
-
-
+    position: relative;
+    bottom: 355px;
 }
-.search-input-container {      /* 서치인풋 길이 */
 
-bottom:350px;
-width:700px;
-
+.search-input-container {      
+    bottom: 350px;
+    width: 700px;
 }
 
 @media only screen and (max-width: 768px) {
-    
     header {
         display: flex;
         flex-direction: column;
@@ -283,7 +258,6 @@ width:700px;
     }
 
     .banner {
-        
         flex-direction: column;
         text-align: center;
     }
@@ -293,13 +267,13 @@ width:700px;
         margin-bottom: 20px;
     }
     .search-input-container {
-    
         justify-content: center;
         width: 150%; 
-left: calc(-25% - 20px)
+        left: calc(-25% - 20px);
     }
 
     .search-input {
+        height: 30px;
         font-size: 18px; 
     }
 
@@ -314,5 +288,9 @@ left: calc(-25% - 20px)
 
     .prompt {
         font-size: 16px;
+    }
+
+    .search-button { 
+        margin-left: 5px; 
     }
 }
