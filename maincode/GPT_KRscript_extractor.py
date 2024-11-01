@@ -21,8 +21,8 @@ class KoreanScriptExtractor:
         self.video_title = self.get_video_title()
 
     def load_stopwords(self):
-        with open('KR_bloom_dictionary/stopwords-ko.txt', 'r', encoding='utf-8') as file:
-            return set(line.strip() for line in file)
+        stopwords_data = pd.read_csv('KR_bloom_dictionary/stopwords-ko.csv')
+        return stopwords_data['data'].tolist() 
 
     def get_video_title(self):
         video_id = self.vid.split("v=")[1]
