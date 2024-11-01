@@ -15,7 +15,7 @@ class KoreanScriptExtractor:
         self.wikiUserKey = wikiUserKey
         self.NUM_OF_WORDS = NUM_OF_WORDS
         self.segments = []
-        self.sentences_for_gpt = []  # BERT 분석용 문장 저장
+        self.sentences_for_gpt = []  # GPT 분석용 문장 저장
         self.stopwords = self.load_stopwords()
         self.okt = Okt()
         self.video_title = self.get_video_title()
