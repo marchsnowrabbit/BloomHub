@@ -15,14 +15,14 @@ class KoreanScriptExtractor:
         self.wikiUserKey = wikiUserKey
         self.NUM_OF_WORDS = NUM_OF_WORDS
         self.segments = []
-        self.sentences_for_gpt = []  # BERT 분석용 문장 저장
+        self.sentences_for_gpt = []  # GPT 분석용 문장 저장
         self.stopwords = self.load_stopwords()
         self.okt = Okt()
         self.video_title = self.get_video_title()
 
     def load_stopwords(self):
-        with open('KR_bloom_dictionary/stopwords-ko.txt', 'r', encoding='utf-8') as file:
-            return set(line.strip() for line in file)
+        stopwords_data = pd.read_csv('KR_bloom_dictionary/stopwords-ko.csv')
+        return stopwords_data['data'].tolist() 
 
     def get_video_title(self):
         video_id = self.vid.split("v=")[1]

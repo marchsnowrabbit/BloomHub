@@ -102,94 +102,63 @@
         </form>
 
 
-
-       
-
-    
-
-    <script>
-
-
-      $(document).ready(function() {
-    $('#send-code-btn').on('click', function(e) {       /*^ 인증하기 버튼 누르면 */
-        e.preventDefault(); // 기본 이벤트(예: 폼 제출)를 방지
-        const email = $('#email').val(); // 이메일 입력란의 값을 가져옴
-
-        // 서버로 인증번호 요청
-        $.ajax({
-            type: 'POST', // 요청 메서드 설정 (POST)
-            url: '/send-verification-code', // 요청을 보낼 서버의 URL
-            contentType: 'application/json', // 보낼 데이터의 형식
-            data: JSON.stringify({ email: email }), // 데이터를 JSON 형식으로 변환하여 전송
-            success: function(response) { // 요청이 성공적으로 처리된 경우
-                if (response.success) { // 서버 응답에서 success가 true일 경우
-                    alert(response.message); // 성공 메시지를 알림으로 표시
-                    $('#verify-code-btn').show(); // 인증 확인 버튼 보이기
-                  
-                    $('.verification__block').show(); // 인증번호 입력 칸 보이기
-                } else { // success가 false일 경우
-                    alert(response.message); // 실패 메시지를 알림으로 표시
-                }
-            },
-            error: function() { // 요청 처리 중 오류가 발생한 경우
-                alert('인증번호 발송 중 오류가 발생했습니다. -html 오류'); // 오류 메시지를 알림으로 표시
-            }
-        });
-    });
-});
-
-
-
-
-
-
-
-
-
-//      //? 확인 버튼 클릭 시 인증번호 확인 로직
-//     $('#verify-code-btn').on('click', function(e) {
-//         e.preventDefault();
-//         const verificationCode = $('#verification-code').val();
-//         const email = $('#email').val();
-
-//         // 서버로 인증번호 확인 요청
-//         $.ajax({
-//     type: 'POST',
-//     url: 'http://localhost:3000/send-verification-code', // 서버 URL 및 경로
-//     // url: '/send-verification-code',
-//     contentType: 'application/json',
-//     data: JSON.stringify({ email: email }),
-//     success: function(response) {
-//         console.log('응답:', response); // 응답 로그
-//         if (response.success) {
-//             alert(response.message);
-//             $('#verify-code-btn').show();
-//             $('.verification__block').show();
-//         } else {
-//             alert(response.message);
-//         }
-//     },
-//     error: function(xhr, status, error) {
-//         console.error('AJAX 오류:', status, error); // AJAX 오류 로그
-//         alert('인증번호 발송 중 오류가 발생했습니다.- html 오류');
-//     }
-// });
-
-//     });   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </script>
+         <!--! 이메일보내기 -->
+        <script>
+            $(document).ready(function() {
+                $('#send-code-btn').on('click', function(e) {
+                    e.preventDefault();
+                    const email = $('#email').val();
+        
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "send_verification_code" %}',
+                        data: {
+                            'email': email,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert(response.message);
+                                $('#verify-code-btn').show();
+                                $('.verification__block').show();
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function() {
+                            alert('인증번호 발송 중 오류가 발생했습니다.');
+                        }
+                    });
+                });
+        
+                $('#verify-code-btn').on('click', function(e) {
+                    e.preventDefault();
+                    const email = $('#email').val();
+                    const verificationCode = $('#verification-code').val();
+        
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "verify_code_and_find_id" %}',
+                        data: {
+                            'email': email,
+                            'verification_code': verificationCode,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#found-id').text(response.found_id);
+                                $('#id-display').show();
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function() {
+                            alert('인증번호 확인 중 오류가 발생했습니다.');
+                        }
+                    });
+                });
+            });
+        </script>
+        
 </body>
 </html>

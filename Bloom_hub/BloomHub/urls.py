@@ -30,6 +30,8 @@ urlpatterns = [
     path('find-id/kor/', views.find_id_kor, name='find_id_kor'),
     path('find-pwd/', views.find_pwd, name='findpwd'),
     path('find-pwd/kor/', views.find_pwd_kor, name='find_pwd_kor'),
+    path('send-verification-code', views.send_verification_code, name='send_verification_code'),
+    path('verify-code-and-find-id', views.verify_code_and_find_id, name='verify_code_and_find_id'),
 
     #############################마이페이지,비번변경,닉넴변경,이메일변경처리 할것######################################
 

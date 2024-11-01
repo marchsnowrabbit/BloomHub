@@ -6,6 +6,11 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from googleapiclient.discovery import build
+import random
+import string
+from django.core.mail import send_mail
+from django.utils import timezone
+from datetime import timedelta
 import isodate
 from .models import BloomUser
 
@@ -218,6 +223,53 @@ def check_login(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+# 이메일 인증번호 생성 함수
+def generate_verification_code():
+    return ''.join(random.choices(string.digits, k=6))
+
+# 인증번호 발송 뷰
+def send_verification_code(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = BloomUser.objects.get(email=email)
+            verification_code = generate_verification_code()
+            request.session['verification_code'] = verification_code
+            request.session['verification_expiry'] = (timezone.now() + timedelta(minutes=10)).timestamp()
+
+            # 이메일 발송
+            send_mail(
+                'Your Verification Code',
+                f'Your verification code is {verification_code}.',
+                'noreply@example.com',
+                [email],
+                fail_silently=False,
+            )
+            return JsonResponse({'success': True, 'message': '인증번호가 발송되었습니다.'})
+        except BloomUser.DoesNotExist:
+            return JsonResponse({'success': False, 'message': '등록된 이메일이 아닙니다.'})
+    return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
+
+# 인증번호 확인 뷰
+def verify_code_and_find_id(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        code = request.POST.get('verification_code')
+
+        stored_code = request.session.get('verification_code')
+        expiry = request.session.get('verification_expiry')
+        
+        if timezone.now().timestamp() > expiry:
+            return JsonResponse({'success': False, 'message': '인증번호가 만료되었습니다.'})
+        
+        if code == stored_code:
+            user = BloomUser.objects.get(email=email)
+            return JsonResponse({'success': True, 'found_id': user.user_id})
+        else:
+            return JsonResponse({'success': False, 'message': '인증번호가 일치하지 않습니다.'})
+    return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
+
 
 # 페이지 렌더링 뷰들
 def home(request):

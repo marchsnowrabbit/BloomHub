@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
 from django.db import models
 
 class BloomUserManager(BaseUserManager):
@@ -10,13 +10,28 @@ class BloomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class BloomUser(AbstractBaseUser):
+    def create_superuser(self, user_id, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+        
+        return self.create_user(user_id=user_id, username=user_id, email=email, password=password, **extra_fields)
+
+class BloomUser(AbstractBaseUser, PermissionsMixin):
     user_id = models.CharField(max_length=50, unique=True)
     username = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     youtube_api_key = models.CharField(max_length=255, blank=True, null=True)
     wikifier_api_key = models.CharField(max_length=255, blank=True, null=True)
     profileImg = models.ImageField(upload_to='profiles/', blank=True, null=True)
+
+      # 추가된 필드
+    is_staff = models.BooleanField(default=False)  # Staff status
+    is_superuser = models.BooleanField(default=False)  # Superuser status
 
     USERNAME_FIELD = 'user_id'
     REQUIRED_FIELDS = ['email']

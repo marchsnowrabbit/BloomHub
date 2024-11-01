@@ -162,29 +162,30 @@ class BloomAnalysis:
         tfidf_scores = tfidf_matrix.toarray()[0]
         top_n_indices = tfidf_scores.argsort()[-top_n:][::-1]
         return [feature_names[i] for i in top_n_indices]
-
+    
     @staticmethod
     def load_dictionary(file_path):
-        with open(file_path, 'r', encoding='utf-8') as file:
-            return [line.strip() for line in file]
+        # CSV 사전 파일 로드
+        dictionary_data = pd.read_csv(file_path)
+        return dictionary_data['word'].tolist() 
 
 # 한국어 및 영어 단계별 사전 로드
 bloom_dict_ko = {
-    'remember': BloomAnalysis.load_dictionary('KR_bloom_dictionary/remembering.txt'),
-    'understand': BloomAnalysis.load_dictionary('KR_bloom_dictionary/understanding.txt'),
-    'apply': BloomAnalysis.load_dictionary('KR_bloom_dictionary/applying.txt'),
-    'analyze': BloomAnalysis.load_dictionary('KR_bloom_dictionary/analyzing.txt'),
-    'evaluate': BloomAnalysis.load_dictionary('KR_bloom_dictionary/evaluating.txt'),
-    'create': BloomAnalysis.load_dictionary('KR_bloom_dictionary/creating.txt')
+    'remember': BloomAnalysis.load_dictionary('KR_bloom_dictionary/remembering.csv'),
+    'understand': BloomAnalysis.load_dictionary('KR_bloom_dictionary/understanding.csv'),
+    'apply': BloomAnalysis.load_dictionary('KR_bloom_dictionary/applying.csv'),
+    'analyze': BloomAnalysis.load_dictionary('KR_bloom_dictionary/analyzing.csv'),
+    'evaluate': BloomAnalysis.load_dictionary('KR_bloom_dictionary/evaluating.csv'),
+    'create': BloomAnalysis.load_dictionary('KR_bloom_dictionary/creating.csv')
 }
 
 bloom_dict_en = {
-    'remember': BloomAnalysis.load_dictionary('EN_bloom_dictionary/remembering.txt'),
-    'understand': BloomAnalysis.load_dictionary('EN_bloom_dictionary/understanding.txt'),
-    'apply': BloomAnalysis.load_dictionary('EN_bloom_dictionary/applying.txt'),
-    'analyze': BloomAnalysis.load_dictionary('EN_bloom_dictionary/analyzing.txt'),
-    'evaluate': BloomAnalysis.load_dictionary('EN_bloom_dictionary/evaluating.txt'),
-    'create': BloomAnalysis.load_dictionary('EN_bloom_dictionary/creating.txt')
+    'remember': BloomAnalysis.load_dictionary('EN_bloom_dictionary/remembering.csv'),
+    'understand': BloomAnalysis.load_dictionary('EN_bloom_dictionary/understanding.csv'),
+    'apply': BloomAnalysis.load_dictionary('EN_bloom_dictionary/applying.csv'),
+    'analyze': BloomAnalysis.load_dictionary('EN_bloom_dictionary/analyzing.csv'),
+    'evaluate': BloomAnalysis.load_dictionary('EN_bloom_dictionary/evaluating.csv'),
+    'create': BloomAnalysis.load_dictionary('EN_bloom_dictionary/creating.csv')
 }
 
 # 클래스 사용 예시
