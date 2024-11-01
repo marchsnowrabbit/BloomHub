@@ -279,7 +279,7 @@ class BloomAnalysisWithGPTandDictionary:
     def load_dictionary(file_path):
         # CSV 사전 파일 로드
         dictionary_data = pd.read_csv(file_path)
-        return dictionary_data['words'].tolist() 
+        return dictionary_data['word'].tolist() 
 
 # 한국어 및 영어 단계별 Bloom 사전 로드
 bloom_dict_ko = {
