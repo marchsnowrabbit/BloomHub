@@ -134,6 +134,12 @@ AUTH_USER_MODEL = 'BloomHub.BloomUser'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+APPEND_SLASH = False\
 
-# settings.py
-APPEND_SLASH = False
+# 이메일 설정
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'marchsnowrabbit@gmail.com'  # Gmail 주소
+EMAIL_HOST_PASSWORD = 'sudqxtbvrxdz ijme'  # 앱 비밀번호 또는 계정 비밀번호 (앱 비밀번호 권장)

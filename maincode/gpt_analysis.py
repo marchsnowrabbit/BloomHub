@@ -66,11 +66,12 @@ class BloomAnalysisWithGPTandDictionary:
         ]
 
         """
-        블룸텍소노미 동사표를 csv파일로 만들고, combined_sentences + csv를 함께 gpt에 입력으로 사용
+        블룸텍소노미 동사표를 csv파일로 만들고, combined_sentences + gpt에 입력으로 사용
         (dictionary text file을 csv로 구성해서 유지)
         gpt 출력형식 지정
         e.g. 
         """
+        
         results = {}  # 결과를 저장할 딕셔너리
         for (start_time, end_time), combined_text in grouped_sentences.items():
             user_content = (
