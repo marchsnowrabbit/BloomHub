@@ -167,7 +167,7 @@ label[for="user_id"] {
     position: relative;
 }
 label[for="username"] {
-    right: calc(-15% - 0px);
+    right: calc(-20% - 0px);
     position: relative;
 }
 label[for="password1"] {
@@ -296,7 +296,7 @@ button:disabled {
         position: relative;
     }
     label[for="username"] {
-        right: calc(-12% - 0px);
+        right: calc(-18% - 0px);
         position: relative;
     }
     label[for="password1"] {
