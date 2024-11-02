@@ -18,7 +18,7 @@ body {
 
 header {
     display: flex;
-    flex-direction: hide;               
+    flex-direction: row;               
     justify-content: flex-start;       
     align-items: center;               
     padding: 0 20px;
@@ -151,7 +151,7 @@ header .auth a {
         
         position:relative;
         top:-50px;
-        right: calc(25% - 10px);
+        right: calc(30% - 20px);
     
     }
 
@@ -161,7 +161,7 @@ header .auth a {
         font-family: 'KCC-Hanbit', sans-serif;
         position: relative;
         top:-140px;
-        right: calc(30% - 20px);
+        right: calc(32% - 0px);
     
     
     
@@ -171,7 +171,7 @@ header .auth a {
     #hr-green {
         position: relative;
         top:-8px;
-        left:108px;
+        left:145px;
         width:450px;
         border-color: #72BA84;
     
@@ -379,12 +379,12 @@ button:hover {
         right: calc(20% - 0px);
     }
     h1 {
-        right: calc(20% - 10px);
+        right: calc(20% - -20px);
     
     }
 
     .description-container {
-        right: calc(23% - 0px);
+        right: calc(32% - 0px);
     
     
     
@@ -393,9 +393,37 @@ button:hover {
 
     #hr-green {
        
-        left:70px;
+        left:105px;
         width:400px;
 
         
+    }
+    .input__row {
+       top: -150px;
+       right: calc(-30% - 10px);
+       margin-top: 0px;
+       margin-bottom: -150px;
+    }
+    
+
+    
+
+    .hide-on-small {
+        display: none; /* 특정 클래스의 글자 숨기기 */
+    }
+    button {
+        background: #72BA84;
+        color: #ffffff;
+        padding: 15px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: 'KCC-Hanbit', sans-serif;
+        margin-left: 420px; /* 버튼과 입력란 사이에 여백 추가 */
+        /* 아래 줄을 추가하여 버튼을 오른쪽으로 옮깁니다. */
+         /* 버튼의 왼쪽 여백을 조정하여 중앙으로 이동 */
+         position: relative;
+         top:-60px;
     }
 }

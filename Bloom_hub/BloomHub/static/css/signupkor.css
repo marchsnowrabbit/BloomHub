@@ -167,7 +167,7 @@ label[for="user_id"] {
     position: relative;
 }
 label[for="username"] {
-    right: calc(-15% - 0px);
+    right: calc(-20% - 0px);
     position: relative;
 }
 label[for="password1"] {
@@ -247,6 +247,18 @@ button:disabled {
 .form-group {
     margin-bottom: 15px;
 }
+.howtokey {
+    text-align: center;
+}
+.howtokey a {
+    text-decoration: none;
+    color: purple; 
+    font-weight: bold;
+    font-size: 20px;
+}
+.howtokey a:hover {
+    text-decoration: underline;
+}
 @media only screen and (max-width: 768px) {
     header {
         display: flex;
@@ -284,7 +296,7 @@ button:disabled {
         position: relative;
     }
     label[for="username"] {
-        right: calc(-12% - 0px);
+        right: calc(-18% - 0px);
         position: relative;
     }
     label[for="password1"] {
