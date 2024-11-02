@@ -11,9 +11,11 @@
 </head>
 <body>
     <header>
+        <!-- 로고 링크를 Django URL로 변경 -->
         <a href="{% url 'home' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
+    
         <div class="auth">
             <div class="language-container">
                 <a href="#" class="language">Language</a>
@@ -22,27 +24,32 @@
                     <a href="{% url 'search' %}">English</a>
                 </div>
             </div>
+    
             <span id="auth-options">
+                <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
                 <a href="{% url 'login' %}" id="login-link" style="display: none;">Login</a>
                 <a href="{% url 'signup' %}" id="signup-link" style="display: none;">Sign up</a>
                 <span id="username" style="display: none;"></span>
                 <a href="#" id="logout-link" style="display: none;">Logout</a>
             </span>
         </div>
+    
         <nav>
+            <!-- 네비게이션 링크들도 Django URL로 변경 -->
             <a href="{% url 'guide' %}">Guides</a>
             <a href="{% url 'search' %}">Search</a>
+            <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
             <a href="{% url 'mypage' %}" id="mypage-link">My profile</a>
             <div class="dropdown-container">
                 <a href="#" class="classing">Classing</a>
                 <div class="dropdown">
-                    <a href="{% url 'learning' %}" class="dropdown-link">Learning Video</a>
-                    <a href="{% url 'learned' %}" class="dropdown-link">Learned Video</a>
+                    <a href="{% url 'learning' %}" class="dropdown-link" data-url="{% url 'learning' %}">Learning Video</a>
+                    <a href="{% url 'learned' %}" class="dropdown-link" data-url="{% url 'learned' %}">Learned Video</a>
                 </div>
             </div>
+            
         </nav>
     </header>
-    
     <h1>Search results for "{{ keyword }}"</h1>
     
     <div class="search-container">
@@ -94,33 +101,67 @@
 
     <script>
         $(document).ready(function() {
-            $('#login-link').show();
-            $('#signup-link').show();
-            $('#username').hide();
-            $('#logout-link').hide();
+    // 기본 상태 설정
+    $('#login-link').show();  
+    $('#signup-link').show(); 
+    $('#username').hide();      
 
-            // 로그인 상태 확인
-            $.ajax({
-                url: "{% url 'check_login' %}",
-                method: "GET",
-                success: function(response) {
-                    if (response.is_logged_in) {
-                        $('#username').text(response.username).show();
-                        $('#logout-link').show();
-                        $('#login-link').hide();
-                        $('#signup-link').hide();
-                    } else {
-                        $('#login-link').show();
-                        $('#signup-link').show();
-                        $('#username').hide();
-                        $('#logout-link').hide();
-                    }
-                },
-                error: function() {
-                    alert("An error occurred while checking the login status. Please try again later.");
+    // 로그인 상태 확인
+    $.ajax({
+        url: "{% url 'check_login' %}",
+        method: "GET",
+        success: function(response) {
+            if (response.is_logged_in) {
+                $('#username').text(response.username).show(); 
+                $('#logout-link').show();                      
+                $('#login-link').hide();                     
+                $('#signup-link').hide();                   
+            } else {
+                $('#login-link').show();                     
+                $('#signup-link').show();                     
+                $('#username').hide();                     
+                $('#logout-link').hide();                    
+            }
+        },
+        error: function() {
+            alert("An error occurred while checking the login status. Please try again later.");
+        }
+    });
+
+    // 마이페이지 링크 클릭 시 로그인 확인
+    $('#mypage-link').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{% url 'check_login' %}",
+            method: "GET",
+            success: function(response) {
+                if (response.is_logged_in) {
+                    window.location.href = "{% url 'mypage' %}";
+                } else {
+                    alert("Login is required. Please log in.");
                 }
-            });
+            }
+        });
+    });
 
+    // 드롭다운 링크 클릭 시 로그인 확인
+    $('.dropdown-link').on('click', function(e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+        $.ajax({
+            url: "{% url 'check_login' %}",
+            method: "GET",
+            success: function(response) {
+                if (response.is_logged_in) {
+                    window.location.href = url;
+                } else {
+                    alert("Login is required. Please log in.");
+                }
+            }
+        });
+    });
+
+});
             // 로그아웃 처리
             $('#logout-link').on('click', function(e) {
                 e.preventDefault();
