@@ -274,11 +274,9 @@ nav a.classing:hover {
   transition: transform 0.3 ease, z-index 0.4s ease;
   flex: 1 1 calc(50% - 20px);
   max-width: calc(50% - 20px);
-  border-radius:50px;
+  
 }
-#guide-card, #search-card, #profile-card {
-  border-radius: 50px /* 모든 카드에 동일한 둥근 정도 적용 */  !important;
-}
+
 
 
 /* 카드의 콘텐츠 레이어 설정 */
@@ -386,6 +384,7 @@ nav a.classing:hover {
   left: calc(50% - 35px);
   z-index: 3;
 cursor: pointer;
+overflow: hidden;
 }
 
 
@@ -726,6 +725,11 @@ cursor: pointer;
 
 }
 @media only screen and (max-width: 360px) {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
   #profile-card .card__title {
   position: relative;
   left: calc(35% - 25px);
@@ -735,11 +739,9 @@ cursor: pointer;
 font-size: 25px;
 }
 .card {
-  border-radius:50px  !important;
+  border-radius:50px;
 }
-#guide-card, #search-card, #profile-card {
-  border-radius: 50px !important;; /* 모든 카드에 동일한 둥근 정도 적용 */
-}
+
 
 #profile-card .card__description {
 position:relative;
