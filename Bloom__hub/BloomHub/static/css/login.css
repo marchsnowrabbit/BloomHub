@@ -639,7 +639,8 @@ top:-132px;
     z-index: 1;
 }
 .signin__btn {
-    top:-290px;
+    top:200px;
+    right: calc(0% - -10px);
 }
 }
 

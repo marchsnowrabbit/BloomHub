@@ -21,8 +21,8 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'guidekor' %}">Korean</a>
-                    <a href="{% url 'guide' %}">English</a>
+                    <a href="{% url 'loginkor' %}">Korean</a>
+                    <a href="{% url 'login' %}">English</a>
                 </div>
             </div>
     
@@ -108,16 +108,15 @@
                             window.location.href = "{% url 'home' %}";
                         } else {
                             if (response.error === 'user_id') {
-                                $('#error_message').text("계정이 존재하지 않습니다.");
+                                $('#error_message').text("The account does not exist.");
                             } else if (response.error === 'password') {
-                                $('#error_message').text("비밀번호가 잘못되었습니다.");
+                                $('#error_message').text("The password is incorrect.");
                             }
                         }
                     }
                 });
             });
         });
-
         $(document).ready(function() {
     // 기본 상태 설정
     $('#login-link').show();  
@@ -180,7 +179,6 @@
     });
 
 });
-
     </script>
 </body>
 </html>

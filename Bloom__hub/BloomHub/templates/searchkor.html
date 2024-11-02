@@ -45,10 +45,10 @@
             <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
             <a href="{% url 'mypagekor' %}" id="mypage-link">마이 페이지</a>
             <div class="dropdown-container">
-                <a href="#" class="classing">클래싱</a>
+                <a href="#" class="classing">학습하기</a>
                 <div class="dropdown">
-                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">학습중인 영상</a>
-                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">학습했던 영상</a>
+                    <a href="{% url 'learningkor' %}" class="dropdown-link" data-url="{% url 'learningkor' %}">학습중인 영상</a>
+                    <a href="{% url 'learnedkor' %}" class="dropdown-link" data-url="{% url 'learnedkor' %}">학습했던 영상</a>
                 </div>
             </div>
             
@@ -149,8 +149,6 @@ $('#mypage-link').on('click', function(e) {
                 }
             });
         });
-        
-        
 </script>
 
 </body>

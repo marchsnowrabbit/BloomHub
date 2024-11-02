@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>>
-    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/signupkor.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -21,8 +21,8 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'guidekor' %}">Korean</a>
-                    <a href="{% url 'guide' %}">English</a>
+                    <a href="{% url 'findIDkor' %}">Korean</a>
+                    <a href="{% url 'findID' %}">English</a>
                 </div>
             </div>
     
@@ -102,15 +102,15 @@
                 data: { field: field, value: value },
                 success: function(response) {
                     if (response.exists) {
-                        $(msgElement).text("이미 사용 중입니다.").addClass("invalid").removeClass("valid");
+                        $(msgElement).text("Already in use.").addClass("invalid").removeClass("valid");
                         $('#submit_btn').prop('disabled', true);  // 중복 시 버튼 비활성화
                     } else {
-                        $(msgElement).text("사용 가능합니다.").addClass("valid").removeClass("invalid");
+                        $(msgElement).text("Available.").addClass("valid").removeClass("invalid");
                         validateForm();  // 유효성 검사 진행
                     }
                 },
                 error: function() {
-                    $(msgElement).text("오류가 발생했습니다. 다시 시도해 주세요.").addClass("invalid").removeClass("valid");
+                    $(msgElement).text("An error has occurred. Please try again.").addClass("invalid").removeClass("valid");
                     $('#submit_btn').prop('disabled', true);
                 }
             });
@@ -124,15 +124,15 @@
             $('#password_match_msg').text(""); // 초기화
     
             if (!specialChar.test(password)) {
-                $('#password_msg').text("특수문자를 포함해야 합니다.").addClass("invalid").removeClass("valid");
+                $('#password_msg').text("It must include special characters.").addClass("invalid").removeClass("valid");
                 valid = false;
             } 
             if (!uppercase.test(password)) {
-                $('#password_msg').text("대문자를 포함해야 합니다.").addClass("invalid").removeClass("valid");
+                $('#password_msg').text("It must include uppercase letters.").addClass("invalid").removeClass("valid");
                 valid = false;
             }
             if (valid) {
-                $('#password_msg').text("사용 가능한 비밀번호입니다.").addClass("valid").removeClass("invalid");
+                $('#password_msg').text("It is a usable password.").addClass("valid").removeClass("invalid");
             }
             return valid;
         }
@@ -143,10 +143,10 @@
             $('#password_match_msg').text(""); // 초기화
     
             if (password1 !== password2) {
-                $('#password_match_msg').text("비밀번호가 일치하지 않습니다.").addClass("invalid").removeClass("valid");
+                $('#password_match_msg').text("The passwords do not match.").addClass("invalid").removeClass("valid");
                 return false;
             } else {
-                $('#password_match_msg').text("비밀번호가 일치합니다.").addClass("valid").removeClass("invalid");
+                $('#password_match_msg').text("The passwords match.").addClass("valid").removeClass("invalid");
                 return true;
             }
         }
@@ -242,7 +242,7 @@
     });
 
 });
-
+        
     </script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>비밀번호 찾기</title>
+    <title>Find Password</title>
     <link rel="stylesheet" href="{% static 'css/findpwd.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -20,8 +20,8 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'guidekor' %}">Korean</a>
-                    <a href="{% url 'guide' %}">English</a>
+                    <a href="{% url 'findpwdkor' %}">Korean</a>
+                    <a href="{% url 'findpwd' %}">English</a>
                 </div>
             </div>
     
@@ -43,8 +43,8 @@
             <div class="dropdown-container">
                 <a href="#" class="classing">Classing</a>
                 <div class="dropdown">
-                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">Learning Video</a>
-                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">Learned Video</a>
+                    <a href="{% url 'learning' %}" class="dropdown-link" data-url="{% url 'learning' %}">Learning Video</a>
+                    <a href="{% url 'learned' %}" class="dropdown-link" data-url="{% url 'learned' %}">Learned Video</a>
                 </div>
             </div>
             
@@ -52,40 +52,40 @@
     </header>
 
     <div class="container">
-    <h1>비밀번호 찾기</h1>
+    <h1>Find Password</h1>
     <div class="description-container">
-        <div id="description"> Did you forget your ID?</div>
+        <div id="description"> Did you forget your Password?</div>
         <hr id="hr-green">
     </div>
 
     <form id="find-password-form">
     <div class="input__row">
-        <label for="user_id">ID:</label>
+        <label class="hide-on-small" for="user_id">ID:</label>
         <input type="text" id="user_id" name="user_id" placeholder="ID" required>
     </div>
-        <button type="button" id="send-code-btn">인증번호 보내기</button>
+        <button type="button" id="send-code-btn">Send</button>
         <div class="input__row">
-        <label for="email">Email:</label>
+        <label class="hide-on-small" for="email">Email:</label>
         <input type="email" id="email" name="email" placeholder="Email" required>
     </div>
         
         <div id="verification-section" style="display: none;">
-            <label for="verification-code">인증번호:</label>
-            <input type="text" id="verification-code" placeholder="인증번호" required>
-            <button type="button" id="verify-code-btn">확인</button>
+            <label class="hide-on-small" for="verification-code">Code:</label>
+            <input type="text" id="verification-code" placeholder="verification code" required>
+            <button type="button" id="verify-code-btn">verify</button>
         </div>
 
 
         <div id="reset-password-section" style="display: none;">
-            <div class="input__row">
-            <label for="new-password">New Password:</label>
-            <input type="password" id="new-password" required>
+            <div class="input-section">
+            <label class="hide-on-small" for="new-password">New Password:</label>
+            <input type="password" id="new-password" placeholder="new password" required>
         </div>
-            <div class="input__row">
-            <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" required>
+        <div class="input-section">
+            <label class="hide-on-small" for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" placeholder="confirm password" required>
         </div>
-            <button type="button" id="reset-password-btn">변경</button>
+            <button type="button" id="reset-password-btn">confirm</button>
         </div>
     </form>
     <div id="message"></div>
@@ -127,8 +127,7 @@
                     data: { user_id: $('#user_id').val(), email: $('#email').val(), verification_code: $('#verification-code').val(), csrfmiddlewaretoken: '{{ csrf_token }}' },
                     success: function(response) {
                         if (response.success) {
-                            
-                            $('.verification__block').hide(); // 인증번호 입력란 숨기기
+                            $('#verification-section').hide(); // 인증번호 입력란 숨기기
                     $('#verify-code-btn').hide(); // 확인 버튼 숨기기
                     $('#reset-password-section').show(); // 새로운 비밀번호 섹션 보이기
                     $('#reset-password-btn').show(); // 변경 버튼 보이기
@@ -145,7 +144,7 @@
                     data: { user_id: $('#user_id').val(), new_password: $('#new-password').val(), confirm_password: $('#confirm-password').val(), csrfmiddlewaretoken: '{{ csrf_token }}' },
                     success: function(response) {
                         if (response.success) {
-                            alert("비밀번호가 업데이트되었습니다.");
+                            alert("The password has been updated.");
                             window.location.href = "{% url 'home' %}";
                         } else {
                             alert(response.message);

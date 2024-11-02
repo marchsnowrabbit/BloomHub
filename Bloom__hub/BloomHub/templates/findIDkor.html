@@ -45,8 +45,8 @@
             <div class="dropdown-container">
                 <a href="#" class="classing">클래싱</a>
                 <div class="dropdown">
-                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">학습중인 영상</a>
-                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">학습했던 영상</a>
+                    <a href="{% url 'learningkor' %}" class="dropdown-link" data-url="{% url 'learningkor' %}">학습중인 영상</a>
+                    <a href="{% url 'learnedkor' %}" class="dropdown-link" data-url="{% url 'learnedkor' %}">학습했던 영상</a>
                 </div>
             </div>
             
@@ -254,8 +254,6 @@ $(document).ready(function() {
         });
     });
 </script>
-        
-        </script>
         
 </body>
 </html>
