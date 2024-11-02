@@ -12,6 +12,7 @@ body {
     margin: 0;
     min-height: 100vh;
     padding: 0;
+    overflow: hidden;
     
 }
 
@@ -150,7 +151,7 @@ header .auth a {
         
         position:relative;
         top:-50px;
-        right: calc(30% - 20px);
+        right: calc(25% - 10px);
     
     }
 
@@ -160,7 +161,7 @@ header .auth a {
         font-family: 'KCC-Hanbit', sans-serif;
         position: relative;
         top:-140px;
-        right: calc(30% - 0px);
+        right: calc(30% - 20px);
     
     
     
@@ -170,7 +171,7 @@ header .auth a {
     #hr-green {
         position: relative;
         top:-8px;
-        left:122px;
+        left:108px;
         width:450px;
         border-color: #72BA84;
     
