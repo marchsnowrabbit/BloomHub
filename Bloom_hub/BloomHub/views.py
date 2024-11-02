@@ -1,3 +1,4 @@
+import json
 import os
 import logging
 from django.shortcuts import render, redirect
@@ -85,11 +86,18 @@ class YoutubeVideoapi:
             if video_response['items']:
                 video = video_response['items'][0]
                 has_caption = video['contentDetails'].get('caption') == 'true'  # 자막 유무 확인
+
+                 # duration을 두 가지 형식으로 가져옵니다.
+                duration = video['contentDetails']['duration']
+                duration_seconds = int(isodate.parse_duration(duration).total_seconds())  # 초 단위
+
                 return {
                     'title': video['snippet']['title'],
                     'thumbnail': video['snippet']['thumbnails']['default']['url'],
                     'viewCount': video['statistics'].get('viewCount', 0),
                     'channelTitle': video['snippet']['channelTitle'],
+                    'duration': self.convert_duration(duration),  # 사람이 읽기 쉬운 형식
+                    'duration_seconds': duration_seconds,  # 초 단위로 저장용
                     'videoId': video_id,
                     'hasCaption': has_caption
                 }
@@ -114,6 +122,9 @@ def search(request):
         video_api = YoutubeVideoapi()
         videos, next_page_token, prev_page_token = video_api.videolist(keyword, page_token)
 
+    if not keyword:
+        return render(request, 'search.html')
+    
         if not videos:
             messages.error(request, '비디오를 찾을 수 없습니다.')
 
@@ -125,6 +136,7 @@ def search(request):
     })
 
 
+
 def study(request, video_id):
     video_api = YoutubeVideoapi()
     video_info = video_api.get_video_details(video_id)
@@ -132,10 +144,55 @@ def study(request, video_id):
     if video_info is None:
         return render(request, 'study.html', {'error': '비디오 정보를 불러올 수 없습니다.'})
 
-    video_info['videoId'] = video_id  # video ID가 추가로 전달되는지 확인
+    video_info['videoId'] = f"https://www.youtube.com/watch?v={video_id}"
     return render(request, 'study.html', {'video': video_info})
 
+###########bean작성################################
+def save_learning_video(request):
+    if request.method == "POST":
+        from .models import LearningVideo
+        data = json.loads(request.body)
+        title = data.get("title")
+        vid = data.get("vid")
+        setTime = int(data.get("setTime"))
+        uploader = data.get("uploader")
+        view_count = int(data.get("view_count"))
+        std_lang = data.get("std_lang")
+        user = request.user if request.user.is_authenticated else None
 
+        if user:
+            try:
+                # LearningVideo 생성 또는 업데이트
+                video, created = LearningVideo.objects.get_or_create(
+                    vid=vid,
+                    defaults={
+                        'title': title,
+                        'setTime': setTime,
+                        'uploader': uploader,
+                        'view_count': view_count,
+                        'std_lang': std_lang,
+                        'learning_status': False
+                    }
+                )
+                if not created:
+                    # 기존 레코드가 있을 경우 업데이트 (필요한 경우에만)
+                    video.title = title
+                    video.duration = setTime
+                    video.uploader = uploader
+                    video.view_count = view_count
+                    video.std_lang = std_lang
+                    video.save()
+
+                return JsonResponse({"success": True, "created": created})
+            except Exception as e:
+                print("Error saving video:", e)
+                return JsonResponse({"success": False, "error": str(e)})
+        else:
+            return JsonResponse({"success": False, "error": "로그인 필요"})
+
+    return JsonResponse({"success": False, "error": "잘못된 요청"})
+
+#############################################회원용#################
 # 중복 체크 API 뷰
 def check_duplicate(request):
     field = request.GET.get('field')
@@ -335,7 +392,41 @@ def reset_password(request):
     return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
 
 
-###########################################################################################3
+###########################################################################################
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import BloomUser  # 사용자 모델 임포트
+
+# 이메일 변경 뷰
+@login_required
+def change_email(request):
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_email = request.POST.get('new_email')
+
+        user = request.user  # 현재 로그인한 사용자
+
+        # 비밀번호 확인
+        if not user.check_password(current_password):
+            return JsonResponse({'success': False, 'message': '비밀번호가 일치하지 않습니다.'})
+
+        # 이메일 중복 체크
+        if BloomUser.objects.filter(email=new_email).exists():
+            return JsonResponse({'success': False, 'message': '이미 사용 중인 이메일입니다.'})
+
+        # 이메일 업데이트
+        try:
+            user.email = new_email
+            user.save()
+            return JsonResponse({'success': True, 'message': '이메일이 성공적으로 변경되었습니다.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'오류가 발생했습니다: {str(e)}'})
+
+    return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
+
+###########################################################################################
 # 페이지 렌더링 뷰들
 def home(request):
     return render(request, 'home.html')

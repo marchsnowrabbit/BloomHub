@@ -41,6 +41,7 @@ urlpatterns = [
     path('mypage/', views.mypage, name='mypage'),
     path('mypage/kor/', views.mypage_kor, name='mypagekor'),
     path('mypage/manager/', views.mypage_manager, name='mypage_manager'),
+    path('change_email/', views.change_email, name='change_email'),
 
     ########################### 검색 및 검색 결과 ########################################
 
@@ -49,6 +50,7 @@ urlpatterns = [
     path('search/result', views.search_result, name='searchresult'),
     path('search/result/kor', views.search_result_kor, name='searchresultkor'),
     path('study/<str:video_id>', views.study, name='study'),  # video_id를 인자로 받는 study URL
+    path('save_learning_video/', views.save_learning_video, name='save_learning_video'),
 
     path('analysis/', views.analysis, name='analysis'),
 ]

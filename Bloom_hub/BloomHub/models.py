@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
 from django.db import models
 
+
 class BloomUserManager(BaseUserManager):
     def create_user(self, user_id, username, password=None, **extra_fields):
         if not user_id:
@@ -40,6 +41,25 @@ class BloomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+    
+
+################유튜브 영상 DB####################
+from django.db import models
+from django.conf import settings
+
+class LearningVideo(models.Model):
+    title = models.CharField(max_length=255)
+    vid = models.URLField()  # YouTube 영상 링크 저장
+    setTime = models.IntegerField()  # 영상 길이 (초 단위)
+    uploader = models.CharField(max_length=255)  # 영상 업로더
+    view_count = models.IntegerField()  # 조회수
+    std_lang = models.CharField(max_length=2, choices=[('KR', 'Korean'), ('EN', 'English')])  # 지원 언어
+    learning_status = models.BooleanField(default=False)  # 학습 여부, 기본값 False
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # 학습한 사용자
+
+    def __str__(self):
+        return self.title
+
 
 # # 유튜브 비디오 모델 정의
 # class YouTubeVideo(models.Model):

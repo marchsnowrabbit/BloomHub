@@ -31,6 +31,17 @@
             <p style="color: red;">{{ error }}</p>
         {% endif %}
     </div>
+
+    <div class="controls">
+        <!-- 언어 선택 옵션 -->
+        <p>영상 지원 언어 선택: 
+            <label><input type="radio" name="std_lang" value="KR" checked> 한국어</label>
+            <label><input type="radio" name="std_lang" value="EN"> 영어</label>
+        </p>
+    
+        <!-- 학습할 영상에 저장 버튼 -->
+        <button id="save-learning-video" class="button">학습할 영상에 저장</button>
+    </div>
     <a href="/search">검색 결과로 돌아가기</a>
 
     <script>
@@ -53,6 +64,41 @@
         function onPlayerReady(event) {
             event.target.playVideo();
         }
+
+        //학습할 영상에 저장 버튼 클릭 이벤트
+            // 학습할 영상에 저장 버튼 클릭 이벤트
+    document.getElementById("save-learning-video").addEventListener("click", function() {
+        const selectedLang = document.querySelector('input[name="std_lang"]:checked').value;
+        fetch("{% url 'save_learning_video' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+                title: "{{ video.title }}",
+                vid: "{{ video.videoId }}",
+                setTime: "{{ video.duration_seconds }}",  // setTime 대신 duration 사용
+                uploader: "{{ video.channelTitle }}",
+                view_count: "{{ video.viewCount }}",
+                std_lang: selectedLang
+            })
+        })  // fetch 함수의 옵션 객체 종료
+        .then(response =>{
+            if(!response.ok){
+                throw new Error('HTTP error! status: ${response.status}');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert("Video saved for learning.");
+            } else {
+                alert(data.error || "Failed to save video.");
+            }
+        });
+    }).catch(error => console.error("Fetch error:", error));
+
     </script>
 </body>
 </html>
