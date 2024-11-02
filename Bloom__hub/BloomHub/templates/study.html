@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학습하기</title>
+    <style>
+        .video-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .info {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>학습하기</h1>
+    <div class="video-container">
+        {% if video %}
+            <!-- YouTube Player API를 사용하여 동영상을 임베드 -->
+            <div id="player"></div>
+            
+            <div class="info">
+                <h2>{{ video.title }}</h2>
+                <p>조회수: {{ video.viewCount }}회</p>
+                <p>채널명: {{ video.channelTitle }}</p>
+            </div>
+        {% else %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    </div>
+
+    <div class="controls">
+        <!-- 언어 선택 옵션 -->
+        <p>영상 지원 언어 선택: 
+            <label><input type="radio" name="std_lang" value="KR" checked> 한국어</label>
+            <label><input type="radio" name="std_lang" value="EN"> 영어</label>
+        </p>
+    
+        <!-- 학습할 영상에 저장 버튼 -->
+        <button id="save-learning-video" class="button">학습할 영상에 저장</button>
+    </div>
+    <a href="/search">검색 결과로 돌아가기</a>
+
+    <script>
+        // YouTube Player API 스크립트 로드
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: '{{ video.videoId }}',
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        //학습할 영상에 저장 버튼 클릭 이벤트
+            // 학습할 영상에 저장 버튼 클릭 이벤트
+    document.getElementById("save-learning-video").addEventListener("click", function() {
+        const selectedLang = document.querySelector('input[name="std_lang"]:checked').value;
+        fetch("{% url 'save_learning_video' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+                title: "{{ video.title }}",
+                vid: "{{ video.videoId }}",
+                setTime: "{{ video.duration_seconds }}",  // setTime 대신 duration 사용
+                uploader: "{{ video.channelTitle }}",
+                view_count: "{{ video.viewCount }}",
+                std_lang: selectedLang
+            })
+        })  // fetch 함수의 옵션 객체 종료
+        .then(response =>{
+            if(!response.ok){
+                throw new Error('HTTP error! status: ${response.status}');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert("Video saved for learning.");
+            } else {
+                alert(data.error || "Failed to save video.");
+            }
+        });
+    }).catch(error => console.error("Fetch error:", error));
+
+    </script>
+</body>
+</html>

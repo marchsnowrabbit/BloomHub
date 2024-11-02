@@ -14,118 +14,94 @@
 
 <body>
     <header>
-        <a href="http://localhost:5500/static/templates/home.html" class="logo">
-            <img src="/static/img/logo.png" alt="logo" style="height: 100px;">
+        <!-- 로고 링크를 Django URL로 변경 -->
+        <a href="{% url 'homekor' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
     
-        <nav>
-            <a href="http://localhost:5500/static/templates/guide.html">Guides</a>
-            <a href="http://localhost:5500/static/templates/search.html">Search</a>
-            <a href="http://localhost:5500/static/templates/mypage.html">My profile</a>
-            <div class="dropdown-container">
-                <a href="#" class="classing">Classing</a>
-                <div class="dropdown">
-                    <a href="http://localhost:5500/static/templates/learning.html">Learning Video</a>
-                    <a href="http://localhost:5500/static/templates/learned.html">Learned Video</a>
-                </div>
-            </div>
-        </nav>
         <div class="auth">
             <div class="language-container">
-                <a href="#" class="language">Language</a>
+                <a href="#" class="language">언어</a>
                 <div class="language-dropdown">
-                    <a href="http://localhost:5500/static/templates/homeKorean.html">Korean</a>
-                    <a href="http://localhost:5500/static/templates/home.html">English</a>
+                    <a href="{% url 'searchkor' %}">한국어</a>
+                    <a href="{% url 'search' %}">영어</a>
                 </div>
             </div>
-            <a href="http://localhost:5500/static/templates/loginnew.html" id="login-link">Login</a>
-            <a href="http://localhost:5500/static/templates/signup.html" id="signup-link">Sign up</a>
-            <a href="#" id="logout-link" style="display: none;">Logout</a>
-
+    
+            <span id="auth-options">
+                <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
+                <a href="{% url 'loginkor' %}" id="login-link" style="display: none;">로그인</a>
+                <a href="{% url 'signupkor' %}" id="signup-link" style="display: none;">회원가입</a>
+                <span id="username" style="display: none;"></span>
+                <a href="#" id="logout-link" style="display: none;">로그아웃</a>
+            </span>
         </div>
+    
+        <nav>
+            <!-- 네비게이션 링크들도 Django URL로 변경 -->
+            <a href="{% url 'guidekor' %}">가이드</a>
+            <a href="{% url 'searchkor' %}">검색</a>
+            <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
+            <a href="{% url 'mypagekor' %}" id="mypage-link">마이 페이지</a>
+            <div class="dropdown-container">
+                <a href="#" class="classing">클래싱</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">학습중인 영상</a>
+                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">학습했던 영상</a>
+                </div>
+            </div>
+            
+        </nav>
     </header>
-    <hr>
-  
     <main>
         
     </main>
 
     <script>
-        /* document.addEventListener('DOMContentLoaded', function() {
-            const learnedResultsContainer = document.getElementById('learned-results');
-            learnedResultsContainer.innerHTML = '';  
-
-            const learnedResults = [
-                {
-                    thumbnail: 'red',
-                    title: 'HTML 기본 강의',
-                    duration: '10:19',
-                    channel: '웹디자인',
-                    views: '30,000'
+        $(document).ready(function() {
+        // 기본 상태 설정
+        $('#login-link').show();  
+        $('#signup-link').show(); 
+        $('#username').hide();    
+        $('#logout-link').hide();  
+    
+        // 로그인 상태 확인
+        $.ajax({
+            url: "{% url 'check_login' %}",
+            method: "GET",
+            success: function(response) {
+                if (response.is_logged_in) {
+                    $('#username').text(response.username).show(); 
+                    $('#logout-link').show();                      
+                    $('#login-link').hide();                     
+                    $('#signup-link').hide();                   
+                } else {
+                    $('#login-link').show();                     
+                    $('#signup-link').show();                     
+                    $('#username').hide();                      
+                    $('#logout-link').hide();                    
+                }
+            },
+            error: function() {
+                alert("로그인 상태를 확인하는 중 오류가 발생했습니다. ");
+            }
+        });
+    
+        // 로그아웃 처리
+        $('#logout-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'logout_view' %}",
+                method: "GET",
+                success: function() {
+                    window.location.href = "{% url 'home' %}"; 
                 },
-                {
-                    thumbnail: 'purple',
-                    title: 'CSS 심화 강의',
-                    duration: '25:00',
-                    channel: 'css스타일',
-                    views: '40,000'
-                },
-            ];
-
-            learnedResults.forEach(result => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><div class="thumbnail" style="background-color: ${result.thumbnail};"></div></td>
-                    <td>${result.title}</td>
-                    <td>${result.duration}</td>
-                    <td>${result.channel}</td>
-                    <td>${result.views}</td>
-                    <td>
-                        
-                        <a href="analysis.html">
-                        <button class="learn-btn">클릭</button>
-                        </a>
-                        
-                        
-                        </td>
-                `;
-                
-                learnedResultsContainer.appendChild(row);
+                error: function() {
+                    alert("로그아웃에 실패했습니다.");
+                }
             });
         });
- */
-
-
-
-            //^ 로그인 상태 확인
-            $(document).ready(function() {
-            
-            $.get('/check-login', function(data) {
-                if (data.loggedIn) {
-            $('#login-link').hide();
-            $('#signup-link').hide();
-            $('#logout-link').show();
-        } else {
-            $('#login-link').show();
-            $('#signup-link').show();
-            $('#logout-link').hide();
-        }
-            });
-
-            // 로그아웃 처리
-            $('#logout-link').on('click', function(e) {
-                e.preventDefault();
-                $.get('/logout', function(data) {
-                    if (data.success) {
-                        alert('로그아웃 되었습니다.');
-                        location.reload();
-                    }
-                });
-            });
-        });
-
-
-
+    });
     </script>
 
 <div class="h1-container">
