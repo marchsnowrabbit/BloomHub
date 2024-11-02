@@ -175,6 +175,9 @@ nav a.classing:hover {
     display: block;
     
 }
+#username {
+    color: white
+}
 
 
 /*^ 헤더,드랍다운 */

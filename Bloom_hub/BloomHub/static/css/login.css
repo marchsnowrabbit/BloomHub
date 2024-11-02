@@ -162,7 +162,7 @@ nav a.classing:hover {
     margin: 10px auto;
     position: relative;
     right: calc(0% - -47px);
-    top: -160px;
+    top: -165px;
 }
 
 /* Description styling */
@@ -295,6 +295,7 @@ form {
     position: relative;
     left: calc(0% - 15px);
     top: -190px;
+    font-family: 'KCC-Hanbit', sans-serif;
 }
 
 
@@ -349,10 +350,11 @@ form {
 }
 
 /* Password links */
+
 .password-links {
     display: flex;
     justify-content: space-between;
-    margin: 10px 0;
+    margin: 100px 0;
 }
 
 
@@ -382,66 +384,32 @@ form {
     font-family: 'KCC-Hanbit', sans-serif;
     /* box-shadow: 0 15px 30px rgba(233, 30, 99, .36); */
     transition: .2s linear;
-    position: relative;
-    right: calc(-35% - 10px);
-    top:-290px;
+    
+    right: calc(5% - 0px);
+    top:220px;
     font-weight: bold;
+    position: absolute;
 }
 
 .signin__btn:hover {
-    background: rgb(102, 177, 33);
+    background: rgb(71, 125, 20);
 }
 
-
-/* SIGN IN WITH */
-.separator {
-    display: block;
-    margin: 30px auto 10px;
-    text-align: center;
-    height: 40px;
-    position: relative;
-    background: transparent;
-    color: #04e963;
-    font-size: 13px;
-    width: 90%;
-    max-width: 680px;
+#error_message {
+    color: red; 
+    margin-top: 10px; 
+    font-size: 19px;
+    margin-left: 138px;
 }
 
-.separator::before {
-    content: "";
-    position: absolute;
-    top: 8px;
-    left: 0;
-    background: rgba(15, 19, 42, .2);
-    height: 1px;
-    width: 45%;
+#id-display {
+    background-color: white; /* 흰색 배경 */
+    color: red; /* 글자색 빨강 */
+    padding: 10px; /* 내부 여백 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    text-align: center; /* 중앙 정렬 */
+    margin-top: 20px; /* 위쪽 여백 */
 }
-
-.separator::after {
-    content: "";
-    position: absolute;
-    top: 8px;
-    right: 0;
-    background: rgba(15, 19, 42, .2);
-    height: 1px;
-    width: 45%;
-}
-
-.google__btn,
-.github__btn {
-    display: block;
-    width: 90%;
-    max-width: 680px;
-    margin: 20px auto;
-    height: 50px;
-    cursor: pointer;
-    font-size: 14px;
-    font-family: 'KCC-Hanbit', sans-serif;
-    border-radius: 8px;
-    border: none;
-    line-height: 40px;
-}
-
 
 /* Modal styling */
 .modal {
@@ -583,40 +551,6 @@ top:-132px;
     }
     
     
-/* 구글, 깃허브 버튼 */
-/* .google__btn {
-    background: #5b90f0;
-    color: white;
-    box-shadow: 0 15px 30px rgba(91, 144, 240, .36);
-    transition: .2s linear;
-}
-
-.google__btn .fa {
-    font-size: 20px;
-    padding: 0 5px 0 0;
-}
-
-.google__btn:hover {
-    box-shadow: 0 0 0 rgba(91, 144, 240, .0);
-}
-
-.github__btn {
-    background: #25282d;
-    color: white;
-    box-shadow: 0 15px 30px rgba(37, 40, 45, .36);
-    transition: .2s linear;
-}
-
-.github__btn .fa {
-    font-size: 20px;
-    padding: 0 5px 0 0;
-}
-
-.github__btn:hover {
-    box-shadow: 0 0 0 rgba(37, 40, 45, .0);
-} */
-
-/* 구글, 깃허브 버튼 */
 @media only screen and (max-width: 768px) {
     
     header {
@@ -680,12 +614,9 @@ top:-132px;
 .password-links {
     display: flex;
     justify-content: space-between;
-    margin: 10px -5px 10px -110px;
+    margin: 110px 10px 30px -130px;
 }
-.signin__btn {
-    right: calc(-35% - 10px);
-    top:-310px;
-}
+
 .id-label{
     right: -170px;
     position: relative;
@@ -707,6 +638,9 @@ top:-132px;
     position: relative;
     z-index: 1;
 }
-
+.signin__btn {
+    top:200px;
+    right: calc(0% - -10px);
+}
 }
 
