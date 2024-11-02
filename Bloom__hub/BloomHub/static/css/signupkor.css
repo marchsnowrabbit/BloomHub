@@ -247,6 +247,18 @@ button:disabled {
 .form-group {
     margin-bottom: 15px;
 }
+.howtokey {
+    text-align: center;
+}
+.howtokey a {
+    text-decoration: none;
+    color: purple; 
+    font-weight: bold;
+    font-size: 20px;
+}
+.howtokey a:hover {
+    text-decoration: underline;
+}
 @media only screen and (max-width: 768px) {
     header {
         display: flex;

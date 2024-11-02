@@ -1,5 +1,3 @@
-/*반응형 수정*/
-
 @font-face {
     font-family: 'KCC-Hanbit';
     src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
@@ -7,11 +5,10 @@
     font-weight: normal;
     font-style: normal;
   }
-  
+
 body {
     font-family: 'KCC-Hanbit', sans-serif;
     background-color: rgb(11, 36, 60);
-
     margin: 0;
     min-height: 100vh;
     padding: 0;
@@ -154,13 +151,13 @@ nav a.classing:hover {
 /*^ 로그인창 */
 /* 초록색 선 */
 #hr-green {
-    width: 450px;
-    border: none;
-    border-top: 2px solid #72BA84;
-    margin: 10px auto;
     position: relative;
-    right: calc(0% - -47px);
-    top: -142px;
+    top:-8px;
+    left:122px;
+    width:450px;
+    border-color: #72BA84;
+
+    border-top: 2px solid #72BA84; /* 굵기와 색상 설정 */
     
 }
 
@@ -169,12 +166,16 @@ nav a.classing:hover {
 
 /*^ 설명부분 */
 .description-container {
-    text-align: left; 
-    padding: 10px 0;
+    text-align: center;
+    padding: 20px;
     font-family: 'KCC-Hanbit', sans-serif;
     position: relative;
-    right: calc(0% - 24px);
-    top: -125px;
+    top:-140px;
+    right: calc(30% - 0px);
+
+
+
+
 }
 /*^ 설명 색깔 */
 .container #description {
@@ -199,7 +200,7 @@ nav a.classing:hover {
     padding: 10px;
     border-radius: 70px;
     position: relative;
-    top: -105px;
+     top: -105px;
 
 
 }
@@ -216,8 +217,8 @@ h1 {
     transition: .2s linear;
     
     position:relative;
-    top:-45px;
-    right: calc(29% - 0px);
+    top:-50px;
+     right: calc(30% - 0px);
 
 }
 
@@ -477,100 +478,55 @@ pointer-events: none; /*^ 마우스포인터로 클릭 불가 */
 
 
 
-
-
-
-
-
-
-
-/* 구글, 깃허브 버튼 */
-/* .google__btn {
-    background: #5b90f0;
-    color: white;
-    box-shadow: 0 15px 30px rgba(91, 144, 240, .36);
-    transition: .2s linear;
-}
-
-.google__btn .fa {
-    font-size: 20px;
-    padding: 0 5px 0 0;
-}
-
-.google__btn:hover {
-    box-shadow: 0 0 0 rgba(91, 144, 240, .0);
-}
-
-.github__btn {
-    background: #25282d;
-    color: white;
-    box-shadow: 0 15px 30px rgba(37, 40, 45, .36);
-    transition: .2s linear;
-}
-
-.github__btn .fa {
-    font-size: 20px;
-    padding: 0 5px 0 0;
-}
-
-.github__btn:hover {
-    box-shadow: 0 0 0 rgba(37, 40, 45, .0);
-} */
-
-/* 구글, 깃허브 버튼 */
-
-
-
-
-
-/* SIGN IN WITH */
-/* .separator {
-    display: block;
-    margin: 30px auto 10px;
+#id-display {
+    color: black;
+    font-family: 'KCC-Hanbit', sans-serif;
+    padding: 110px;
+    width: fit-content;
+    margin-top: -240px; /* 상단 여백을 조금만 줘서 위로 위치 */
+    
     text-align: center;
-    height: 40px;
-    position: relative;
-    background: transparent;
-    color: #04e963;
-    font-size: 13px;
-    width: 90%;
-    max-width: 680px;
+    line-height: 1.5em;
+    font-size: 23px; /* 텍스트 크기 키움 */
+    justify-content: center;
 }
 
-.separator::before {
-    content: "";
-    position: absolute;
-    top: 8px;
-    left: 0;
-    background: rgba(15, 19, 42, .2);
-    height: 1px;
-    width: 45%;
+#found-id {
+    color: red; /* 아이디 텍스트 색상 빨간색 */
+    font-weight: bold;
+    font-size: 24px; /* 아이디만 더 강조되도록 크기 키움 */
 }
 
-.separator::after {
-    content: "";
-    position: absolute;
-    top: 8px;
-    right: 0;
-    background: rgba(15, 19, 42, .2);
-    height: 1px;
-    width: 45%;
-} */
-/* 
-.google__btn,
-.github__btn {
-    display: block;
-    width: 90%;
-    max-width: 680px;
-    margin: 20px auto;
+/* 버튼 스타일 조정 */
+.password-find-btn, .signin-confirm-btn {
+    background-color: #72BA84;
+    color: white;
+    width: 140px; /* 버튼 크기 확대 */
     height: 50px;
-    cursor: pointer;
-    font-size: 14px;
-    font-family: 'Montserrat', sans-serif;
-    border-radius: 8px;
+    border-radius: 5px;
     border: none;
-    line-height: 40px;
-} */
+    cursor: pointer;
+    font-size: 20px; /* 버튼 텍스트 크기 키움 */
+    margin: 0 10px; /* 버튼 간격 */
+    font-family: 'KCC-Hanbit', sans-serif;
+}
+
+.password-find-btn {
+    background-color: #9B83D4; /* 비밀번호 찾기 버튼 색상 */
+}
+
+.password-find-btn:hover,
+.signin-confirm-btn:hover {
+    opacity: 0.9;
+}
+
+/* 버튼 컨테이너 중앙 정렬 */
+#button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* 버튼 사이 간격 */
+    margin-top: 10px;
+}
 
 @media only screen and (max-width: 768px) {
     
@@ -609,14 +565,11 @@ pointer-events: none; /*^ 마우스포인터로 클릭 불가 */
         top: 10px;
         right: 10px;
     }
-    #hr-green {
-        right: calc(-1% - -5px);
-    }
 h1 {
     right: calc(27% - 0px);
 }
 .description-container {
-    right: calc(-2% - 0px);
+    right: calc(25% - 0px);
 }
 .input__block {
     right: calc(10% - -10px); 
@@ -633,5 +586,9 @@ h1 {
 #verify-code-btn {
 right: calc(10% - 0px);
 
+}
+#id-display {
+    
+    padding: 110px; /*확인 못함 ...*/
 }
 }
