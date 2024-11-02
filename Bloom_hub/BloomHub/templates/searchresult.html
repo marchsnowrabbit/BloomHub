@@ -162,21 +162,8 @@
     });
 
 });
-            // 로그아웃 처리
-            $('#logout-link').on('click', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: "{% url 'logout_view' %}",
-                    method: "GET",
-                    success: function() {
-                        window.location.href = "{% url 'home' %}"; 
-                    },
-                    error: function() {
-                        alert("Failed to log out. Please try again.");
-                    }
-                });
-            });
-        });
+
+    
     </script>
 </body>
 </html>
