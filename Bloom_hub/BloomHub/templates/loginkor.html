@@ -105,7 +105,8 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            window.location.href = "{% url 'home' %}";
+                            const homeUrl = "{% url 'homekor' %}";  
+                            window.location.href = "{% url 'homekor' %}";
                         } else {
                             if (response.error === 'user_id') {
                                 $('#error_message').text("계정이 존재하지 않습니다.");
