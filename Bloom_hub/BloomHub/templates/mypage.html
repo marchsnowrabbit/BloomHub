@@ -1,26 +1,20 @@
+{% load tz %}
 {% load static %}
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Page</title>
     <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
 
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
-
-
-    
-
 </head>
 <body>
     <header>
-        <!-- 로고 링크를 Django URL로 변경 -->
-        <a href="{% url 'home' %}" class="logo">
+        <!-- Change logo link to Django URL -->
+        <a href="{% url 'homekor' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
     
@@ -28,28 +22,31 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'mypagekor' %}">Korean</a>
-                    <a href="{% url 'mypage' %}">English</a>
+                    <a href="{% url 'loginkor' %}">Korean</a>
+                    <a href="{% url 'login' %}">English</a>
                 </div>
             </div>
     
             <span id="auth-options">
+                <!-- Show username or login/signup links based on login status -->
+                <a href="{% url 'loginkor' %}" id="login-link" style="display: none;">Login</a>
+                <a href="{% url 'signupkor' %}" id="signup-link" style="display: none;">Sign Up</a>
                 <span id="username" style="display: none;"></span>
                 <a href="#" id="logout-link" style="display: none;">Logout</a>
             </span>
         </div>
     
         <nav>
-            <!-- 네비게이션 링크들도 Django URL로 변경 -->
-            <a href="{% url 'guide' %}">Guides</a>
-            <a href="{% url 'search' %}">Search</a>
-            <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
-            <a href="#" id="mypage-link">My profile</a>
+            <!-- Change navigation links to Django URL -->
+            <a href="{% url 'guidekor' %}">Guide</a>
+            <a href="{% url 'searchkor' %}">Search</a>
+            <!-- Navigation links check login status, guide and search available before login -->
+            <a href="{% url 'mypagekor' %}" id="mypage-link">My Page</a>
             <div class="dropdown-container">
-                <a href="#" class="classing">Classing</a>
+                <a href="#" class="classing">Learn</a>
                 <div class="dropdown">
-                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">Learning Video</a>
-                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">Learned Video</a>
+                    <a href="{% url 'learningkor' %}" class="dropdown-link" data-url="{% url 'learningkor' %}">Ongoing Learning Videos</a>
+                    <a href="{% url 'learnedkor' %}" class="dropdown-link" data-url="{% url 'learnedkor' %}">Learned Videos</a>
                 </div>
             </div>
             
@@ -60,7 +57,7 @@
         <div class="sidebar">
             <ul>
                 <li><a href="#" onclick="showContent('myInfo')">My Information</a></li>
-                <li><a href="#" onclick="showContent('personalInfo')">Manage Personal<br>Information</a></li>
+                <li><a href="#" onclick="showContent('personalInfo')">Change Personal Information</a></li>
             </ul>
         </div>
         <div class="content">
@@ -74,108 +71,228 @@
                             <img src="{% static 'img/profileImg.png' %}" alt="profileImage">
                         </div>
                         <div class="profile-info">
-                            <p>회원 정보</p>
-                            
-                            <p>E-mail: <span id="userEmail">Loading...</span></p>
-                            <p>Last Login: <span id="userJoinDate">Loading...</span></p>
+                            <p>User Information</p>
+                            <p>Email: <span id="userEmail">Loading...</span></p>
+                            <p>Last Login: <span id="userJoinDate">{{ user.last_login|localtime }}</span></p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div id="personalInfo" class="content-section">
-                <strong class="manage-title">Manage Personal Information</strong>
+                <strong class="manage-title">Personal Information Management</strong>
                 <form id="emailForm">
                     <div class="form-group">
-                    <label for="email">Change Email: </label>
-                    <input type="email" id="email" name="email" required>
-                    <button type="button" onclick="updateEmail()">Change Email</button>
-                </div>
+                        <label for="email">New Email: </label>
+                        <input type="email" id="email" name="email" required>
+                        <button type="button" id="change-email-btn">Change</button>
+                    </div>
                 </form>
                 <form id="passwordForm">
+                    <div id="password-error" class="error-message" style="display: none;"></div>
+                    <div id="password-success" class="success-message" style="display: none;"></div>
                     <div class="form-group">
-                    <label for="password">Enter New Password: </label>
-                    <input type="password" id="password" name="password" required>
-                </div>
+                        <label for="password">New Password: </label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
                     <div class="form-group">
-                    <label for="confirmPassword">Confirm New Password: </label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
-                    <button type="button" onclick="updatePassword()">Change Password</button>
+                        <label for="confirmPassword">Confirm Password: </label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        <button type="button" id="reset-password-btn">Confirm Password</button>
                     </div>
                 </form>
             </div>
 
             <div id="learnedVideos" class="content-section">
-                <h2>학습한 영상 내역</h2>
+                <h2>Learned Video History</h2>
                 <ul id="videoList"></ul>
             </div>
         </div>
     </div>
 
     <script>
+    // Function to switch content sections
+    function showContent(sectionId) {
+        // Hide all sections
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
 
-        
-//^ 콘텐츠 섹션 전환 함수
-function showContent(sectionId) {
-    // 모든 섹션을 숨김
-    const sections = document.querySelectorAll('.content-section');
-    sections.forEach(section => {
-        section.classList.remove('active');
-    });
-
-    // 선택된 섹션만 표시
-    if (sectionId) {
-        const activeSection = document.getElementById(sectionId);
-        if (activeSection) {
-            activeSection.classList.add('active');
+        // Show only the selected section
+        if (sectionId) {
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            } else {
+                console.error("Section with ID " + sectionId + " not found.");
+            }
         }
     }
-}
 
-         $(document).ready(function() {
-    // 기본 상태 설정
-    $('#login-link').show();  
-    $('#signup-link').show(); 
-    $('#username').hide();    
-    $('#logout-link').hide();  
+    $(document).ready(function() {
+        // Set default state
+        $('#login-link').show();  
+        $('#signup-link').show(); 
+        $('#username').hide();    
+        $('#logout-link').hide();  
 
-    // 로그인 상태 확인
-    $.ajax({
-        url: "{% url 'check_login' %}",
-        method: "GET",
-        success: function(response) {
-            if (response.is_logged_in) {
-                $('#username').text(response.username).show(); 
-                $('#logout-link').show();                      
-                $('#login-link').hide();                     
-                $('#signup-link').hide();                   
-            } else {
-                $('#login-link').show();                     
-                $('#signup-link').show();                     
-                $('#username').hide();                      
-                $('#logout-link').hide();                    
-            }
-        },
-        error: function() {
-            alert("An error occurred while checking the login status. Please try again later.");
-        }
-    });
-
-    // 로그아웃 처리
-    $('#logout-link').on('click', function(e) {
-        e.preventDefault();
+        // Check login status
         $.ajax({
-            url: "{% url 'logout_view' %}",
+            url: "{% url 'check_login' %}",
             method: "GET",
-            success: function() {
-                window.location.href = "{% url 'home' %}"; 
+            success: function(response) {
+                if (response.is_logged_in) {
+                    $('#username').text(response.username).show(); 
+                    $('#logout-link').show();                      
+                    $('#login-link').hide();                     
+                    $('#signup-link').hide();   
+                    
+                    // Request user information (email, login time)
+                    $.ajax({
+                        url: "{% url 'get_user_info' %}",
+                        method: "GET",
+                        success: function(userResponse) {
+                            $('#userEmail').text(userResponse.email);
+                            // Use the last_login value received from the server
+                            $('#userJoinDate').text(userResponse.last_login);
+                        },
+                        error: function() {
+                            alert("An error occurred while fetching user information.");
+                        }
+                    });
+
+                } else {
+                    $('#login-link').show();                     
+                    $('#signup-link').show();                     
+                    $('#username').hide();                      
+                    $('#logout-link').hide();                    
+                }
             },
             error: function() {
-                alert("Failed to log out. Please try again.");
+                alert("An error occurred while checking login status. Please try again later.");
             }
         });
+
+        // Logout handling
+        $('#logout-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'logout_view' %}",
+                method: "GET",
+                success: function() {
+                    window.location.href = "{% url 'home' %}"; 
+                },
+                error: function() {
+                    alert("Logout failed. Please try again.");
+                }
+            });
+        });
+
+        // Email change handling
+        $('#change-email-btn').click(function() {
+            $.ajax({
+                url: "{% url 'change_email' %}",
+                method: "POST",
+                data: {
+                    email: $('#email').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert("Email has been updated."); $('#email').val('');
+                        // Refresh the page after changing email
+                        $('#email').val('');  // Refresh after email change
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while checking login status. Please try again later.");
+                }
+            });
+        });
+
+        // Password change handling
+        $('#reset-password-btn').click(function() {
+            // Check if password fields are empty
+            const newPassword = $('#password').val();
+            const confirmPassword = $('#confirmPassword').val();
+            const passwordError = $('#password-error');
+            const passwordSuccess = $('#password-success');
+            
+            // Password validity check: Must include uppercase, lowercase, number, and special character
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*\d)|(?=.*[a-z])(?=.*[!@#\$%\^&\*])|(?=.*[A-Z])(?=.*[!@#\$%\^&\*])|(?=.*\d)(?=.*[!@#\$%\^&\*])/;
+
+            if (!passwordRegex.test(newPassword)) {
+                console.log("Password validity check failed");
+                passwordError.text('Password must include uppercase, lowercase, number, and special character.').show();
+                $('#password').focus();
+                return;
+            } else {
+                passwordError.hide();
+            }
+
+            // If new password and confirm password do not match
+            if (newPassword !== confirmPassword) {
+                console.log("Password and confirm password do not match");
+                passwordError.text('Passwords do not match.').show();
+                $('#confirmPassword').focus();
+                return;
+            }
+
+            console.log("Sending password change request");
+            // Send request to change password
+            $.ajax({
+                url: "{% url 'reset_password' %}",
+                method: "POST",
+                data: {
+                    new_password: newPassword,
+                    confirm_password: confirmPassword,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log("Password change successful");
+                        alert("Password has been updated."); $('#password').val(''); $('#confirmPassword').val('');
+                        passwordError.hide();
+                    } else {
+                        console.log("Password change failed: " + response.message);
+                        passwordError.text(response.message).show();
+                        passwordSuccess.hide();
+                        $('#password').focus();
+                    }
+                },
+                error: function(xhr) {
+                    console.log("Server error: " + xhr.status + " - " + xhr.statusText);
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        passwordError.text(xhr.responseJSON.message).show();
+                        passwordSuccess.hide();
+                    } else {
+                        alert("An error occurred while updating the password. Please try again.");
+                    }
+                }
+            });
+        });
+
+        // Immediate validity check display when entering a new password
+        $('#password').on('input', function() {
+            const newPassword = $(this).val();
+            const passwordError = $('#password-error');
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])/;
+            if (!passwordRegex.test(newPassword)) {
+                passwordError.text('Password must include uppercase, lowercase, number, and special character.').show();
+            } else {
+                passwordError.hide();
+            }
+        });
+
+        // Show message when focusing on the new password input
+        $('#password').on('focus', function() {
+            const passwordError = $('#password-error');
+            passwordError.text('Password must include uppercase, lowercase, number, and special character.').css('display', 'block');
+        });
     });
-});
     </script>
 </body>
 </html>

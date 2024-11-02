@@ -157,6 +157,7 @@ nav a.classing:hover {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     max-width: 920px;
+    height:auto;
 }
 .content-section {
     display: none;
@@ -247,6 +248,11 @@ form button:active {
 }
 .content-section.active {
     display: block;
+}
+.error-message {
+    color: red;
+    font-size: 17px;
+    margin-bottom: 20px;
 }
 @media only screen and (max-width: 768px) {
     header {

@@ -1,3 +1,4 @@
+{% load tz %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="ko">
@@ -7,15 +8,8 @@
     <title>My Page</title>
     <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
 
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
-
-
-    
-
 </head>
 <body>
     <header>
@@ -28,12 +22,15 @@
             <div class="language-container">
                 <a href="#" class="language">언어</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'mypagekor' %}">한국어</a>
-                    <a href="{% url 'mypage' %}">영어</a>
+                    <a href="{% url 'loginkor' %}">한국어</a>
+                    <a href="{% url 'login' %}">영어</a>
                 </div>
             </div>
     
             <span id="auth-options">
+                <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
+                <a href="{% url 'loginkor' %}" id="login-link" style="display: none;">로그인</a>
+                <a href="{% url 'signupkor' %}" id="signup-link" style="display: none;">회원가입</a>
                 <span id="username" style="display: none;"></span>
                 <a href="#" id="logout-link" style="display: none;">로그아웃</a>
             </span>
@@ -46,10 +43,10 @@
             <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
             <a href="{% url 'mypagekor' %}" id="mypage-link">마이 페이지</a>
             <div class="dropdown-container">
-                <a href="#" class="classing">클래싱</a>
+                <a href="#" class="classing">학습하기</a>
                 <div class="dropdown">
-                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">학습중인 영상</a>
-                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">학습했던 영상</a>
+                    <a href="{% url 'learningkor' %}" class="dropdown-link" data-url="{% url 'learningkor' %}">학습중인 영상</a>
+                    <a href="{% url 'learnedkor' %}" class="dropdown-link" data-url="{% url 'learnedkor' %}">학습했던 영상</a>
                 </div>
             </div>
             
@@ -60,7 +57,7 @@
         <div class="sidebar">
             <ul>
                 <li><a href="#" onclick="showContent('myInfo')">내 정보</a></li>
-                <li><a href="#" onclick="showContent('personalInfo')">개인정보관리</a></li>
+                <li><a href="#" onclick="showContent('personalInfo')">개인정보 변경</a></li>
             </ul>
         </div>
         <div class="content">
@@ -75,32 +72,33 @@
                         </div>
                         <div class="profile-info">
                             <p>회원 정보</p>
-                            
-                            <p>이메일: <span id="userEmail"></span></p>
-                            <p>마지막 로그인: <span id="userJoinDate"></span></p>
+                            <p>이메일: <span id="userEmail">Loading...</span></p>
+                            <p>마지막 로그인: <span id="userJoinDate">{{ user.last_login|localtime }}</span></p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div id="personalInfo" class="content-section">
-                <strong class="manage-title">개인정보관리</strong>
+                <strong class="manage-title">개인 정보 관리</strong>
                 <form id="emailForm">
                     <div class="form-group">
-                    <label for="email">바꿀 이메일: </label>
-                    <input type="email" id="email" name="email" required>
-                    <button type="button" onclick="updateEmail()">변경하기</button>
-                </div>
+                        <label for="email">바꿀 이메일: </label>
+                        <input type="email" id="email" name="email" required>
+                        <button type="button" id="change-email-btn">변경하기</button>
+                    </div>
                 </form>
                 <form id="passwordForm">
+                    <div id="password-error" class="error-message" style="display: none;"></div>
+                    <div id="password-success" class="success-message" style="display: none;"></div>
                     <div class="form-group">
-                    <label for="password">새로운 비밀번호: </label>
-                    <input type="password" id="password" name="password" required>
-                </div>
+                        <label for="password">새로운 비밀번호: </label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
                     <div class="form-group">
-                    <label for="confirmPassword">비밀번호 확인: </label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
-                    <button type="button" onclick="updatePassword()">변경하기</button>
+                        <label for="confirmPassword">비밀번호 확인: </label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        <button type="button" id="reset-password-btn">비밀번호 확인</button>
                     </div>
                 </form>
             </div>
@@ -113,69 +111,188 @@
     </div>
 
     <script>
+    // 콘텐츠 섹션 전환 함수
+    function showContent(sectionId) {
+        // 모든 섹션을 숨김
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
 
-        
-//^ 콘텐츠 섹션 전환 함수
-function showContent(sectionId) {
-    // 모든 섹션을 숨김
-    const sections = document.querySelectorAll('.content-section');
-    sections.forEach(section => {
-        section.classList.remove('active');
-    });
-
-    // 선택된 섹션만 표시
-    if (sectionId) {
-        const activeSection = document.getElementById(sectionId);
-        if (activeSection) {
-            activeSection.classList.add('active');
+        // 선택된 섹션만 표시
+        if (sectionId) {
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            } else {
+                console.error("Section with ID " + sectionId + " not found.");
+            }
         }
     }
-}
 
-         $(document).ready(function() {
-    // 기본 상태 설정
-    $('#login-link').show();  
-    $('#signup-link').show(); 
-    $('#username').hide();    
-    $('#logout-link').hide();  
+    $(document).ready(function() {
+        // 기본 상태 설정
+        $('#login-link').show();  
+        $('#signup-link').show(); 
+        $('#username').hide();    
+        $('#logout-link').hide();  
 
-    // 로그인 상태 확인
-    $.ajax({
-        url: "{% url 'check_login' %}",
-        method: "GET",
-        success: function(response) {
-            if (response.is_logged_in) {
-                $('#username').text(response.username).show(); 
-                $('#logout-link').show();                      
-                $('#login-link').hide();                     
-                $('#signup-link').hide();                   
-            } else {
-                $('#login-link').show();                     
-                $('#signup-link').show();                     
-                $('#username').hide();                      
-                $('#logout-link').hide();                    
-            }
-        },
-        error: function() {
-            alert("An error occurred while checking the login status. Please try again later.");
-        }
-    });
-
-    // 로그아웃 처리
-    $('#logout-link').on('click', function(e) {
-        e.preventDefault();
+        // 로그인 상태 확인
         $.ajax({
-            url: "{% url 'logout_view' %}",
+            url: "{% url 'check_login' %}",
             method: "GET",
-            success: function() {
-                window.location.href = "{% url 'home' %}"; 
+            success: function(response) {
+                if (response.is_logged_in) {
+                    $('#username').text(response.username).show(); 
+                    $('#logout-link').show();                      
+                    $('#login-link').hide();                     
+                    $('#signup-link').hide();   
+                    
+                    // 사용자 정보 요청 (이메일, 로그인 시간)
+                    $.ajax({
+                        url: "{% url 'get_user_info' %}",
+                        method: "GET",
+                        success: function(userResponse) {
+                            $('#userEmail').text(userResponse.email);
+                            // 서버에서 받아온 로컬 시간의 last_login 값을 그대로 사용
+                            $('#userJoinDate').text(userResponse.last_login);
+                        },
+                        error: function() {
+                            alert("사용자 정보를 가져오는 중 오류가 발생했습니다.");
+                        }
+                    });
+
+                } else {
+                    $('#login-link').show();                     
+                    $('#signup-link').show();                     
+                    $('#username').hide();                      
+                    $('#logout-link').hide();                    
+                }
             },
             error: function() {
-                alert("Failed to log out. Please try again.");
+                alert("로그인 상태를 확인하는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
             }
         });
+
+        // 로그아웃 처리
+        $('#logout-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'logout_view' %}",
+                method: "GET",
+                success: function() {
+                    window.location.href = "{% url 'home' %}"; 
+                },
+                error: function() {
+                    alert("로그아웃에 실패했습니다. 다시 시도해 주세요.");
+                }
+            });
+        });
+
+        // 이메일 변경 처리
+        $('#change-email-btn').click(function() {
+            $.ajax({
+                url: "{% url 'change_email' %}",
+                method: "POST",
+                data: {
+                    email: $('#email').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert("이메일이 업데이트되었습니다."); $('#email').val('');
+                        // 이메일 변경 후 페이지 새로고침
+                        $('#email').val('');  // 이메일 변경 후 새로고침 수행
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert("로그인 상태를 확인하는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+                }
+            });
+        });
+
+        // 비밀번호 변경 처리
+        $('#reset-password-btn').click(function() {
+            // 비밀번호 값이 비어 있는지 확인
+            const newPassword = $('#password').val();
+            const confirmPassword = $('#confirmPassword').val();
+            const passwordError = $('#password-error');
+            const passwordSuccess = $('#password-success');
+            
+            // 비밀번호 유효성 검사: 대소문자, 숫자, 특수문자 중 3가지 포함 여부 확인
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])|(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*\d)|(?=.*[a-z])(?=.*[!@#\$%\^&\*])|(?=.*[A-Z])(?=.*[!@#\$%\^&\*])|(?=.*\d)(?=.*[!@#\$%\^&\*])/;
+
+            if (!passwordRegex.test(newPassword)) {
+                console.log("비밀번호 유효성 검사 실패");
+                passwordError.text('비밀번호는 대소문자, 특수문자, 숫자 중 3가지를 포함해야 합니다.').show();
+                $('#password').focus();
+                return;
+            } else {
+                passwordError.hide();
+            }
+
+            // 비밀번호와 확인 비밀번호가 일치하지 않는 경우
+            if (newPassword !== confirmPassword) {
+                console.log("비밀번호와 확인 비밀번호가 일치하지 않음");
+                passwordError.text('비밀번호가 일치하지 않습니다.').show();
+                $('#confirmPassword').focus();
+                return;
+            }
+
+            console.log("비밀번호 변경 요청 전송 중");
+            // 서버로 비밀번호 변경 요청
+            $.ajax({
+                url: "{% url 'reset_password' %}",
+                method: "POST",
+                data: {
+                    new_password: newPassword,
+                    confirm_password: confirmPassword,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log("비밀번호 변경 성공");
+                        alert("비밀번호가 업데이트되었습니다."); $('#password').val(''); $('#confirmPassword').val('');
+                        passwordError.hide();
+                    } else {
+                        console.log("비밀번호 변경 실패: " + response.message);
+                        passwordError.text(response.message).show();
+                        passwordSuccess.hide();
+                        $('#password').focus();
+                    }
+                },
+                error: function(xhr) {
+                    console.log("서버 오류: " + xhr.status + " - " + xhr.statusText);
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        passwordError.text(xhr.responseJSON.message).show();
+                        passwordSuccess.hide();
+                    } else {
+                        alert("비밀번호를 업데이트하는 중 오류가 발생했습니다. 다시 시도해 주세요.");
+                    }
+                }
+            });
+        });
+
+        // 새로운 비밀번호 입력 시 즉각적인 유효성 검사 표시
+        $('#password').on('input', function() {
+            const newPassword = $(this).val();
+            const passwordError = $('#password-error');
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])/;
+            if (!passwordRegex.test(newPassword)) {
+                passwordError.text('비밀번호는 대소문자, 특수문자, 숫자 중 3가지를 반드시 포함해야 합니다.').show();
+            } else {
+                passwordError.hide();
+            }
+        });
+
+        // 새로운 비밀번호 입력창에 포커스가 있을 때 메시지 표시
+        $('#password').on('focus', function() {
+            const passwordError = $('#password-error');
+            passwordError.text('비밀번호는 대소문자, 특수문자, 숫자 중 3가지를 반드시 포함해야 합니다.').css('display', 'block');
+        });
     });
-});
     </script>
 </body>
 </html>
