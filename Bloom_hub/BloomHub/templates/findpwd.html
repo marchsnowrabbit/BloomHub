@@ -3,37 +3,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>비밀번호 찾기</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Password</title>
+    <link rel="stylesheet" href="{% static 'css/findpwd.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <h1>비밀번호 찾기</h1>
-    <form id="find-password-form">
-        <label for="user_id">ID:</label>
-        <input type="text" id="user_id" name="user_id" required>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <button type="button" id="send-code-btn">인증번호 보내기</button>
+    <header>
+        <!-- 로고 링크를 Django URL로 변경 -->
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
+        </a>
+    
+        <div class="auth">
+            <div class="language-container">
+                <a href="#" class="language">Language</a>
+                <div class="language-dropdown">
+                    <a href="{% url 'findpwdkor' %}">Korean</a>
+                    <a href="{% url 'findpwd' %}">English</a>
+                </div>
+            </div>
+    
+            <span id="auth-options">
+                <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
+                <a href="{% url 'login' %}" id="login-link" style="display: none;">Login</a>
+                <a href="{% url 'signup' %}" id="signup-link" style="display: none;">Sign up</a>
+                <span id="username" style="display: none;"></span>
+                <a href="#" id="logout-link" style="display: none;">Logout</a>
+            </span>
+        </div>
+    
+        <nav>
+            <!-- 네비게이션 링크들도 Django URL로 변경 -->
+            <a href="{% url 'guide' %}">Guides</a>
+            <a href="{% url 'search' %}">Search</a>
+            <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
+            <a href="{% url 'mypage' %}" id="mypage-link">My profile</a>
+            <div class="dropdown-container">
+                <a href="#" class="classing">Classing</a>
+                <div class="dropdown">
+                    <a href="{% url 'learning' %}" class="dropdown-link" data-url="{% url 'learning' %}">Learning Video</a>
+                    <a href="{% url 'learned' %}" class="dropdown-link" data-url="{% url 'learned' %}">Learned Video</a>
+                </div>
+            </div>
+            
+        </nav>
+    </header>
 
+    <div class="container">
+    <h1>Find Password</h1>
+    <div class="description-container">
+        <div id="description"> Did you forget your Password?</div>
+        <hr id="hr-green">
+    </div>
+
+    <form id="find-password-form">
+    <div class="input__row">
+        <label class="hide-on-small" for="user_id">ID:</label>
+        <input type="text" id="user_id" name="user_id" placeholder="ID" required>
+    </div>
+        <button type="button" id="send-code-btn">Send</button>
+        <div class="input__row">
+        <label class="hide-on-small" for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+    </div>
+        
         <div id="verification-section" style="display: none;">
-            <label for="verification-code">인증번호:</label>
-            <input type="text" id="verification-code" required>
-            <button type="button" id="verify-code-btn">확인</button>
+            <label class="hide-on-small" for="verification-code">Code:</label>
+            <input type="text" id="verification-code" placeholder="verification code" required>
+            <button type="button" id="verify-code-btn">verify</button>
         </div>
 
+
         <div id="reset-password-section" style="display: none;">
-            <label for="new-password">New Password:</label>
-            <input type="password" id="new-password" required>
-            <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" required>
-            <button type="button" id="reset-password-btn">변경</button>
+            <div class="input-section">
+            <label class="hide-on-small" for="new-password">New Password:</label>
+            <input type="password" id="new-password" placeholder="new password" required>
+        </div>
+        <div class="input-section">
+            <label class="hide-on-small" for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" placeholder="confirm password" required>
+        </div>
+            <button type="button" id="reset-password-btn">confirm</button>
         </div>
     </form>
     <div id="message"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+    
         $(document).ready(function() {
+            $('#login-link').show();  
+    $('#signup-link').show(); 
+    $('#username').hide(); 
+    $('.first-input__block, .input__block').show(); 
+    $('#send-code-btn').show();   
+    $('#logout-link').hide();
             $('#send-code-btn').click(function() {
                 $.post({
                     url: "{% url 'send_verification_code_for_password_reset' %}",
@@ -42,6 +108,12 @@
                         if (response.success) {
                             $('#verification-section').show();
                             alert(response.message);
+                            $('#verify-code-btn').show(); // 확인 버튼 표시
+                    $('.verification__block').show(); // 인증번호 입력 칸 표시
+
+                    $('#send-code-btn').hide(); // 인증번호 보내기 버튼 숨기기
+                    $('#email').parent().hide(); // Email 입력란 숨기기
+                    $('#user_id').parent().hide(); // ID 입력란 숨기기
                         } else {
                             alert(response.message);
                         }
@@ -55,8 +127,10 @@
                     data: { user_id: $('#user_id').val(), email: $('#email').val(), verification_code: $('#verification-code').val(), csrfmiddlewaretoken: '{{ csrf_token }}' },
                     success: function(response) {
                         if (response.success) {
-                            $('#verification-section').hide();
-                            $('#reset-password-section').show();
+                            $('#verification-section').hide(); // 인증번호 입력란 숨기기
+                    $('#verify-code-btn').hide(); // 확인 버튼 숨기기
+                    $('#reset-password-section').show(); // 새로운 비밀번호 섹션 보이기
+                    $('#reset-password-btn').show(); // 변경 버튼 보이기
                         } else {
                             alert(response.message);
                         }
@@ -70,7 +144,7 @@
                     data: { user_id: $('#user_id').val(), new_password: $('#new-password').val(), confirm_password: $('#confirm-password').val(), csrfmiddlewaretoken: '{{ csrf_token }}' },
                     success: function(response) {
                         if (response.success) {
-                            alert("비밀번호가 업데이트되었습니다.");
+                            alert("The password has been updated.");
                             window.location.href = "{% url 'home' %}";
                         } else {
                             alert(response.message);
@@ -79,6 +153,92 @@
                 });
             });
         });
+
+        // 로그인 상태 확인
+    $.ajax({
+        url: "{% url 'check_login' %}",
+        method: "GET",
+        success: function(response) {
+            if (response.is_logged_in) {
+                $('#username').text(response.username).show(); 
+                $('#logout-link').show();                      
+                $('#login-link').hide();                     
+                $('#signup-link').hide();                   
+            } else {
+                $('#login-link').show();                     
+                $('#signup-link').show();                     
+                $('#username').hide();                      
+                $('#logout-link').hide();                    
+            }
+        },
+        error: function() {
+            alert("An error occurred while checking the login status. Please try again later.");
+        }
+    });
+
+
+    $(document).ready(function() {
+    // 기본 상태 설정
+    $('#login-link').show();  
+    $('#signup-link').show(); 
+    $('#username').hide();      
+
+    // 로그인 상태 확인
+    $.ajax({
+        url: "{% url 'check_login' %}",
+        method: "GET",
+        success: function(response) {
+            if (response.is_logged_in) {
+                $('#username').text(response.username).show(); 
+                $('#logout-link').show();                      
+                $('#login-link').hide();                     
+                $('#signup-link').hide();                   
+            } else {
+                $('#login-link').show();                     
+                $('#signup-link').show();                     
+                $('#username').hide();                     
+                $('#logout-link').hide();                    
+            }
+        },
+        error: function() {
+            alert("An error occurred while checking the login status. Please try again later.");
+        }
+    });
+
+    // 마이페이지 링크 클릭 시 로그인 확인
+    $('#mypage-link').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{% url 'check_login' %}",
+            method: "GET",
+            success: function(response) {
+                if (response.is_logged_in) {
+                    window.location.href = "{% url 'mypage' %}";
+                } else {
+                    alert("Login is required. Please log in.");
+                }
+            }
+        });
+    });
+
+    // 드롭다운 링크 클릭 시 로그인 확인
+    $('.dropdown-link').on('click', function(e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+        $.ajax({
+            url: "{% url 'check_login' %}",
+            method: "GET",
+            success: function(response) {
+                if (response.is_logged_in) {
+                    window.location.href = url;
+                } else {
+                    alert("Login is required. Please log in.");
+                }
+            }
+        });
+    });
+
+});
     </script>
 </body>
 </html>
