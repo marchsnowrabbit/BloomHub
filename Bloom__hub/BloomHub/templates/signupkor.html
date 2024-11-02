@@ -9,18 +9,6 @@
     <link rel="stylesheet" href="{% static 'css/signupkor.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .message {
-            font-size: 14px;
-            margin-left: 10px;
-        }
-        .valid {
-            color: green;
-        }
-        .invalid {
-            color: red;
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -177,6 +165,38 @@
                 validateForm();
             });
         });
+        // 마이페이지 링크 클릭 시 로그인 확인
+$('#mypage-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = "{% url 'mypage' %}";
+                    } else {
+                        alert("로그인이 필요합니다. 로그인 해주세요.");
+                    }
+                }
+            });
+        });
+        // 드롭다운 링크 클릭 시 로그인 확인
+        $('.dropdown-link').on('click', function(e) {
+            e.preventDefault();
+            const url = $(this).data('url');
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = url;
+                    } else {
+                        alert("로그인이 필요합니다. 로그인 해주세요.");
+                    }
+                }
+            });
+        });
+        
     </script>
 </body>
 </html>

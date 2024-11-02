@@ -21,8 +21,8 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'findIDkor' %}">Korean</a>
-                    <a href="{% url 'findID' %}">English</a>
+                    <a href="{% url 'guidekor' %}">Korean</a>
+                    <a href="{% url 'guide' %}">English</a>
                 </div>
             </div>
     
@@ -117,6 +117,7 @@
                 });
             });
         });
+
         $(document).ready(function() {
     // 기본 상태 설정
     $('#login-link').show();  
@@ -179,6 +180,7 @@
     });
 
 });
+
     </script>
 </body>
 </html>

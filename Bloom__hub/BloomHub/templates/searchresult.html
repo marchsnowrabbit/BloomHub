@@ -43,13 +43,14 @@
             <div class="dropdown-container">
                 <a href="#" class="classing">Classing</a>
                 <div class="dropdown">
-                    <a href="{% url 'learning' %}" class="dropdown-link" data-url="{% url 'learning' %}">Learning Video</a>
-                    <a href="{% url 'learned' %}" class="dropdown-link" data-url="{% url 'learned' %}">Learned Video</a>
+                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">Learning Video</a>
+                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">Learned Video</a>
                 </div>
             </div>
             
         </nav>
     </header>
+    
     <h1>Search results for "{{ keyword }}"</h1>
     
     <div class="search-container">
@@ -101,67 +102,33 @@
 
     <script>
         $(document).ready(function() {
-    // 기본 상태 설정
-    $('#login-link').show();  
-    $('#signup-link').show(); 
-    $('#username').hide();      
+            $('#login-link').show();
+            $('#signup-link').show();
+            $('#username').hide();
+            $('#logout-link').hide();
 
-    // 로그인 상태 확인
-    $.ajax({
-        url: "{% url 'check_login' %}",
-        method: "GET",
-        success: function(response) {
-            if (response.is_logged_in) {
-                $('#username').text(response.username).show(); 
-                $('#logout-link').show();                      
-                $('#login-link').hide();                     
-                $('#signup-link').hide();                   
-            } else {
-                $('#login-link').show();                     
-                $('#signup-link').show();                     
-                $('#username').hide();                     
-                $('#logout-link').hide();                    
-            }
-        },
-        error: function() {
-            alert("An error occurred while checking the login status. Please try again later.");
-        }
-    });
-
-    // 마이페이지 링크 클릭 시 로그인 확인
-    $('#mypage-link').on('click', function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: "{% url 'check_login' %}",
-            method: "GET",
-            success: function(response) {
-                if (response.is_logged_in) {
-                    window.location.href = "{% url 'mypage' %}";
-                } else {
-                    alert("Login is required. Please log in.");
+            // 로그인 상태 확인
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        $('#username').text(response.username).show();
+                        $('#logout-link').show();
+                        $('#login-link').hide();
+                        $('#signup-link').hide();
+                    } else {
+                        $('#login-link').show();
+                        $('#signup-link').show();
+                        $('#username').hide();
+                        $('#logout-link').hide();
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while checking the login status. Please try again later.");
                 }
-            }
-        });
-    });
+            });
 
-    // 드롭다운 링크 클릭 시 로그인 확인
-    $('.dropdown-link').on('click', function(e) {
-        e.preventDefault();
-        const url = $(this).data('url');
-        $.ajax({
-            url: "{% url 'check_login' %}",
-            method: "GET",
-            success: function(response) {
-                if (response.is_logged_in) {
-                    window.location.href = url;
-                } else {
-                    alert("Login is required. Please log in.");
-                }
-            }
-        });
-    });
-
-});
             // 로그아웃 처리
             $('#logout-link').on('click', function(e) {
                 e.preventDefault();
@@ -177,6 +144,40 @@
                 });
             });
         });
+
+        // 마이페이지 링크 클릭 시 로그인 확인
+$('#mypage-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = "{% url 'mypage' %}";
+                    } else {
+                        alert("Login is required. Please log in.");
+                    }
+                }
+            });
+        });
+
+        // 드롭다운 링크 클릭 시 로그인 확인
+        $('.dropdown-link').on('click', function(e) {
+            e.preventDefault();
+            const url = $(this).data('url');
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = url;
+                    } else {
+                        alert("Login is required. Please log in.");
+                    }
+                }
+            });
+        });
+        
     </script>
 </body>
 </html>

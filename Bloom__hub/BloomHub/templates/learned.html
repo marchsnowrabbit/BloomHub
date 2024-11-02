@@ -23,12 +23,15 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'mypagekor' %}">Korean</a>
-                    <a href="{% url 'mypage' %}">English</a>
+                    <a href="{% url 'guidekor' %}">Korean</a>
+                    <a href="{% url 'guide' %}">English</a>
                 </div>
             </div>
     
             <span id="auth-options">
+                <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
+                <a href="{% url 'login' %}" id="login-link" style="display: none;">Login</a>
+                <a href="{% url 'signup' %}" id="signup-link" style="display: none;">Sign up</a>
                 <span id="username" style="display: none;"></span>
                 <a href="#" id="logout-link" style="display: none;">Logout</a>
             </span>
@@ -50,8 +53,7 @@
             
         </nav>
     </header>
-    <hr>
-  
+
     <main>
         
     </main>
@@ -101,6 +103,40 @@
            });
        });
    });
+
+   // 마이페이지 링크 클릭 시 로그인 확인
+$('#mypage-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = "{% url 'mypage' %}";
+                    } else {
+                        alert("Login is required. Please log in.");
+                    }
+                }
+            });
+        });
+
+        // 드롭다운 링크 클릭 시 로그인 확인
+        $('.dropdown-link').on('click', function(e) {
+            e.preventDefault();
+            const url = $(this).data('url');
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = url;
+                    } else {
+                        alert("Login is required. Please log in.");
+                    }
+                }
+            });
+        });
+        
    </script>
 <div class="h1-container">
     <h1>학습한 영상</h1></div>
