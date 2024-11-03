@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'KCC-Hanbit';
     src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
-         url('/static/fonts/KCC-Hanbit.woff') format('woff');
+        url('/static/fonts/KCC-Hanbit.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-  }
+}
 
 body {
     font-family: 'KCC-Hanbit', sans-serif;
@@ -13,9 +13,6 @@ body {
     margin: 0;
     min-height: 100vh;
 }
-
-
-    
 
 header {
     display: flex;
@@ -33,19 +30,17 @@ header .logo {
     color: white; 
 }
 
-
 header nav {
     display: flex;              
     gap: 35px;                 
     align-items: center;        
     margin: 0;  
-    }
+}
 
 header nav a {
     color: white;
     font-size: 23px;
     text-decoration: none;
-
 } 
 
 header .auth {
@@ -55,7 +50,6 @@ header .auth {
     position: absolute;
     right: 0px;
     top: 0px;
-
 }
 
 header .auth a {
@@ -64,7 +58,6 @@ header .auth a {
     text-decoration: none;
 }
 
-/** Dropdown styling */
 .language-container {
     position: relative;
 }
@@ -73,7 +66,7 @@ header .auth a {
     color: white;
     text-decoration: none;
     font-size: 16px;
-    }
+}
 
 .language-dropdown {
     display: none;
@@ -101,7 +94,7 @@ nav a.classing:hover, nav a.language:hover {
     color: rgb(11, 36, 60);
 }
 
-/* classing 드롭다운 */
+
 .dropdown-container {
     position: relative;
 }
@@ -135,15 +128,12 @@ nav a.classing:hover {
     display: block;
     
 }
+
+/* 로그인 시 상단바 아이디 글자색 */
 #username {
     color: white
 }
 
-
-/*^ 헤더,드랍다운 */
-/*^ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-
-/* 가이드 설명 부분, 반응형시 회원가입 시 API 키 발급 방법는 중앙에 옴 */
 .api-keys-instructions {
     color: white;
     background-color: rgb(11, 36, 60);
@@ -196,9 +186,6 @@ h2 {
 .api-keys-instructions strong {
     font-weight: bold;
 }
-
-
-
 
 .banner {
     display: flex;
@@ -321,20 +308,10 @@ p {
     cursor: pointer;
 }
 
-
-
 .container p {          
-
-font-size:20px;
-color:rgb(216, 195, 36);
-
-
+    font-size:20px;
+    color:rgb(216, 195, 36);
 }
-
-
-/* 
-반응형 768
-*/
 
 @media only screen and (max-width: 768px) {
     
