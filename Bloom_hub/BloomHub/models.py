@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
 from django.db import models
+from django.forms import JSONField
 
 
 class BloomUserManager(BaseUserManager):
@@ -44,35 +46,39 @@ class BloomUser(AbstractBaseUser, PermissionsMixin):
     
 
 ################유튜브 영상 DB####################
+
 from django.db import models
-from django.conf import settings
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class LearningVideo(models.Model):
-    title = models.CharField(max_length=255)
-    vid = models.URLField()  # YouTube 영상 링크 저장
-    setTime = models.IntegerField()  # 영상 길이 (초 단위)
-    uploader = models.CharField(max_length=255)  # 영상 업로더
-    view_count = models.IntegerField()  # 조회수
-    std_lang = models.CharField(max_length=2, choices=[('KR', 'Korean'), ('EN', 'English')])  # 지원 언어
-    learning_status = models.BooleanField(default=False)  # 학습 여부, 기본값 False
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # 학습한 사용자
+    vid = models.CharField(max_length=100, unique=True)  # 비디오 ID, 고유
+    title = models.CharField(max_length=255)  # 비디오 제목
+    setTime = models.IntegerField()  # 비디오 길이 (초 단위)
+    uploader = models.CharField(max_length=255, blank=True, null=True)  # 업로더 정보
+    view_count = models.IntegerField(default=0)  # 조회수
+    std_lang = models.CharField(max_length=10, default="EN")  # 언어 코드 (KR, EN)
+    learning_status = models.BooleanField(default=False)  # 학습 상태
+    user = models.ForeignKey(
+        'BloomUser', 
+        on_delete=models.CASCADE, 
+        to_field='user_id'  # References the user_id field
+    )
 
-    def __str__(self):
-        return self.title
+class WordData(models.Model):
+    video = models.ForeignKey(LearningVideo, related_name='word_data', on_delete=models.CASCADE)
+    word = models.CharField(max_length=255)  # 단어
+    pos = models.CharField(max_length=50)  # 품사
+    start_time = models.IntegerField()  # 시작 시간 (초 단위)
+    end_time = models.IntegerField()  # 종료 시간 (초 단위)
+    page_rank = models.FloatField(null=True, blank=True)  # PageRank 점수
+    url = models.URLField(null=True, blank=True)  # 관련 URL
+    data_type = models.CharField(max_length=10, default="word")  # 데이터 유형
 
-
-# # 유튜브 비디오 모델 정의
-# class YouTubeVideo(models.Model):
-#     link = models.URLField()
-#     title = models.CharField(max_length=200)
-#     channel_name = models.CharField(max_length=100)
-#     duration = models.PositiveIntegerField()  # 영상 길이 (초 단위)
-#     is_learned = models.BooleanField(default=False)
-
-# # 학습된 비디오 모델 정의
-# class LearnedVideo(models.Model):
-#     youtube_video = models.ForeignKey(YouTubeVideo, on_delete=models.CASCADE)
-#     subtitle_language = models.CharField(max_length=10, choices=[('KR', '한국어'), ('EN', '영어')])
-#     nouns = models.JSONField()  # 명사 5개
-#     bloom_sections = models.JSONField()  # Bloom 단계별 구간 리스트
-#     plotly_graphs = models.JSONField()  # Plotly 그래프 2종
+class SentenceData(models.Model):
+    video = models.ForeignKey(LearningVideo, related_name='sentence_data', on_delete=models.CASCADE)
+    word = models.TextField()  # 문장
+    start_time = models.IntegerField()  # 시작 시간 (초 단위)
+    end_time = models.IntegerField()  # 종료 시간 (초 단위)
+    data_type = models.CharField(max_length=10, default="sentence")  # 데이터 유형
