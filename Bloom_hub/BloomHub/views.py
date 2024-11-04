@@ -1,11 +1,11 @@
-import os,json, logging,string
-import isodate,urllib,csv,re
+import os,json,logging,string
+import isodate,urllib,csv,re,time
 import random
 import pandas as pd
 import urllib.parse,urllib.request
 import nltk, spacy
 import concurrent.futures
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import JsonResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import make_password
@@ -23,10 +23,13 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import CouldNotRetrieveTranscript
 from konlpy.tag import Okt
 from .models import WordData, SentenceData  # 모델 임포트
+from django.apps import apps
+from collections import Counter
+import plotly.express as px
+import plotly.graph_objects as go
+from sklearn.feature_extraction.text import TfidfVectorizer
+from openai import OpenAI, max_retries
 
-# 로깅 설정
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
 
 class YoutubeVideoapi:
     def __init__(self):
@@ -203,13 +206,18 @@ class KoreanScriptExtractor:
         self.video_title = self.get_video_title()
 
     def load_stopwords_from_mongo(self):
+        # MongoDB 연결 설정
         client = MongoClient(settings.MONGO_URI)
         db = client["BloomHub"]
         collection = db["bloom_dictionary"]
         
         # MongoDB에서 'stopwords-ko' 데이터를 가져오기
         stopwords_data = collection.find_one({"language": "Korean", "stage": "stopwords-ko"})
-        return stopwords_data['words'] if stopwords_data else []
+        
+        # JSON 리스트 형식을 문자열 리스트로 변환
+        if stopwords_data:
+            return [str(word) for word in stopwords_data.get('words', [])]
+        return []
 
     def get_video_title(self):
         video_id = self.vid.split("v=")[1]
@@ -572,41 +580,65 @@ def get_mongo_connection():
     db = client[settings.DATABASES['default']['NAME']]
     return db
 
-# 추출 결과를 MongoDB에 저장하는 함수
+# YouTube 링크에서 비디오 ID만 추출하는 함수
+def extract_video_id(youtube_url):
+    import re
+    match = re.search(r"(?:v=|\/)([0-9A-Za-z_-]{11})", youtube_url)
+    return match.group(1) if match else youtube_url
+
+logger = logging.getLogger('myapp')
+
 def run_extractor_and_save_to_db(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        video_id = data.get("video_id")
+
+        # 로그 추가
+        logger.info("Received data: %s", data)
+
+        video_url = data.get("video_id")  # 이 단계에서는 링크 형태로 받음
         set_time = data.get("setTime")
         std_lang = data.get("std_lang")
         wikifier_api_key = request.user.wikifier_api_key
         user_id = request.user.user_id
 
+        # video_id를 링크 형태에서 추출
+        video_id = extract_video_id(video_url)
+
+        # 로깅 정보 출력
+        logger.info("Extracted Video ID: %s, Set Time: %s, Std Lang: %s", video_id, set_time, std_lang)
+
         if not video_id or not set_time:
             return JsonResponse({"success": False, "error": "video_id and setTime are required."})
+        
+        # 로그 추가
+        logger.info("Received data in run_extractor_and_save_to_db: %s", data)
 
-        # vid가 링크 형태가 아니면 링크로 변환
-        if not is_valid_youtube_url(video_id):
-            video_id = f"https://www.youtube.com/watch?v={video_id}"
-
+        # LearningVideo 저장
         video, created = LearningVideo.objects.update_or_create(
-            vid=video_id,
+            vid=video_id,  # ID만 저장
             defaults={
                 'title': data.get("title"),
-                'setTime': data.get("setTime"),
+                'setTime': set_time,
                 'uploader': data.get("uploader"),
                 'view_count': data.get("view_count"),
-                'std_lang': data.get("std_lang"),
+                'std_lang': std_lang,
                 'user_id': user_id,
                 'learning_status': False
             }
         )
 
+        # 로그로 값 출력
+        logger.debug("Received video_id: %s, set_time: %s, user_id: %s", video_id, set_time, user_id)
+
+        # 추출기에서 사용할 비디오 URL 형태의 vid 전달
+        if not is_valid_youtube_url(video_url):
+            video_url = f"https://www.youtube.com/watch?v={video_url}"
+
         # 언어에 따라 적절한 추출기를 선택
         if std_lang == "KR":
-            extractor = KoreanScriptExtractor(vid=video_id, setTime=set_time, wikiUserKey=wikifier_api_key)
+            extractor = KoreanScriptExtractor(vid=video_url, setTime=set_time, wikiUserKey=wikifier_api_key)
         elif std_lang == "EN":
-            extractor = EnglishScriptExtractor(vid=video_id, setTime=set_time, wikiUserKey=wikifier_api_key)
+            extractor = EnglishScriptExtractor(vid=video_url, setTime=set_time, wikiUserKey=wikifier_api_key)
         else:
             return JsonResponse({"success": False, "error": "Invalid language selection."})
 
@@ -617,7 +649,7 @@ def run_extractor_and_save_to_db(request):
         # WordData 저장
         word_data_objects = [
             WordData(
-                video = video,
+                video=video,
                 url=row['url'],
                 page_rank=row['pageRank'],
                 word=row['word'],
@@ -637,20 +669,394 @@ def run_extractor_and_save_to_db(request):
             sentence_data_combined[time_key].append(sentence["word"])
         
         sentence_data_objects = [
-                SentenceData(
-                    video=video,
-                    word=" ".join(words),  # 같은 구간의 문장들을 하나로 결합
-                    start_time=start_time,
-                    end_time=end_time
-                )
-                for (start_time, end_time), words in sentence_data_combined.items()
-            ]
+            SentenceData(
+                video=video,
+                word=" ".join(words),  # 같은 구간의 문장들을 하나로 결합
+                start_time=start_time,
+                end_time=end_time
+            )
+            for (start_time, end_time), words in sentence_data_combined.items()
+        ]
 
         SentenceData.objects.bulk_create(sentence_data_objects)
 
         return JsonResponse({"success": True, "message": "Data saved successfully."})
 
     return JsonResponse({"success": False, "error": "Invalid request method."}, status=400)
+
+#분석기
+class BloomAnalysisWithGPTandDictionary:
+    def __init__(self, video_id, language):
+        self.video_id = video_id
+        self.language = language
+        self.word_data = self.load_data_from_db("WordData")  # MongoDB에서 데이터 불러오기
+        self.sentence_data = self.load_data_from_db("SentenceData")  # MongoDB에서 데이터 불러오기
+        self.bloom_dict_ko = self.load_bloom_dictionary_from_db("Korean")
+        self.bloom_dict_en = self.load_bloom_dictionary_from_db("English")
+        self.bloom_priority = {
+            'remember': 6, 'understand': 5, 'apply': 4, 
+            'analyze': 3, 'evaluate': 2, 'create': 1
+        }
+    
+    def load_data_from_db(self, model_name):
+        # `self.video_id`가 올바르게 참조되는지 확인
+        Model = apps.get_model('BloomHub', model_name)
+        data = Model.objects.filter(video__vid=self.video_id).values()
+        
+         # 로그 출력
+        logger.info(f"Data loaded from {model_name} for video_id {self.video_id}: {list(data)}")
+
+        return pd.DataFrame(data)
+
+    @staticmethod
+    def load_bloom_dictionary_from_db(language):
+        BloomDictionary = apps.get_model('BloomHub', 'BloomDictionary')
+        bloom_dict = {}
+        stages = ["remember", "understand", "apply", "analyze", "evaluate", "create"]
+
+        for stage in stages:
+            entry = BloomDictionary.objects.filter(language=language, stage=stage).first()
+            if entry:
+                # JSON 문자열 파싱 및 유니코드 디코딩
+                try:
+                    words = json.loads(entry.words) if isinstance(entry.words, str) else entry.words
+                    bloom_dict[stage] = [word for word in words if word != "word"]
+                    logger.info(f"Bloom dictionary loaded for {language} - Stage: {stage}, Words: {bloom_dict[stage]}")
+                except json.JSONDecodeError as e:
+                    logger.error(f"Failed to parse words for {language} - Stage: {stage}: {e}")
+            else:
+                logger.warning(f"No dictionary entry found for {language} - Stage: {stage}")
+
+        return bloom_dict
+    
+    def detect_language(self):
+        # 벡터화된 언어 감지
+        self.word_data['language'] = self.word_data['word'].str.contains('[\u3131-\uD79D]').map(
+            {True: 'Korean', False: 'English'}
+        )
+
+    def process_verbs(self):
+        # 언어 감지 호출
+        self.detect_language()
+
+        # 동사만 필터링
+        verbs = self.word_data[self.word_data['pos'] == 'verb'].copy()
+
+        # 동사별 사용 횟수를 'start_time', 'end_time' 기준으로 그룹화
+        self.verb_counts = verbs.groupby(['start_time', 'end_time', 'word', 'language']).size().reset_index(name='count')
+
+        # Verb Counts 로그로 출력
+        logger.debug("Verb Counts with Bloom Stages:\n%s", self.verb_counts)
+
+        # Bloom 단계 결정 함수에 'start_time', 'end_time' 전달
+        self.verb_counts['bloom_stage'] = self.verb_counts.apply(
+            lambda row: self.determine_final_bloom_stage(row['word'], row['language'], row['start_time'], row['end_time']),
+            axis=1
+        )
+
+    def tag_bloom_stage(self, word, language):
+        # 언어별로 적절한 사전 선택
+        bloom_dict = self.bloom_dict_ko if language == 'Korean' else self.bloom_dict_en
+        for stage, words in bloom_dict.items():
+            if word in words:
+                return stage
+        return 'unknown'
+    
+    def gpt_bloom_classification(self, grouped_sentences):
+        client = OpenAI(api_key="your-api-key")
+       
+        # 시스템 메시지 설정으로 Bloom 단계 분류 유도
+        messages = [
+            {"role": "system", "content": "You are a helpful assistant that classifies text into Bloom's Taxonomy stages."}
+        ]
+
+        """
+        블룸텍소노미 동사표를 csv파일로 만들고, combined_sentences + gpt에 입력으로 사용
+        (dictionary text file을 csv로 구성해서 유지)
+        gpt 출력형식 지정
+        e.g. 
+        """
+        
+        results = {}  # 결과를 저장할 딕셔너리
+        for (start_time, end_time), combined_text in grouped_sentences.items():
+            user_content = (
+                f"The following text is from {start_time}s to {end_time}s:\n\n"
+                f"{combined_text}\n\n"
+                "Please break this text into complete sentences. Then, classify each sentence "
+                "according to Bloom's Taxonomy as one of the following stages: 'Remember', 'Understand', "
+                "'Apply', 'Analyze', 'Evaluate', or 'Create'.\n\n"
+                "Format each sentence with its classification like this:\n"
+                "- Sentence: <Complete Sentence>\n- Stage: <Bloom's Taxonomy Stage>"
+            )
+            messages.append({"role": "user", "content": user_content})
+
+            for attempt in range(max_retries):
+                try:
+                    # GPT 모델에 요청 전송
+                    completion = client.chat.completions.create(
+                        model="gpt-4o",
+                        messages=messages,
+                        temperature=0.0,
+                        timeout=30
+                    )
+                
+                    # 올바른 형식으로 응답 추출
+                    raw_response = completion.choices[0].message.content
+                    print("\nGPT Processed Response:\n", raw_response)
+
+                    # 응답을 줄 단위로 나누고, 빈 줄 제거
+                    response_lines = [line.strip() for line in raw_response.split('\n') if line.strip()]
+                
+                    # 필요한 부분만 추출하여 결과 저장
+                    results[(start_time, end_time)] = response_lines if response_lines else 'unknown'
+                    break  # 성공적으로 처리된 경우 루프 종료
+
+                except (KeyError, IndexError, AttributeError) as e:
+                    print(f"Error for segment {start_time}-{end_time}: {e}.")
+                    results[(start_time, end_time)] = 'unknown'
+                    break
+            
+                except Exception as e:
+                    print(f"Attempt {attempt + 1} for segment {start_time}-{end_time} failed with error: {e}. Retrying...")
+                    time.sleep(2 ** attempt)
+
+        # 구간에 대한 결과를 반환
+        return [results.get((start_time, end_time), 'unknown') for (start_time, end_time) in grouped_sentences.keys()]
+    
+    def determine_final_bloom_stage(self, word, language, start_time, end_time):
+        # 단어 및 문장 기반 Bloom 단계 결정
+        word_based_stage = self.tag_bloom_stage(word, language)
+
+        # 해당 시간 구간에 해당하는 문장 필터링
+        sentences = self.sentence_data[
+            (self.sentence_data['start_time'] == start_time) & 
+            (self.sentence_data['end_time'] == end_time)
+        ]['word'].values
+
+        # 문장이 없을 경우 기본값 설정
+        if len(sentences) == 0:
+            sentence_based_stage = 'unknown'
+        else:
+            # numpy 배열을 리스트로 변환 후 GPT 호출
+            grouped_sentences = {(start_time, end_time): list(sentences)}
+            results = self.gpt_bloom_classification(grouped_sentences)
+        
+            # 모든 문장에 대한 Bloom 단계 결과 수집
+            stages = [result for result in results if isinstance(result, str)]
+
+            if not stages:
+                sentence_based_stage = 'unknown'
+            else:
+                # 각 단계의 빈도를 계산
+                stage_counts = Counter(stages)
+                # 가장 빈도가 높은 단계 선택
+                sentence_based_stage = stage_counts.most_common(1)[0][0]
+
+        # 최종 단계 결정 (우선순위 비교)
+        if word_based_stage == 'unknown':
+            return sentence_based_stage
+        elif sentence_based_stage == 'unknown':
+            return word_based_stage
+        else:
+            return self.choose_better_stage(word_based_stage, sentence_based_stage)
+
+    def calculate_bloom_distribution(self):
+        # 구간별 Bloom 단계 분포 계산
+        self.bloom_distribution = self.verb_counts.groupby(
+            ['start_time', 'end_time', 'bloom_stage']
+        ).size().unstack(fill_value=0)
+    
+        # 각 구간에서 가장 빈도가 높은 Bloom 단계 결정
+        self.bloom_distribution['decided_stage'] = self.bloom_distribution.drop(columns='unknown').idxmax(axis=1)
+
+    def decide_bloom_stage(self, row):
+        # 각 구간에서 가장 빈도가 높은 Bloom 단계 결정
+        stages = row.drop('unknown').to_dict()
+        if not stages:
+            return 'unknown'
+        return max(stages, key=lambda stage: (stages[stage], -self.bloom_priority[stage]))
+
+    def merge_segments(self):
+        # 동일한 Bloom 단계를 갖는 구간 병합
+        merged_segments = []
+        start_time, prev_stage, prev_end = None, None, None
+
+        for idx, row in self.bloom_distribution.iterrows():
+            stage = row['decided_stage']
+            current_start = idx[0]  # 'start_time'
+            current_end = idx[1]    # 'end_time'
+
+            if stage != prev_stage:
+                # 이전 구간이 존재하면 병합된 구간으로 추가
+                if prev_stage is not None:
+                    merged_segments.append((start_time, prev_end, prev_stage))
+                # 새로운 구간 시작
+                start_time = current_start
+
+            # 현재 구간의 끝 시간 갱신
+            prev_end = current_end
+            prev_stage = stage
+
+        # 마지막 구간 추가
+        if prev_stage is not None:
+            merged_segments.append((start_time, prev_end, prev_stage))
+
+        return merged_segments
+
+    def plot_donut_chart(self):
+        # Bloom 단계별 도넛 차트
+        bloom_counts = self.verb_counts['bloom_stage'].value_counts().reset_index()
+        bloom_counts.columns = ['bloom_stage', 'counts']
+        bloom_counts = bloom_counts[bloom_counts['bloom_stage'] != 'unknown']
+
+        color_map = {
+            'remember': '#8290c4', 'understand': '#88c1e8',
+            'apply': '#74ac80', 'analyze': '#b1d984',
+            'evaluate': '#fae373', 'create': '#fb8976'
+        }
+
+        fig = px.pie(
+            bloom_counts, names='bloom_stage', values='counts', hole=0.5,
+            color='bloom_stage', color_discrete_map=color_map
+        )
+        return fig
+
+    def plot_dot_graph(self, merged_segments):
+        # 시간 흐름에 따른 Bloom 단계 그래프
+        bloom_stage_mapping = {
+            'remember': 1, 'understand': 2, 'apply': 3,
+            'analyze': 4, 'evaluate': 5, 'create': 6
+        }
+        color_map = {
+            'remember': '#8290c4', 'understand': '#88c1e8',
+            'apply': '#74ac80', 'analyze': '#b1d984',
+            'evaluate': '#fae373', 'create': '#fb8976'
+        }
+
+        final_result = pd.DataFrame(merged_segments, columns=['start_segment', 'end_segment', 'bloom_stage'])
+        final_result['bloom_stage_numeric'] = final_result['bloom_stage'].map(bloom_stage_mapping)
+        final_result['bloom_color'] = final_result['bloom_stage'].map(color_map)
+
+        #선없는 도트 그래프
+        dot_trace = go.Scatter(
+            x=final_result['start_segment'], y=final_result['bloom_stage_numeric'],
+            mode='markers', marker=dict(size=10, color=final_result['bloom_color']), name='Bloom Stages'
+        )
+
+        layout = go.Layout(
+            title='Bloom Stages Over Time', xaxis_title='Time (seconds)', yaxis_title='Bloom Stage (numeric)',
+            yaxis=dict(tickvals=[1, 2, 3, 4, 5, 6], ticktext=['remember', 'understand', 'apply', 'analyze', 'evaluate', 'create']),
+            showlegend=False
+        )
+
+        fig = go.Figure(data=[dot_trace], layout=layout)
+        return fig
+
+    def format_stage_segments(self, merged_segments):
+        # 각 Bloom 단계의 시작-종료 시간 구간 포맷팅
+        stage_dict = {}
+        for segment in merged_segments:
+            start_time, end_time, stage = segment
+            if stage not in stage_dict:
+                stage_dict[stage] = []
+            stage_dict[stage].append(f"{start_time}-{end_time}")
+        stage_segments = {stage: ', '.join(segments) for stage, segments in stage_dict.items()}
+        return stage_segments
+    
+    def analyze_nouns(self, top_n=5):
+        nouns = self.word_data[self.word_data['pos'] == 'noun']
+        nouns_text = ' '.join(nouns['word'])
+
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform([nouns_text])
+
+        # 버전에 따라 적절한 메서드를 사용하여 feature names 가져오기
+        try:
+            feature_names = vectorizer.get_feature_names_out()
+        except AttributeError:
+            feature_names = vectorizer.get_feature_names()
+
+        tfidf_scores = tfidf_matrix.toarray()[0]
+        top_n_indices = tfidf_scores.argsort()[-top_n:][::-1]
+
+        return [feature_names[i] for i in top_n_indices]
+
+#분석기 실행
+import logging
+
+logger = logging.getLogger(__name__)
+# 리다이렉션 됨(result-analsis)
+def run_analysis(request, video_id):
+    # Video ID 및 지원 언어 정보 가져오기
+    video = get_object_or_404(LearningVideo, vid=video_id)
+    logger.info("Running analysis for video_id: %s", video_id)  # video_id 확인
+    language = video.std_lang
+    logger.info("Detected language: %s", language)  # 언어 확인
+    
+    # BloomAnalysisWithGPTandDictionary 인스턴스 생성 후 분석 실행
+    analysis = BloomAnalysisWithGPTandDictionary(video_id=video_id, language=language)
+    
+    # 각 단계의 분석 실행 및 결과 확인 로그 추가
+    try:
+        analysis.process_verbs()
+        logger.info("Verbs processed successfully.")
+
+        analysis.calculate_bloom_distribution()
+        logger.info("Bloom distribution calculated successfully.")
+
+        merged_segments = analysis.merge_segments()
+        logger.info("Merged segments: %s", merged_segments)
+
+        # 결과로 사용할 데이터
+        top_nouns = analysis.analyze_nouns()
+        logger.info("Top nouns: %s", top_nouns)
+
+        stage_segments = analysis.format_stage_segments(merged_segments)
+        logger.info("Stage segments: %s", stage_segments)
+
+        # 차트 생성 후 HTML로 변환
+        donut_chart_html = analysis.plot_donut_chart().to_html(full_html=False)
+        dot_chart_html = analysis.plot_dot_graph(merged_segments).to_html(full_html=False)
+
+        # 성공적으로 처리된 경우 JSON 응답으로 반환
+        logger.info("Returning analysis results as JSON.")
+        return JsonResponse({
+            'success': True,
+            'top_nouns': top_nouns,
+            'stage_segments': stage_segments,
+            'donut_chart': donut_chart_html,
+            'dot_graph': dot_chart_html,
+        })
+    
+    except Exception as e:
+        logger.error("Error during analysis: %s", e)
+        return JsonResponse({'success': False, 'error': str(e)})
+
+# 분석 데이터 저장
+def save_analysis_to_db(request, video_id):
+    if request.method == 'POST':
+        video = get_object_or_404(LearningVideo, vid=video_id)
+        video.learning_status = True
+        video.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
+
+
+def analysis_result(request, video_id):
+    # 분석 결과 페이지 렌더링
+    return render(request, 'analysis_result.html', {
+        'video_id': video_id,
+        # 필요한 컨텍스트 데이터 추가
+    })
+
+# 분석 데이터 저장
+def save_analysis_to_db(request, video_id):
+    if request.method == 'POST':
+        video = get_object_or_404(LearningVideo, vid=video_id)
+        video.learning_status = True
+        video.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
 
 #############################################회원용#################
 # 중복 체크 API 뷰

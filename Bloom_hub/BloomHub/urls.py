@@ -49,9 +49,13 @@ urlpatterns = [
     path('search', views.search, name='searchkor'), # 슬래시 없이 URL 작성
     path('search/result', views.search_result, name='searchresult'),
     path('search/result/kor', views.search_result_kor, name='searchresultkor'),
+    ##################비디오 저장 및 추출 분석#################################
     path('study/<str:video_id>', views.study, name='study'),  # video_id를 인자로 받는 study URL
     path('save_learning_video/', views.save_learning_video, name='save_learning_video'),
     path('run_extractor_and_save_to_db/', views.run_extractor_and_save_to_db,name='run_extractor_and_save_to_db'),
+    path('run_analysis/<str:video_id>/', views.run_analysis, name='run_analysis'),
+    path('analysis_result/<str:video_id>/', views.analysis_result, name='analysis_result'),
+    path('save_analysis_to_db/<str:video_id>/', views.save_analysis_to_db, name='save_analysis_to_db'),
 
     path('analysis/', views.analysis, name='analysis'),
 ]

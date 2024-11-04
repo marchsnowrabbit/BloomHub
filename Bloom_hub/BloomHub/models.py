@@ -1,3 +1,4 @@
+import json
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
 from django.db import models
@@ -67,7 +68,7 @@ class LearningVideo(models.Model):
     )
 
 class WordData(models.Model):
-    video = models.ForeignKey(LearningVideo, related_name='word_data', on_delete=models.CASCADE)
+    video = models.ForeignKey(LearningVideo, to_field='vid', related_name='word_data', on_delete=models.CASCADE)
     word = models.CharField(max_length=255)  # 단어
     pos = models.CharField(max_length=50)  # 품사
     start_time = models.IntegerField()  # 시작 시간 (초 단위)
@@ -77,8 +78,29 @@ class WordData(models.Model):
     data_type = models.CharField(max_length=10, default="word")  # 데이터 유형
 
 class SentenceData(models.Model):
-    video = models.ForeignKey(LearningVideo, related_name='sentence_data', on_delete=models.CASCADE)
+    video = models.ForeignKey(LearningVideo, to_field='vid', related_name='sentence_data', on_delete=models.CASCADE)
     word = models.TextField()  # 문장
     start_time = models.IntegerField()  # 시작 시간 (초 단위)
     end_time = models.IntegerField()  # 종료 시간 (초 단위)
     data_type = models.CharField(max_length=10, default="sentence")  # 데이터 유형
+
+class AnalysisResult(models.Model):
+    video = models.ForeignKey(LearningVideo,to_field='vid',related_name='analysis_results', on_delete=models.CASCADE)
+    bloom_stage_segments = models.JSONField()  # 단계별 구간 정보 (예: {"remember": "0-60, 180-240", ...})
+    top_nouns = models.JSONField()  # 상위 명사 (예: ["Python", "data", "web", ...])
+    donut_chart = models.JSONField()  # Plotly 도넛 차트 JSON 데이터
+    dot_chart = models.JSONField()  # Plotly 단계 분포 차트 JSON 데이터
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class BloomDictionary(models.Model):
+    language = models.CharField(max_length=20)  # 예: 'Korean', 'English'
+    stage = models.CharField(max_length=50)  # 예: 'remember', 'understand', 'apply', etc.
+    words = models.JSONField()  # 각 단계에 해당하는 단어 목록 (예: ["word1", "word2"])
+
+    class Meta:
+        unique_together = ('language', 'stage')  # 언어와 단계가 유일하도록 설정
+
+    def __str__(self):
+        return f"{self.language} - {self.stage}"
+
