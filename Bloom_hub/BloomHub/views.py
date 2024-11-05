@@ -686,9 +686,6 @@ def run_extractor_and_save_to_db(request):
     return JsonResponse({"success": False, "error": "Invalid request method."}, status=400)
 
 #분석기
-# 로깅 설정
-logger = logging.getLogger(__name__)
-
 class BloomAnalysisWithGPTandDictionary:
     def __init__(self, video_id, language):
         self.video_id = video_id
@@ -994,11 +991,17 @@ class BloomAnalysisWithGPTandDictionary:
         return formatted_segments
 
 
-#그래프 객체 생성
+#그래프 객체 생성(디자인 수정가능 여기를 확인하세요!)
+import plotly.express as px
+import plotly.graph_objects as go
+
+# 그래프 객체 생성(디자인 수정가능 여기를 확인하세요!)
 class BloomGraphRenderer:
     def __init__(self, bloom_distribution, merged_segments):
         self.bloom_distribution = bloom_distribution
         self.merged_segments = merged_segments
+
+        print(self.merged_segments)  # 데이터 구조 확인
 
     def plot_donut_chart(self):
         # 각 'decided_stage'의 빈도수를 계산
@@ -1016,30 +1019,68 @@ class BloomGraphRenderer:
             bloom_counts, names='bloom_stage', values='counts', hole=0.5,
             color='bloom_stage', color_discrete_map=color_map
         )
+
+        # 그래프 레이아웃 설정
+        fig.update_layout(
+            width=500,
+            height=500,
+            paper_bgcolor='rgba(0, 0, 0, 0)',  # 완전 투명 배경
+            plot_bgcolor='rgba(0, 0, 0, 0)',   # 그래프 배경 투명
+            font=dict(
+                family='Arial',      # 글꼴체 설정
+                color='#2a3f5f'      # 글자색
+            ),
+            title_font=dict(
+                family='Arial',      # 제목 글꼴체 설정
+                color='#2a3f5f'      # 제목 글자색
+            ),
+        )
         
         return fig
 
     def plot_dot_graph(self):
+        # Bloom 단계와 매핑
         bloom_stage_mapping = {
-            'remember': 1, 'understand': 2, 'apply': 3,
-            'analyze': 4, 'evaluate': 5, 'create': 6
+            'remember': 1,
+            'understand': 2,
+            'apply': 3,
+            'analyze': 4,
+            'evaluate': 5,
+            'create': 6
         }
+
+        # 각 Bloom 단계에 대한 색상 맵
         color_map = {
-            'remember': '#8290c4', 'understand': '#88c1e8',
-            'apply': '#74ac80', 'analyze': '#b1d984',
-            'evaluate': '#fae373', 'create': '#fb8976'
+            'remember': '#8290c4',
+            'understand': '#88c1e8',
+            'apply': '#74ac80',
+            'analyze': '#b1d984',
+            'evaluate': '#fae373',
+            'create': '#fb8976'
         }
 
-        # merged_segments에서 'bloom_stage'를 'decided_stage'로 변경
-        final_result = pd.DataFrame(self.merged_segments, columns=['start_segment', 'end_segment', 'bloom_stage'])
-        final_result['bloom_stage_numeric'] = final_result['bloom_stage'].map(bloom_stage_mapping)
-        final_result['bloom_color'] = final_result['bloom_stage'].map(color_map)
+        # 그래프에 사용할 데이터 초기화
+        x_values = []
+        y_values = []
+        colors = []
 
+        for segment in self.merged_segments:
+            start, end, stage = segment[0], segment[1], segment[2]
+            numeric_stage = bloom_stage_mapping.get(stage.lower())
+    
+            # x 값을 구간별로 나누기
+            if numeric_stage is not None:
+                for time in range(start, end + 1, 60):  # 60초 간격으로 나눔
+                    x_values.append(time)
+                    y_values.append(numeric_stage)
+                    colors.append(color_map[stage.lower()])  # 각 단계에 맞는 색상
+
+        # 도트 그래프 데이터 구성
         dot_trace = go.Scatter(
-            x=final_result['start_segment'].tolist(),  # ndarray를 리스트로 변환
-            y=final_result['bloom_stage_numeric'].tolist(),  # ndarray를 리스트로 변환
-            mode='markers', 
-            marker=dict(size=10, color=final_result['bloom_color']),
+            x=x_values,
+            y=y_values,
+            mode='markers',
+            marker=dict(size=10, color=colors),
             name='Bloom Stages'
         )
 
@@ -1047,20 +1088,32 @@ class BloomGraphRenderer:
             title='Bloom Stages Over Time', 
             xaxis_title='Time (seconds)', 
             yaxis_title='Bloom Stage (numeric)',
-            yaxis=dict(tickvals=[1, 2, 3, 4, 5, 6], ticktext=['remember', 'understand', 'apply', 'analyze', 'evaluate', 'create']),
-            showlegend=False
+            yaxis=dict(
+                tickvals=list(bloom_stage_mapping.values()),  # 모든 Bloom 단계 값
+                ticktext=list(bloom_stage_mapping.keys()),  # 모든 Bloom 단계 이름
+                range=[0.5, 6.5]  # y축 범위를 설정하여 모든 단계가 보이도록 함
+            ),
+            height=400,  # 높이 설정
+            width=600,   # 너비 설정
+            paper_bgcolor='rgba(0, 0, 0, 0)',  # 완전 투명 배경
+            plot_bgcolor='rgba(0, 0, 0, 0)',   # 그래프 배경 투명
+            font=dict(
+                family='Arial',      # 글꼴체 설정
+                color='#2a3f5f'      # 글자색
+            ),
+            title_font=dict(
+                family='Arial',      # 제목 글꼴체 설정
+                color='#2a3f5f'      # 제목 글자색
+            ),
         )
 
+        # Figure 객체 생성 및 반환
         fig = go.Figure(data=[dot_trace], layout=layout)
         return fig
 
 
     
 #분석기 실행
-import logging
-
-logger = logging.getLogger(__name__)
-
 def run_analysis(request, video_id):
     video = LearningVideo.objects.get(vid=video_id)
     language = video.std_lang
@@ -1086,6 +1139,9 @@ def run_analysis(request, video_id):
         
         logger.info("Generating dot graph...")
         dot_graph = graph_renderer.plot_dot_graph()
+
+        logger.debug(f"Donut chart data: {pio.to_json(donut_chart)}")
+        logger.debug(f"Dot graph data: {pio.to_json(dot_graph)}")
 
         # JSON 변환
         response_data = {

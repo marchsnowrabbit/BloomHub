@@ -8,6 +8,7 @@
         .video-container { text-align: center; margin-top: 20px; }
         .info { font-size: 18px; margin-top: 10px; }
         #loading-message { display: none; color: blue; font-size: 16px; }
+        #donut-chart, #dot-graph { width: 500px; height: 400px; } /* 그래프 크기 조정 */
     </style>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script><!--plotly 불러오기-->
 </head>
@@ -174,15 +175,32 @@
                     var donutChartDiv = document.getElementById('donut-chart');
                     var dotGraphDiv = document.getElementById('dot-graph');
 
-                    // Plotly.newPlot을 호출할 때 변수로 전달
-                    Plotly.newPlot(donutChartDiv, data.donut_chart.data, data.donut_chart.layout);
-                    Plotly.newPlot(dotGraphDiv, data.dot_graph.data, data.dot_graph.layout);
+                    console.log("Donut chart data:", data.donut_chart);
+                    console.log("Dot graph data:", data.dot_graph);
 
-                    console.log("Donut chart data:", data.donut_chart.data);
-                    console.log("Donut chart layout:", data.donut_chart.layout);
-                    console.log("Dot graph data:", data.dot_graph.data);
-                    console.log("Dot graph layout:", data.dot_graph.layout);
-            
+                    // 도넛 차트 렌더링
+                    try {
+                        var donutChartData = JSON.parse(data.donut_chart);
+                        Plotly.newPlot(donutChartDiv, donutChartData.data, donutChartData.layout);
+                    } catch (error) {
+                        console.error("Failed to parse donut chart data:", error);
+                    }
+
+                    // 도트 그래프 렌더링
+                    try {
+                        var dotGraphData = JSON.parse(data.dot_graph); // JSON 문자열을 객체로 파싱
+                        // y값이 null인 경우 0으로 처리
+                        dotGraphData.data.forEach(trace => {
+                        trace.y = trace.y.map(yValue => (yValue === null ? 0 : yValue)); // null 값을 0으로 대체
+                        trace.marker.color = trace.marker.color.map((color, index) => {
+                            // y값이 0인 경우는 색상을 투명으로 설정
+                            return trace.y[index] === 0 ? 'rgba(0, 0, 0, 0)' : color; 
+                            });
+                        });
+                        Plotly.newPlot(dotGraphDiv, dotGraphData.data, dotGraphData.layout); // 그래프 그리기
+                    } catch (error) {
+                        console.error("Failed to parse dot graph data:", error);
+                    }
                     alert("분석이 완료되었습니다!");
                 } else {
                     alert(data.error || "분석 중 오류가 발생했습니다.");
@@ -191,7 +209,7 @@
             .catch(error => {
                 document.getElementById("loading-message").style.display = "none";
                 console.error("분석 중 오류:", error);
-                 alert("분석 중 오류가 발생했습니다.");
+                alert("분석 중 오류가 발생했습니다.");
             });
         }
 
