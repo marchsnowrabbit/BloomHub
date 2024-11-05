@@ -170,8 +170,18 @@
                         stageSegmentsList.appendChild(li);
                     }
 
-                    Plotly.newPlot('donut-chart', data.donut_chart.data, data.donut_chart.layout);
-                    Plotly.newPlot('dot-graph', data.dot_graph.data, data.dot_graph.layout);
+                    // HTML에서 div 요소를 직접 가져와 변수로 저장
+                    var donutChartDiv = document.getElementById('donut-chart');
+                    var dotGraphDiv = document.getElementById('dot-graph');
+
+                    // Plotly.newPlot을 호출할 때 변수로 전달
+                    Plotly.newPlot(donutChartDiv, data.donut_chart.data, data.donut_chart.layout);
+                    Plotly.newPlot(dotGraphDiv, data.dot_graph.data, data.dot_graph.layout);
+
+                    console.log("Donut chart data:", data.donut_chart.data);
+                    console.log("Donut chart layout:", data.donut_chart.layout);
+                    console.log("Dot graph data:", data.dot_graph.data);
+                    console.log("Dot graph layout:", data.dot_graph.layout);
             
                     alert("분석이 완료되었습니다!");
                 } else {

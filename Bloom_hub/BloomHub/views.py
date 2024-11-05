@@ -701,6 +701,7 @@ class BloomAnalysisWithGPTandDictionary:
             'remember': 6, 'understand': 5, 'apply': 4,
             'analyze': 3, 'evaluate': 2, 'create': 1
         }
+        self.gpt_classification_results = {}  # GPT 분석 결과 초기화
         logger.info("BloomAnalysisWithGPTandDictionary initialized.")
 
     def load_data_from_db(self, model_name):
@@ -737,7 +738,7 @@ class BloomAnalysisWithGPTandDictionary:
             lambda row: self.determine_final_bloom_stage(row['word'], row['language'], row['start_time'], row['end_time']),
             axis=1
         )
-        logger.info(f"Verbs processed successfully. Bloom stages determined for each verb.")
+        logger.info(f"Verbs processed successfully. Verb counts:\n{self.verb_counts}")
 
     def tag_bloom_stage(self, word, language):
         bloom_dict = self.bloom_dict_ko if language == 'Korean' else self.bloom_dict_en
@@ -747,13 +748,14 @@ class BloomAnalysisWithGPTandDictionary:
                 return stage
         logger.debug(f"Word '{word}' not found in any stage for language '{language}'")
         return 'unknown'
-
+    
     def gpt_bloom_classification(self, grouped_sentences):
-        client = OpenAI(api_key="your-api-key")
+        client = OpenAI(api_key="your-api-key")  # API 키는 적절히 관리
         max_retries = 3  # 최대 재시도 횟수
 
         results = {}  # 결과를 저장할 딕셔너리
-       
+        valid_stages = {'Remember', 'Understand', 'Apply', 'Analyze', 'Evaluate', 'Create'}
+
         for (start_time, end_time), combined_text in grouped_sentences.items():
             # 각 텍스트 구간에 대해 GPT에 요청할 메시지 준비
             user_content = (
@@ -765,7 +767,7 @@ class BloomAnalysisWithGPTandDictionary:
                 "Format each sentence with its classification like this:\n"
                 "- Sentence: <Complete Sentence>\n- Stage: <Bloom's Taxonomy Stage>"
             )
-            
+
             messages = [
                 {"role": "system", "content": "You are a helpful assistant that classifies text into Bloom's Taxonomy stages."},
                 {"role": "user", "content": user_content}
@@ -775,73 +777,148 @@ class BloomAnalysisWithGPTandDictionary:
                 try:
                     # GPT 모델에 요청 전송
                     completion = client.chat.completions.create(
-                        model="gpt-4",
+                        model="gpt-4o-mini",
                         messages=messages,
                         temperature=0.0,
                         timeout=30
                     )
 
-                    # 올바른 형식으로 응답 추출
+                     # 올바른 형식으로 응답 추출
                     raw_response = completion.choices[0].message.content
                     print("\nGPT Processed Response:\n", raw_response)  # 디버깅용 출력
 
                     # 응답을 줄 단위로 나누고 빈 줄 제거
                     response_lines = [line.strip() for line in raw_response.split('\n') if line.strip()]
-                    results[(start_time, end_time)] = response_lines if response_lines else 'unknown'
+
+                    # 단계 단어만 추출
+                    stage_lines = [
+                        line.split(": ")[1] for line in response_lines 
+                        if line.startswith("- Stage:") and line.split(": ")[1] in valid_stages
+                    ]
+
+                    # 단계 추출 성공 여부 로깅
+                    if stage_lines:
+                        logger.info(f"Bloom stages for segment {start_time}-{end_time}: {stage_lines}")
+                    else:
+                        logger.warning(f"No valid Bloom stages found for segment {start_time}-{end_time}. Defaulting to 'unknown'.")
+
+                    # 결과를 저장
+                    results[(start_time, end_time)] = stage_lines if stage_lines else ['unknown']
                     print(f"GPT classification for segment {start_time}-{end_time} completed successfully.")
                     break  # 성공적으로 처리된 경우 루프 종료
 
                 except (KeyError, IndexError, AttributeError) as e:
                     print(f"Error for segment {start_time}-{end_time}: {e}. Assigning 'unknown' for this segment.")
-                    results[(start_time, end_time)] = 'unknown'
+                    results[(start_time, end_time)] = ['unknown']
                     break  # 오류 발생 시 'unknown' 할당 후 루프 종료
-                
+            
                 except Exception as e:
                     print(f"Attempt {attempt + 1} for segment {start_time}-{end_time} failed with error: {e}. Retrying...")
                     time.sleep(2 ** attempt)  # 재시도 전에 지수적으로 지연 시간 증가
 
-        # 모든 구간의 분석 결과 반환
-        return [results.get((start_time, end_time), 'unknown') for (start_time, end_time) in grouped_sentences.keys()]
+        # 모든 구간의 분석 결과를 클래스 속성에 저장
+        self.gpt_classification_results = results  # 결과를 클래스 속성에 저장
+
+        # 구간에 대한 결과를 반환
+        final_results = []
+        for (start_time, end_time) in grouped_sentences.keys():
+            stage_result = results.get((start_time, end_time), ['unknown'])
+            if stage_result == ['unknown']:
+                logger.warning(f"Final result for segment {start_time}-{end_time} is unknown.")
+            final_results.append(stage_result)
+
+        return final_results
+
 
     def determine_final_bloom_stage(self, word, language, start_time, end_time):
         word_based_stage = self.tag_bloom_stage(word, language)
+        logger.info(f"Word-based stage for '{word}' at segment {start_time}-{end_time}: {word_based_stage}")
+
+        # 특정 구간의 문장을 가져와서 GPT 분석에 사용
         sentences = self.sentence_data[
             (self.sentence_data['start_time'] == start_time) & 
             (self.sentence_data['end_time'] == end_time)
         ]['word'].values
+    
+        logger.info(f"Sentences for segment {start_time}-{end_time}: {sentences}")  # 추가 로그
         sentence_based_stage = 'unknown'
+
         if len(sentences) > 0:
             grouped_sentences = {(start_time, end_time): list(sentences)}
             results = self.gpt_bloom_classification(grouped_sentences)
-            stages = [result for result in results if isinstance(result, str)]
-            stage_counts = Counter(stages)
-            if stage_counts:
-                sentence_based_stage = stage_counts.most_common(1)[0][0]
+        
+            # 모든 결과 및 필터링 확인
+            logger.info(f"GPT classification results for segment {start_time}-{end_time}: {results}")
+        
+            stages = [stage for sublist in results for stage in sublist if stage != 'unknown']
+        
+            logger.info(f"Filtered stages for segment {start_time}-{end_time}: {stages}")  # 추가 로그
 
-        if word_based_stage == 'unknown':
-            return sentence_based_stage
-        elif sentence_based_stage == 'unknown':
+            if stages:
+                stage_counts = Counter(stages)
+                sentence_based_stage = stage_counts.most_common(1)[0][0]  # 가장 빈도가 높은 단계 선택
+                logger.info(f"Sentence-based stage for segment {start_time}-{end_time}: {sentence_based_stage}")
+
+        # Bloom 단계 우선순위 적용
+        if word_based_stage != 'unknown' and sentence_based_stage != 'unknown':
+            final_stage = self.choose_better_stage(word_based_stage, sentence_based_stage)
+            logger.info(f"Final stage (combined) for segment {start_time}-{end_time}: {final_stage}")
+            return final_stage
+        elif word_based_stage != 'unknown':
+            logger.info(f"Final stage (word-based only) for segment {start_time}-{end_time}: {word_based_stage}")
             return word_based_stage
         else:
-            return sentence_based_stage
-    
+            logger.info(f"Final stage (sentence-based only) for segment {start_time}-{end_time}: {sentence_based_stage}")
+        return sentence_based_stage
+
+
+    def choose_better_stage(self, stage1, stage2):
+        """비교하여 우선순위가 높은 Bloom 단계 반환"""
+        if stage1 not in self.bloom_priority or stage2 not in self.bloom_priority:
+            logger.warning(f"Unknown stage encountered: {stage1}, {stage2}")
+            return 'unknown'
+        better_stage = stage1 if self.bloom_priority[stage1] > self.bloom_priority[stage2] else stage2
+        logger.debug(f"Choosing better stage between '{stage1}' and '{stage2}': {better_stage}")
+        return better_stage
+
     def calculate_bloom_distribution(self):
-        # 구간별 Bloom 단계 분포 계산
-        self.bloom_distribution = self.verb_counts.groupby(
-            ['start_time', 'end_time', 'bloom_stage']
+        # 'unknown' bloom_stage 제외한 verb counts 필터링
+        filtered_counts = self.verb_counts[self.verb_counts['bloom_stage'] != 'unknown']
+        logger.info(f"Filtered verb counts for distribution calculation: {filtered_counts}")
+
+        # GPT 문장 분석 결과에서 구간별 Bloom 단계별 개수 생성
+        gpt_stage_data = []
+        for (start_time, end_time), stages in self.gpt_classification_results.items():
+            for stage in stages:
+                if stage != 'unknown':
+                    gpt_stage_data.append({
+                        'start_time': start_time,
+                        'end_time': end_time,
+                        'bloom_stage': stage
+                    })
+    
+        gpt_stage_counts = pd.DataFrame(gpt_stage_data)
+        logger.info(f"GPT stage counts for each segment: {gpt_stage_counts}")
+
+        # verb counts와 GPT stage counts 결합
+        combined_counts = pd.concat([filtered_counts, gpt_stage_counts], ignore_index=True)
+        logger.info(f"Combined counts (verbs + GPT sentences) for distribution calculation: {combined_counts}")
+
+        # Bloom 단계별로 분포 계산
+        self.bloom_distribution = combined_counts.groupby(
+             ['start_time', 'end_time', 'bloom_stage']
         ).size().unstack(fill_value=0)
 
-         # 분포 계산 결과 로깅
-        logger.info("Bloom stage distribution calculated:")
+        logger.info("Filtered Bloom stage distribution calculated:")
         logger.debug(self.bloom_distribution)
 
         # 각 구간에서 가장 빈도가 높은 Bloom 단계 결정
-        self.bloom_distribution['decided_stage'] = self.bloom_distribution.drop(columns='unknown').idxmax(axis=1)
+        self.bloom_distribution['decided_stage'] = self.bloom_distribution.idxmax(axis=1)
 
-        # 최종 단계 결정 결과 로깅
         logger.info("Decided stages for each segment determined:")
         logger.debug(self.bloom_distribution['decided_stage'])
 
+        return self.bloom_distribution
 
     def decide_bloom_stage(self, row):
         # 각 구간에서 가장 빈도가 높은 Bloom 단계 결정
@@ -853,7 +930,6 @@ class BloomAnalysisWithGPTandDictionary:
         decided_stage = max(stages, key=lambda stage: (stages[stage], -self.bloom_priority[stage]))
         logger.debug(f"Decided Bloom stage: {decided_stage}")
         return decided_stage
-
 
     def merge_segments(self):
         # 동일한 Bloom 단계를 갖는 구간 병합
@@ -890,7 +966,6 @@ class BloomAnalysisWithGPTandDictionary:
 
         return merged_segments
 
-
     def analyze_nouns(self, top_n=5):
         nouns = self.word_data[self.word_data['pos'] == 'noun']
         nouns_text = ' '.join(nouns['word'])
@@ -919,13 +994,15 @@ class BloomAnalysisWithGPTandDictionary:
         return formatted_segments
 
 
+#그래프 객체 생성
 class BloomGraphRenderer:
     def __init__(self, bloom_distribution, merged_segments):
         self.bloom_distribution = bloom_distribution
         self.merged_segments = merged_segments
 
     def plot_donut_chart(self):
-        bloom_counts = self.bloom_distribution['bloom_stage'].value_counts().reset_index()
+        # 각 'decided_stage'의 빈도수를 계산
+        bloom_counts = self.bloom_distribution['decided_stage'].value_counts().reset_index()
         bloom_counts.columns = ['bloom_stage', 'counts']
         bloom_counts = bloom_counts[bloom_counts['bloom_stage'] != 'unknown']
 
@@ -939,6 +1016,7 @@ class BloomGraphRenderer:
             bloom_counts, names='bloom_stage', values='counts', hole=0.5,
             color='bloom_stage', color_discrete_map=color_map
         )
+        
         return fig
 
     def plot_dot_graph(self):
@@ -952,65 +1030,83 @@ class BloomGraphRenderer:
             'evaluate': '#fae373', 'create': '#fb8976'
         }
 
+        # merged_segments에서 'bloom_stage'를 'decided_stage'로 변경
         final_result = pd.DataFrame(self.merged_segments, columns=['start_segment', 'end_segment', 'bloom_stage'])
         final_result['bloom_stage_numeric'] = final_result['bloom_stage'].map(bloom_stage_mapping)
         final_result['bloom_color'] = final_result['bloom_stage'].map(color_map)
 
         dot_trace = go.Scatter(
-            x=final_result['start_segment'], y=final_result['bloom_stage_numeric'],
-            mode='markers', marker=dict(size=10, color=final_result['bloom_color']), name='Bloom Stages'
+            x=final_result['start_segment'].tolist(),  # ndarray를 리스트로 변환
+            y=final_result['bloom_stage_numeric'].tolist(),  # ndarray를 리스트로 변환
+            mode='markers', 
+            marker=dict(size=10, color=final_result['bloom_color']),
+            name='Bloom Stages'
         )
 
         layout = go.Layout(
-            title='Bloom Stages Over Time', xaxis_title='Time (seconds)', yaxis_title='Bloom Stage (numeric)',
+            title='Bloom Stages Over Time', 
+            xaxis_title='Time (seconds)', 
+            yaxis_title='Bloom Stage (numeric)',
             yaxis=dict(tickvals=[1, 2, 3, 4, 5, 6], ticktext=['remember', 'understand', 'apply', 'analyze', 'evaluate', 'create']),
             showlegend=False
         )
 
         fig = go.Figure(data=[dot_trace], layout=layout)
         return fig
+
+
     
 #분석기 실행
-# study.html에 띄움
+import logging
+
+logger = logging.getLogger(__name__)
+
 def run_analysis(request, video_id):
     video = LearningVideo.objects.get(vid=video_id)
     language = video.std_lang
     analyzer = BloomAnalysisWithGPTandDictionary(video_id, language)
 
     try:
+        logger.info("Processing verbs...")
         analyzer.process_verbs()
+        logger.info("Calculating bloom distribution...")
         analyzer.calculate_bloom_distribution()
+        logger.info("Merging segments...")
         merged_segments = analyzer.merge_segments()
 
+        logger.info("Formatting stage segments...")
         stage_segments = analyzer.format_stage_segments(merged_segments)
+        logger.info("Analyzing nouns...")
         top_nouns = analyzer.analyze_nouns()
 
         # 그래프 생성
+        logger.info("Generating donut chart...")
         graph_renderer = BloomGraphRenderer(analyzer.bloom_distribution, merged_segments)
         donut_chart = graph_renderer.plot_donut_chart()
+        
+        logger.info("Generating dot graph...")
         dot_graph = graph_renderer.plot_dot_graph()
 
+        # JSON 변환
         response_data = {
             "success": True,
             "top_nouns": top_nouns,
             "stage_segments": stage_segments,
-            "donut_chart": donut_chart.to_plotly_json(),  # Plotly 그래프 데이터를 JSON으로 변환
-            "dot_graph": dot_graph.to_plotly_json()       # Plotly 그래프 데이터를 JSON으로 변환
+            "donut_chart": pio.to_json(donut_chart),  # Plotly 그래프 데이터를 JSON으로 변환
+            "dot_graph": pio.to_json(dot_graph)       # Plotly 그래프 데이터를 JSON으로 변환
         }
+        logger.info("Analysis completed successfully.")
+
     except Exception as e:
+        logger.error(f"An error occurred during analysis: {str(e)}")
         response_data = {"success": False, "error": str(e)}
+
+    logger.debug(f"Response data: {response_data}")
 
     return JsonResponse(response_data)
 
 
-# 분석 데이터 저장
-def save_analysis_to_db(request, video_id):
-    if request.method == 'POST':
-        video = get_object_or_404(LearningVideo, vid=video_id)
-        video.learning_status = True
-        video.save()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False}, status=400)
+
 
 
 
