@@ -53,9 +53,7 @@ urlpatterns = [
     path('study/<str:video_id>', views.study, name='study'),  # video_id를 인자로 받는 study URL
     path('save_learning_video/', views.save_learning_video, name='save_learning_video'),
     path('run_extractor_and_save_to_db/', views.run_extractor_and_save_to_db,name='run_extractor_and_save_to_db'),
-    path('run_analysis/<str:video_id>/', views.run_analysis, name='run_analysis'),
-    path('analysis_result/<str:video_id>/', views.analysis_result, name='analysis_result'),
-    path('save_analysis_to_db/<str:video_id>/', views.save_analysis_to_db, name='save_analysis_to_db'),
+    path('run_analysis/<str:video_id>/', views.run_analysis, name='run_analysis'), 
 
     path('analysis/', views.analysis, name='analysis'),
 ]

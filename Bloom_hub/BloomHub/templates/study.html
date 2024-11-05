@@ -9,6 +9,7 @@
         .info { font-size: 18px; margin-top: 10px; }
         #loading-message { display: none; color: blue; font-size: 16px; }
     </style>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script><!--plotly 불러오기-->
 </head>
 <body>
     <h1>학습하기</h1>
@@ -31,35 +32,29 @@
             <label><input type="radio" name="std_lang" value="EN"> 영어</label>
         </p>
     
-        <!-- 학습할 영상에 저장 버튼 -->
         <button id="save-learning-video" class="button">학습할 영상에 저장</button>
-        <!-- 분석하기 버튼 -->
-         <!-- 분석 버튼 -->
         <button id="analyze-video">분석하기</button>
         <div id="loading-message">로딩 중...</div>
-        <!-- 분석 결과를 표시할 영역 -->
+    </div>
+
+    <!-- 분석 결과를 표시할 영역 -->
     <div id="analysis-result" style="display: none;">
         <div class="result-section">
             <h2>Bloom 단계별 구간</h2>
             <ul class="stage-list" id="stage-segments"></ul>
         </div>
-
         <div class="result-section">
             <h2>주요 명사 키워드 (TF-IDF)</h2>
             <ul class="top-nouns" id="top-nouns"></ul>
         </div>
-
         <div class="result-section">
             <h2>Bloom 단계별 도넛 차트</h2>
             <div id="donut-chart"></div>
         </div>
-
         <div class="result-section">
             <h2>Bloom 단계별 시간 흐름 그래프</h2>
             <div id="dot-graph"></div>
         </div>
-    </div>
-    
     </div>
 
     <a href="/search">검색 결과로 돌아가기</a>
@@ -79,7 +74,6 @@
         }
         function onPlayerReady(event) { event.target.playVideo(); }
 
-        // 학습할 영상에 저장 버튼 클릭 이벤트
         document.getElementById("save-learning-video").addEventListener("click", function() {
             const selectedLang = document.querySelector('input[name="std_lang"]:checked').value;
             fetch("{% url 'save_learning_video' %}", {
@@ -104,21 +98,15 @@
             .catch(error => console.error("저장 중 오류:", error));
         });
 
-        // 추출 시작 버튼 클릭 이벤트
         document.getElementById("analyze-video").addEventListener("click", function() {
             const selectedLang = document.querySelector('input[name="std_lang"]:checked').value;
             const videoId = "{{ video.videoId }}";
-            const setTime = "{{ video.duration_seconds }}"; // setTime 가져오기
+            const setTime = "{{ video.duration_seconds }}";
 
-            // 확인용 콘솔 출력
             console.log("Starting extraction...");
-            console.log("videoId:", videoId); 
-            console.log("setTime:", setTime); 
-            console.log("selectedLang:", selectedLang);
-
             document.getElementById("loading-message").style.display = "block";
 
-            fetch("{% url 'run_extractor_and_save_to_db' %}", {  // URL을 'run_extractor_and_save_to_db'로 변경
+            fetch("{% url 'run_extractor_and_save_to_db' %}", {  
                 method: "POST",
                 headers: { "Content-Type": "application/json", "X-CSRFToken": "{{ csrf_token }}" },
                 body: JSON.stringify({
@@ -132,9 +120,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Extraction response:", data);  // 추출 응답 확인
+                console.log("Extraction response:", data); 
                 if (data.success) {
-                    // 추출 완료 후 즉시 분석 실행
                     return runAnalysis(videoId);
                 } else {
                     document.getElementById("loading-message").style.display = "none";
@@ -148,7 +135,6 @@
             });
         });
 
-        // 분석 시작 함수
         function runAnalysis(videoId) {
             console.log("Starting analysis for videoId:", videoId);
 
@@ -162,11 +148,32 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Analysis response:", data);  // 분석 응답 확인
                 document.getElementById("loading-message").style.display = "none";
+                console.log("Analysis response:", data);
+
                 if (data.success) {
+                    document.getElementById("analysis-result").style.display = "block";
+
+                    const topNounsList = document.getElementById("top-nouns");
+                    topNounsList.innerHTML = "";
+                    data.top_nouns.forEach(noun => {
+                        const li = document.createElement("li");
+                        li.textContent = noun;
+                        topNounsList.appendChild(li);
+                    });
+
+                    const stageSegmentsList = document.getElementById("stage-segments");
+                    stageSegmentsList.innerHTML = "";
+                    for (const [stage, segment] of Object.entries(data.stage_segments)) {
+                        const li = document.createElement("li");
+                        li.textContent = `${stage}: ${segment}`;
+                        stageSegmentsList.appendChild(li);
+                    }
+
+                    Plotly.newPlot('donut-chart', data.donut_chart.data, data.donut_chart.layout);
+                    Plotly.newPlot('dot-graph', data.dot_graph.data, data.dot_graph.layout);
+            
                     alert("분석이 완료되었습니다!");
-                    window.location.href = `/analysis_result/${videoId}/`; // 결과 페이지로 리디렉션
                 } else {
                     alert(data.error || "분석 중 오류가 발생했습니다.");
                 }
@@ -174,7 +181,7 @@
             .catch(error => {
                 document.getElementById("loading-message").style.display = "none";
                 console.error("분석 중 오류:", error);
-                alert("분석 중 오류가 발생했습니다.");
+                 alert("분석 중 오류가 발생했습니다.");
             });
         }
 
