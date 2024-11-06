@@ -54,6 +54,8 @@ urlpatterns = [
     path('save_learning_video/', views.save_learning_video, name='save_learning_video'),
     path('run_extractor_and_save_to_db/', views.run_extractor_and_save_to_db,name='run_extractor_and_save_to_db'),
     path('run_analysis/<str:video_id>/', views.run_analysis, name='run_analysis'), 
+    path('save_analysis_result/', views.save_analysis_result, name='save_analysis_result'),
+    path('get_analysis_result/<str:video_id>/',views.get_analysis_result, name='get_analysis_result'),
 
     path('analysis/', views.analysis, name='analysis'),
 ]

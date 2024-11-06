@@ -1,4 +1,5 @@
 import os,json,logging,string
+import traceback
 import isodate,urllib,csv,re,time
 import random
 import pandas as pd
@@ -22,7 +23,7 @@ from pymongo import MongoClient
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import CouldNotRetrieveTranscript
 from konlpy.tag import Okt
-from .models import WordData, SentenceData  # 모델 임포트
+from .models import WordData, SentenceData, AnalysisResult  # 모델 임포트
 from django.apps import apps
 from collections import Counter
 import plotly.io as pio
@@ -589,35 +590,31 @@ def extract_video_id(youtube_url):
 
 logger = logging.getLogger('myapp')
 
+#추출기 실행 및 데이터 저장
 def run_extractor_and_save_to_db(request):
     if request.method == "POST":
         data = json.loads(request.body)
 
-        # 로그 추가
-        logger.info("Received data: %s", data)
-
-        video_url = data.get("video_id")  # 이 단계에서는 링크 형태로 받음
+        video_url = data.get("video_id")
         set_time = data.get("setTime")
         std_lang = data.get("std_lang")
         wikifier_api_key = request.user.wikifier_api_key
         user_id = request.user.user_id
 
-        # video_id를 링크 형태에서 추출
         video_id = extract_video_id(video_url)
-
-        # 로깅 정보 출력
-        logger.info("Extracted Video ID: %s, Set Time: %s, Std Lang: %s", video_id, set_time, std_lang)
-
         if not video_id or not set_time:
             return JsonResponse({"success": False, "error": "video_id and setTime are required."})
-        
-        # 로그 추가
-        logger.info("Received data in run_extractor_and_save_to_db: %s", data)
 
-        # LearningVideo 저장
-        video, created = LearningVideo.objects.update_or_create(
-            vid=video_id,  # ID만 저장
-            defaults={
+        # MongoDB 연결
+        db = get_mongo_connection()
+        learning_video_collection = db['BloomHub_learningvideo']
+        worddata_collection = db['BloomHub_worddata']
+        sentencedata_collection = db['BloomHub_sentencedata']
+
+        # LearningVideo 저장 또는 업데이트
+        learning_video_collection.update_one(
+            {"vid": video_id},
+            {"$set": {
                 'title': data.get("title"),
                 'setTime': set_time,
                 'uploader': data.get("uploader"),
@@ -625,61 +622,25 @@ def run_extractor_and_save_to_db(request):
                 'std_lang': std_lang,
                 'user_id': user_id,
                 'learning_status': False
-            }
+            }},
+            upsert=True
         )
 
-        # 로그로 값 출력
-        logger.debug("Received video_id: %s, set_time: %s, user_id: %s", video_id, set_time, user_id)
+        # 기존에 저장된 추출 데이터 확인
+        existing_word_data = worddata_collection.count_documents({"video_id": video_id}) > 0
+        existing_sentence_data = sentencedata_collection.count_documents({"video_id": video_id}) > 0
 
-        # 추출기에서 사용할 비디오 URL 형태의 vid 전달
-        if not is_valid_youtube_url(video_url):
-            video_url = f"https://www.youtube.com/watch?v={video_url}"
+        # 데이터가 이미 존재할 경우 분석기로 넘어가기
+        if existing_word_data and existing_sentence_data:
+            return run_analysis(request, video_id)
 
-        # 언어에 따라 적절한 추출기를 선택
+        # 언어에 따라 적절한 추출기 선택
         if std_lang == "KR":
             extractor = KoreanScriptExtractor(vid=video_url, setTime=set_time, wikiUserKey=wikifier_api_key)
         elif std_lang == "EN":
             extractor = EnglishScriptExtractor(vid=video_url, setTime=set_time, wikiUserKey=wikifier_api_key)
         else:
             return JsonResponse({"success": False, "error": "Invalid language selection."})
-
-        # 데이터 추출
-        word_data_df = extractor.url_to_wiki()
-        sentence_data = extractor.sentences_for_gpt
-
-        # WordData 저장
-        word_data_objects = [
-            WordData(
-                video=video,
-                url=row['url'],
-                page_rank=row['pageRank'],
-                word=row['word'],
-                pos=row['pos'],
-                start_time=row['start_time'],
-                end_time=row['end_time']
-            ) for index, row in word_data_df.iterrows()
-        ]
-        WordData.objects.bulk_create(word_data_objects)
-
-        # SentenceData 저장 (동일 구간의 문장을 하나로 합침)
-        sentence_data_combined = {}
-        for sentence in sentence_data:
-            time_key = (sentence["start_time"], sentence["end_time"])
-            if time_key not in sentence_data_combined:
-                sentence_data_combined[time_key] = []
-            sentence_data_combined[time_key].append(sentence["word"])
-        
-        sentence_data_objects = [
-            SentenceData(
-                video=video,
-                word=" ".join(words),  # 같은 구간의 문장들을 하나로 결합
-                start_time=start_time,
-                end_time=end_time
-            )
-            for (start_time, end_time), words in sentence_data_combined.items()
-        ]
-
-        SentenceData.objects.bulk_create(sentence_data_objects)
 
         return JsonResponse({"success": True, "message": "Data saved successfully."})
 
@@ -1064,16 +1025,25 @@ class BloomGraphRenderer:
         y_values = []
         colors = []
 
+        # 겹치는 구간을 저장하기 위한 딕셔너리
+        active_stages = {}
+
         for segment in self.merged_segments:
             start, end, stage = segment[0], segment[1], segment[2]
             numeric_stage = bloom_stage_mapping.get(stage.lower())
     
-            # x 값을 구간별로 나누기
             if numeric_stage is not None:
+                # 겹치는 구간 처리
                 for time in range(start, end + 1, 60):  # 60초 간격으로 나눔
-                    x_values.append(time)
-                    y_values.append(numeric_stage)
-                    colors.append(color_map[stage.lower()])  # 각 단계에 맞는 색상
+                    if time not in active_stages or active_stages[time] < numeric_stage:
+                        active_stages[time] = numeric_stage  # 더 높은 단계로 업데이트
+
+        # active_stages를 사용하여 x, y, color 값을 설정
+        for time, stage in active_stages.items():
+            x_values.append(time)
+            y_values.append(stage)
+            colors.append(color_map[list(bloom_stage_mapping.keys())[stage - 1]])  # 각 단계에 맞는 색상
+
 
         # 도트 그래프 데이터 구성
         dot_trace = go.Scatter(
@@ -1111,12 +1081,34 @@ class BloomGraphRenderer:
         fig = go.Figure(data=[dot_trace], layout=layout)
         return fig
 
-
     
 #분석기 실행
 def run_analysis(request, video_id):
-    video = LearningVideo.objects.get(vid=video_id)
-    language = video.std_lang
+    db = get_mongo_connection()
+    learning_video_collection = db['BloomHub_learningvideo']
+    analysis_result_collection = db['BloomHub_analysisresult']
+
+    # LearningVideo에서 비디오 정보 가져오기
+    video = learning_video_collection.find_one({"vid": video_id})
+    if not video:
+        return JsonResponse({"success": False, "error": "Video not found."})
+
+    # 분석 결과가 이미 존재하는지 확인
+    existing_analysis = analysis_result_collection.find_one({"video_id": video_id})
+    if existing_analysis:
+        # 이미 분석 결과가 존재하는 경우
+        response_data = {
+            "success": True,
+            "top_nouns": existing_analysis.get("top_nouns"),
+            "stage_segments": existing_analysis.get("bloom_stage_segments"),
+            "donut_chart": existing_analysis.get("donut_chart"),
+            "dot_graph": existing_analysis.get("dot_chart")
+        }
+        logger.info("Existing analysis found. Returning existing results.")
+        return JsonResponse(response_data)
+
+    # 새로 분석 시작
+    language = video.get("std_lang")
     analyzer = BloomAnalysisWithGPTandDictionary(video_id, language)
 
     try:
@@ -1143,13 +1135,22 @@ def run_analysis(request, video_id):
         logger.debug(f"Donut chart data: {pio.to_json(donut_chart)}")
         logger.debug(f"Dot graph data: {pio.to_json(dot_graph)}")
 
-        # JSON 변환
+        # JSON 변환 후 MongoDB에 저장
+        analysis_result = {
+            "video_id": video_id,
+            "bloom_stage_segments": stage_segments,
+            "top_nouns": top_nouns,
+            "donut_chart": pio.to_json(donut_chart),
+            "dot_chart": pio.to_json(dot_graph)
+        }
+        analysis_result_collection.insert_one(analysis_result)
+
         response_data = {
             "success": True,
             "top_nouns": top_nouns,
             "stage_segments": stage_segments,
-            "donut_chart": pio.to_json(donut_chart),  # Plotly 그래프 데이터를 JSON으로 변환
-            "dot_graph": pio.to_json(dot_graph)       # Plotly 그래프 데이터를 JSON으로 변환
+            "donut_chart": analysis_result["donut_chart"],
+            "dot_graph": analysis_result["dot_chart"]
         }
         logger.info("Analysis completed successfully.")
 
@@ -1158,6 +1159,69 @@ def run_analysis(request, video_id):
         response_data = {"success": False, "error": str(e)}
 
     logger.debug(f"Response data: {response_data}")
+    return JsonResponse(response_data)
+
+# 분석결과 저장버튼함수
+@csrf_exempt
+# 분석 결과 저장 함수 예시
+def save_analysis_result(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        video_id = data.get("video_id")
+        bloom_stage_segments = data.get("bloom_stage_segments")
+        top_nouns = data.get("top_nouns")
+        donut_chart = data.get("donut_chart")
+        dot_chart = data.get("dot_chart")
+
+        try:
+            # MongoDB 연결
+            db = get_mongo_connection()
+            analysis_result_collection = db['BloomHub_analysisresult']
+
+            # 분석 결과가 이미 존재하는지 확인
+            existing_analysis = analysis_result_collection.find_one({"video_id": video_id})
+            if existing_analysis:
+                existing_analysis["_id"] = str(existing_analysis["_id"])
+                return JsonResponse({"success": True, "result": existing_analysis})  # 이미 존재하는 경우 success를 True로 설정
+
+            # 새로운 분석 결과 저장
+            analysis_result = {
+                "video_id": video_id,
+                "bloom_stage_segments": bloom_stage_segments,
+                "top_nouns": top_nouns,
+                "donut_chart": donut_chart,
+                "dot_chart": dot_chart,
+                "learning_status": True
+            }
+            result = analysis_result_collection.insert_one(analysis_result)
+            analysis_result["_id"] = str(result.inserted_id)
+
+            return JsonResponse({"success": True, "result": analysis_result})
+
+        except Exception as e:
+            error_message = f"Error saving analysis result: {str(e)}\nTraceback: {traceback.format_exc()}"
+            logger.error(error_message)
+            return JsonResponse({"success": False, "error": error_message})
+
+    return JsonResponse({"success": False, "error": "Invalid request."})
+
+
+#분석결과 불러오기 함수
+def get_analysis_result(request, video_id):
+    try:
+        analysis_result = AnalysisResult.objects.get(video__vid=video_id)
+        
+        response_data = {
+            "success": True,
+            "bloom_stage_segments": analysis_result.bloom_stage_segments,
+            "top_nouns": analysis_result.top_nouns,
+            "donut_chart": analysis_result.donut_chart,
+            "dot_chart": analysis_result.dot_chart
+        }
+    except AnalysisResult.DoesNotExist:
+        response_data = {"success": False, "error": "분석 결과가 존재하지 않습니다."}
+    except Exception as e:
+        response_data = {"success": False, "error": str(e)}
 
     return JsonResponse(response_data)
 
