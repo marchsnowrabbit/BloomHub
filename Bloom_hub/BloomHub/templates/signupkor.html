@@ -9,37 +9,14 @@
     <link rel="stylesheet" href="{% static 'css/signupkor.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .message {
-            font-size: 14px;
-            margin-left: 10px;
-        }
-        .valid {
-            color: green;
-        }
-        .invalid {
-            color: red;
-        }
-    </style>
 </head>
 <body>
     <header>
+        <!-- 로고 링크를 Django URL로 변경 -->
         <a href="{% url 'homekor' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
-        
-        <nav>
-            <a href="{% url 'guidekor' %}">가이드</a>
-            <a href="{% url 'searchkor' %}">검색</a>
-            <a href="{% url 'mypagekor' %}">마이페이지</a>
-            <div class="dropdown-container">
-                <a href="#" class="classing">학습</a>
-                <div class="dropdown">
-                    <a href="{% url 'learningkor' %}">학습중인 영상</a>
-                    <a href="{% url 'learnedkor' %}">학습했던 영상</a>
-                </div>
-            </div>
-        </nav>
+    
         <div class="auth">
             <div class="language-container">
                 <a href="#" class="language">언어</a>
@@ -48,23 +25,44 @@
                     <a href="{% url 'signup' %}">영어</a>
                 </div>
             </div>
-            <a href="{% url 'loginkor' %}" id="login-link">로그인</a>
-            <a href="{% url 'signupkor' %}" id="signup-link">회원가입</a>
-            <a href="#" id="logout-link" style="display: none;">로그아웃</a>
+    
+            <span id="auth-options">
+                <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
+                <a href="{% url 'loginkor' %}" id="login-link" style="display: none;">로그인</a>
+                <a href="{% url 'signupkor' %}" id="signup-link" style="display: none;">회원가입</a>
+                <span id="username" style="display: none;"></span>
+                <a href="#" id="logout-link" style="display: none;">로그아웃</a>
+            </span>
         </div>
+    
+        <nav>
+            <!-- 네비게이션 링크들도 Django URL로 변경 -->
+            <a href="{% url 'guidekor' %}">가이드</a>
+            <a href="{% url 'searchkor' %}">검색</a>
+            <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
+            <a href="#" id="mypage-link">마이 페이지</a>
+            <div class="dropdown-container">
+                <a href="#" class="classing">학습하기</a>
+                <div class="dropdown">
+                    <a href="{% url 'learningkor' %}" class="dropdown-link" data-url="{% url 'learningkor' %}">학습중인 영상</a>
+                    <a href="{% url 'learnedkor' %}" class="dropdown-link" data-url="{% url 'learnedkor' %}">학습했던 영상</a>
+                </div>
+            </div>
+            
+        </nav>
     </header>
 
     <div class="container">
     <h1>회원가입</h1>
-    <div id="description">회원가입 후 당신을 위한 맞춤 서비스를 이용해 보세요 </div>
+    <div id="description">가입 후 맞춤형 서비스를 즐겨보세요. </div>
     <form method="POST">
         {% csrf_token %}
 
         <label for="user_id">아이디:</label>
-        <input type="text" id="user_id" name="user_id" placeholder="ID" required>
+        <input type="text" id="user_id" name="user_id" placeholder="아이디" required>
         <span id="user_id_msg" class="message"></span><br><br>
 
-        <label for="username">유저이름:</label>
+        <label for="username">이름:</label>
         <input type="text" name="username" placeholder="이름" required><br><br>
 
         <label for="password1">비밀번호:</label>
@@ -78,6 +76,10 @@
         <label for="email">이메일:</label>
         <input type="email" id="email" name="email" placeholder="이메일" required>
         <span id="email_msg" class="message"></span><br><br>
+
+        <div class="howtokey">
+            <a href="{% url 'guide' %}">YouTube API Key, Wikifier API Key를 입력하는 법</a>
+        </div>
 
         <label for="youtube_api_key">YouTube API Key:</label>
         <input type="text" id="youtube_api_key" name="youtube_api_key" placeholder="YouTube API Key"><br><br>
@@ -177,6 +179,69 @@
                 validateForm();
             });
         });
+
+        $(document).ready(function() {
+    // 기본 상태 설정
+    $('#login-link').show();  
+    $('#signup-link').show(); 
+    $('#username').hide();    
+    $('#logout-link').hide();  
+
+    // 로그인 상태 확인
+    $.ajax({
+        url: "{% url 'check_login' %}",
+        method: "GET",
+        success: function(response) {
+            if (response.is_logged_in) {
+                $('#username').text(response.username).show(); 
+                $('#logout-link').show();                      
+                $('#login-link').hide();                     
+                $('#signup-link').hide();                   
+            } else {
+                $('#login-link').show();                     
+                $('#signup-link').show();                     
+                $('#username').hide();                      
+                $('#logout-link').hide();                    
+            }
+        },
+        error: function() {
+            alert("로그인 상태를 확인하는 중 오류가 발생했습니다. ");
+        }
+    });
+
+// 마이페이지 링크 클릭 시 로그인 확인
+$('#mypage-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = "{% url 'mypage' %}";
+                    } else {
+                        alert("로그인이 필요합니다. 로그인 해주세요.");
+                    }
+                }
+            });
+        });
+        // 드롭다운 링크 클릭 시 로그인 확인
+        $('.dropdown-link').on('click', function(e) {
+            e.preventDefault();
+            const url = $(this).data('url');
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = url;
+                    } else {
+                        alert("로그인이 필요합니다. 로그인 해주세요.");
+                    }
+                }
+            });
+        });
+    });
+        
     </script>
 </body>
 </html>

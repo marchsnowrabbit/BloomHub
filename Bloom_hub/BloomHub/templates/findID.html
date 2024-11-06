@@ -1,11 +1,10 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>아이디찾기  페이지</title>
+    <title>Find Id</title>
     <link rel="stylesheet" href="{% static 'css/findID.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -13,43 +12,53 @@
 
 <body>
     <header>
-       <a href="{% url 'home' %}" class="logo">
+        <!-- 로고 링크를 Django URL로 변경 -->
+        <a href="{% url 'home' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
-      </a>
-
-        <nav>
-            <a href="{% url 'guide' %}">Guides</a>
-            <a href="{% url 'search' %}">Search</a>
-            <a href="{% url 'mypage' %}">My profile</a>
-            <div class="dropdown-container">
-                <a href="#" class="classing">Classing</a>
-                <div class="dropdown">
-                    <a href="{% url 'learning' %}">Learning Video</a>
-                    <a href="{% url 'learned' %}">Learned Video</a>
-                </div>
-            </div>
-        </nav>
+        </a>
+    
         <div class="auth">
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="/로그인한국어.html">Korean</a>
-                    <a href="#">English</a>
+                    <a href="{% url 'findIDkor' %}">Korean</a>
+                    <a href="{% url 'findID' %}">English</a>
                 </div>
             </div>
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'signup' %}">Sign up</a>
+    
+            <span id="auth-options">
+                <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
+                <a href="{% url 'login' %}" id="login-link" style="display: none;">Login</a>
+                <a href="{% url 'signup' %}" id="signup-link" style="display: none;">Sign up</a>
+                <span id="username" style="display: none;"></span>
+                <a href="#" id="logout-link" style="display: none;">Logout</a>
+            </span>
         </div>
+    
+        <nav>
+            <!-- 네비게이션 링크들도 Django URL로 변경 -->
+            <a href="{% url 'guide' %}">Guides</a>
+            <a href="{% url 'search' %}">Search</a>
+            <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
+            <a href="{% url 'mypage' %}" id="mypage-link">My profile</a>
+            <div class="dropdown-container">
+                <a href="#" class="classing">Classing</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">Learning Video</a>
+                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">Learned Video</a>
+                </div>
+            </div>
+            
+        </nav>
     </header>
     
     <div class="container">
         <h1>Finding ID</h1>
         <div class="description-container">
             <div id="description"> Did you forget your ID?</div>
-            
             <hr id="hr-green">
         </div>
-
+        <div id="input-section">
         <ul class="links">
             <li>
                 <!-- <a href="x" id="ID">Name :</a> -->
@@ -58,7 +67,7 @@
                 <a href="" id="Email-input1">Email :</a>
             </li>
             <li>
-                <a href="" id="verification-input2">인증번호 :</a>
+                <a href="" id="verification-input2">Code :</a>
             </li>
 
 
@@ -75,17 +84,33 @@
                 <input type="Email" placeholder="Email" class="input" id="email" /><!--^ 수정? -->
             </div>
 
+            <div class="input__block verification__block"  >
+                <input type="text" placeholder="verification code"" class="input" id="verification-code"   />
+            </div>
+
+        </form>
+        <button class="signin__btn" id="send-code-btn" >Verify</button> <!--! 초록색 인증하기 -->
+        <button class="signin__btn" id="verify-code-btn"  >Confirm</button>  <!--! 초록색 확인 -->
+    </form>
+</div>
+
 
            
  <!-- 인증번호 입력 칸은 기본적으로 숨겨져 있다가 인증번호 발송 후 표시됨 -->
- <div class="input__block verification__block"  >
-     <input type="text" placeholder="인증번호" class="input" id="verification-code"   />
- </div>
+ 
 
  <!-- ID를 찾았을 때 메시지를 표시할 영역 -->
  <div id="id-display" style="display:none;">
-     당신의 아이디는 "<span id="found-id"></span>" 입니다.
- </div>
+    Your ID is "<span id="found-id"></span>".
+    
+    <div id="result-buttons" style="display: none; display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+        <button class="password-find-btn" onclick="location.href='{% url 'findpwd' %}'">Find Password</button>
+        <button class="signin-confirm-btn" id="confirm-btn" onclick="location.href='{% url 'login' %}'">Login</button>
+    </div>
+ 
+    </div>
+
+
 
 
 
@@ -96,10 +121,6 @@
 
              
             
-</form>
-            <button class="signin__btn" id="send-code-btn" >인증하기</button> <!--! 초록색 인증하기 -->
-            <button class="signin__btn" id="verify-code-btn"  >확인</button>  <!--! 초록색 확인 -->
-        </form>
 
 
          <!--! 이메일보내기 -->
@@ -126,7 +147,7 @@
                             }
                         },
                         error: function() {
-                            alert('인증번호 발송 중 오류가 발생했습니다.');
+                            alert('An error occurred while sending the verification code.');
                         }
                     });
                 });
@@ -153,12 +174,87 @@
                             }
                         },
                         error: function() {
-                            alert('인증번호 확인 중 오류가 발생했습니다.');
+                            alert('An error occurred while verifying the verification code.');
                         }
                     });
                 });
             });
+
+            $(document).ready(function() {
+    // 기본 상태 설정
+    $('#login-link').show();  
+    $('#signup-link').show(); 
+    $('#username').hide();      
+
+    // 로그인 상태 확인
+    $.ajax({
+        url: "{% url 'check_login' %}",
+        method: "GET",
+        success: function(response) {
+            if (response.is_logged_in) {
+                $('#username').text(response.username).show(); 
+                $('#logout-link').show();                      
+                $('#login-link').hide();                     
+                $('#signup-link').hide();                   
+            } else {
+                $('#login-link').show();                     
+                $('#signup-link').show();                     
+                $('#username').hide();                     
+                $('#logout-link').hide();                    
+            }
+        },
+        error: function() {
+            alert("An error occurred while checking the login status. Please try again later.");
+        }
+    });
+
+    // 마이페이지 링크 클릭 시 로그인 확인
+    $('#mypage-link').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{% url 'check_login' %}",
+            method: "GET",
+            success: function(response) {
+                if (response.is_logged_in) {
+                    window.location.href = "{% url 'mypage' %}";
+                } else {
+                    alert("Login is required. Please log in.");
+                }
+            }
+        });
+    });
+
+    // 드롭다운 링크 클릭 시 로그인 확인
+    $('.dropdown-link').on('click', function(e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+        $.ajax({
+            url: "{% url 'check_login' %}",
+            method: "GET",
+            success: function(response) {
+                if (response.is_logged_in) {
+                    window.location.href = url;
+                } else {
+                    alert("Login is required. Please log in.");
+                }
+            }
+        });
+    });
+
+});
+
+$(document).ready(function() {
+        $('#verify-code-btn').on('click', function(e) {
+            e.preventDefault();
+
+            // input-section을 숨기고 id-display를 보여줌
+            $('#input-section').hide();
+            $('#id-display').show();
+        });
+    });
+</script>
+        
         </script>
         
 </body>
-</html>
+</html> 

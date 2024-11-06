@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>분석 결과</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        .result-section { margin: 20px; }
+        .result-section h2 { color: #333; }
+        .stage-list, .top-nouns { list-style-type: none; padding: 0; }
+    </style>
+</head>
+<body>
+    <h1>분석 결과</h1>
+
+    <div class="result-section">
+        <h2>Bloom 단계별 구간</h2>
+        <ul class="stage-list">
+            {% for stage, segment in stage_segments.items %}
+                <li><strong>{{ stage }}:</strong> {{ segment }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="result-section">
+        <h2>주요 명사 키워드 (TF-IDF)</h2>
+        <ul class="top-nouns">
+            {% for noun in top_nouns %}
+                <li>#{{ noun }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="result-section">
+        <h2>Bloom 단계별 도넛 차트</h2>
+        <div>{{ donut_chart|safe }}</div>
+    </div>
+
+    <div class="result-section">
+        <h2>Bloom 단계별 시간 흐름 그래프</h2>
+        <div>{{ dot_graph|safe }}</div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a href="{% url 'save_analysis_to_db' video_id=video_id %}" style="padding: 10px 20px; background-color: #4CAF50; color: white;">나의 학습에 저장</a>
+        <a href="/" style="padding: 10px 20px; background-color: #f44336; color: white;">저장하지 않고 닫기</a>
+    </div>
+</body>
+</html>

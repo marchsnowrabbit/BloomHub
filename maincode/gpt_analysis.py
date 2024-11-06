@@ -25,6 +25,7 @@ class BloomAnalysisWithGPTandDictionary:
     def load_dictionary(file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
             return [line.strip() for line in file]
+    
 
     def detect_language(self):
         # 벡터화된 언어 감지
@@ -117,6 +118,8 @@ class BloomAnalysisWithGPTandDictionary:
 
         # 구간에 대한 결과를 반환
         return [results.get((start_time, end_time), 'unknown') for (start_time, end_time) in grouped_sentences.keys()]
+    
+    
     
     def determine_final_bloom_stage(self, word, language, start_time, end_time):
         # 단어 및 문장 기반 Bloom 단계 결정
