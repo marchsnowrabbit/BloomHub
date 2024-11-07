@@ -27,7 +27,7 @@ urlpatterns = [
     #################### 아이디 찾기, 비번찾기, 이메일 인증필요 ###################
 
     path('find-id/', views.find_id, name='findID'),
-    path('find-id/kor/', views.find_id_kor, name='find_id_kor'),
+    path('find-id/kor/', views.find_id_kor, name='findIDkor'),
     path('find-pwd/', views.find_pwd, name='findpwd'),
     path('find-pwd/kor/', views.find_pwd_kor, name='find_pwd_kor'),
     path('send_verification_code/', views.send_verification_code, name='send_verification_code'),
@@ -44,7 +44,6 @@ urlpatterns = [
     path('change_email/', views.change_email, name='change_email'),
 
     ########################### 검색 및 검색 결과 ########################################
-
     path('search', views.search, name='search'),
     path('search', views.search, name='searchkor'), # 슬래시 없이 URL 작성
     path('search/result', views.search_result, name='searchresult'),

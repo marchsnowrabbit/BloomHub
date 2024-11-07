@@ -1177,6 +1177,7 @@ def save_analysis_result(request):
             # MongoDB 연결
             db = get_mongo_connection()
             analysis_result_collection = db['BloomHub_analysisresult']
+            learning_video_collection = db['BloomHub_learningvideo']
 
             # 분석 결과가 이미 존재하는지 확인
             existing_analysis = analysis_result_collection.find_one({"video_id": video_id})
@@ -1190,11 +1191,16 @@ def save_analysis_result(request):
                 "bloom_stage_segments": bloom_stage_segments,
                 "top_nouns": top_nouns,
                 "donut_chart": donut_chart,
-                "dot_chart": dot_chart,
-                "learning_status": True
+                "dot_chart": dot_chart
             }
             result = analysis_result_collection.insert_one(analysis_result)
             analysis_result["_id"] = str(result.inserted_id)
+
+             # LearningVideo 데이터베이스의 해당 문서에서 learning_status 업데이트
+            learning_video_collection.update_one(
+                {"vid": video_id},  # vid로 해당 비디오를 찾기
+                {"$set": {"learning_status": True}}  # learning_status를 True로 업데이트
+            )
 
             return JsonResponse({"success": True, "result": analysis_result})
 
