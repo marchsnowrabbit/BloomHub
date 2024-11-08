@@ -92,6 +92,11 @@ class AnalysisResult(models.Model):
     dot_chart = models.JSONField()  # Plotly 단계 분포 차트 JSON 데이터
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['video'], name='video_index'),  # video 필드에 대한 인덱스 (고유 제약 없음)
+        ]
+
 
 class BloomDictionary(models.Model):
     language = models.CharField(max_length=20)  # 예: 'Korean', 'English'
