@@ -31,6 +31,8 @@ header {
     height: 100px;
     background-color: rgb(11, 36, 60);
     position: relative;
+    top:0;
+    position: sticky;
 }
 
 header .logo {
@@ -126,7 +128,7 @@ nav a.classing:hover, nav a.language:hover {
 }
 
 nav a.classing:hover {
-    color: white; 
+    color: lightgray; 
     display: inline; 
 }
 
@@ -213,9 +215,7 @@ header .auth a {
     display: block;
 }
 
-nav a.classing:hover, nav a.language:hover {
-    color: rgb(11, 36, 60);
-}
+
 
 .dropdown-container {
     position: relative;
@@ -250,6 +250,16 @@ nav a.classing:hover {
     display: block;
     
 }
+
+header nav a:hover,
+header .auth a:hover,
+.language:hover,
+.language-dropdown a:hover,
+.dropdown a:hover, nav a.classing:hover {
+    color: lightgray;
+    cursor: pointer; 
+}
+
 
 #username {
     color: white;

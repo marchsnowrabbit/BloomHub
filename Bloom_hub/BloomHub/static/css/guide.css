@@ -23,6 +23,9 @@ header {
     height: 100px;
     background-color: rgb(11, 36, 60);
     position: relative;
+    top:0;
+    position: sticky;
+    z-index: 1000;
 }
 
 header .logo {
@@ -90,9 +93,7 @@ header .auth a {
     display: block;
 }
 
-nav a.classing:hover, nav a.language:hover {
-    color: rgb(11, 36, 60);
-}
+
 
 
 .dropdown-container {
@@ -119,7 +120,7 @@ nav a.classing:hover, nav a.language:hover {
 }
 
 nav a.classing:hover {
-    color: white; 
+    color: lightgray; 
     display: inline; 
 
 }
@@ -128,6 +129,16 @@ nav a.classing:hover {
     display: block;
     
 }
+
+header nav a:hover,
+header .auth a:hover,
+.language:hover,
+.language-dropdown a:hover,
+.dropdown a:hover, nav a.classing:hover {
+    color: lightgray;
+    cursor: pointer; 
+}
+
 
 /* 로그인 시 상단바 아이디 글자색 */
 #username {
@@ -179,7 +190,7 @@ h2 {
 }
 
 .api-keys-instructions a:hover {
-    text-decoration: underline;
+    color: rgb(205, 205, 27);
 }
 
 
