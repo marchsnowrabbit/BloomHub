@@ -396,6 +396,14 @@ form button:active {
         align-items: center; 
     }
 
+    label[for="email"] {
+        margin-left: 20px;
+    }
+
+    label[for="confirmPassword"] {
+        margin-left: 15px;
+    }
+
     .form-group {
         display: flex; 
         flex-direction: column; 
