@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/searchresult.css' %}">
+    <link rel="stylesheet" href="{% static 'css/searchresultkor.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>{{ keyword }}에 대한 검색 결과</title>
@@ -91,7 +91,7 @@
                     <td>{{ video.channelTitle }}</td>
                     <td>{{ video.viewCount }}회</td>
                     <td>{{ video.duration }}</td>
-                    <td><button class="button">학습하기</button></td>
+                    <td><a href="{% url 'studykor' video.videoId %}" class="button">학습하기</a></td>
                 </tr>
             {% empty %}
                 <tr>
