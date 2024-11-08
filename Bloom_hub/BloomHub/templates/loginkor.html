@@ -131,7 +131,7 @@
         method: "GET",
         success: function(response) {
             if (response.is_logged_in) {
-                $('#username').text(response.username).show(); 
+                $('#username').text(response.username  + '님').show(); 
                 $('#logout-link').show();                      
                 $('#login-link').hide();                     
                 $('#signup-link').hide();                   
@@ -155,7 +155,7 @@ $('#mypage-link').on('click', function(e) {
                 method: "GET",
                 success: function(response) {
                     if (response.is_logged_in) {
-                        window.location.href = "{% url 'mypage' %}";
+                        window.location.href = "{% url 'mypagekor' %}";
                     } else {
                         alert("로그인이 필요합니다. 로그인 해주세요.");
                     }
