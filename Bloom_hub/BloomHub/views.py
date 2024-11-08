@@ -1225,19 +1225,25 @@ def run_analysis(request, video_id):
     return JsonResponse(response_data)
 
    
-# 분석결과 저장버튼함수
 @csrf_exempt
-# 분석 결과 저장 수정중= 중복 id키 문제 해결 필요
+# 분석 결과 저장 최종 중복 id키 해결 (id의 영역을 날림)
 def save_analysis_result(request):
     if request.method == "POST":
         data = json.loads(request.body)
         video_id = data.get("video_id")
         bloom_stage_segments = data.get("bloom_stage_segments")
         top_nouns = data.get("top_nouns")
-        donut_chart = data.get("donut_chart")
-        dot_chart = data.get("dot_chart")
+        donut_chart = json.loads(data.get("donut_chart"))  # JSON 문자열을 딕셔너리로 변환
+        dot_chart = json.loads(data.get("dot_chart")) # JSON 문자열을 딕셔너리로 변환
 
         try:
+            # 배열 형태의 bloom_stage_segments를 객체 형태로 변환
+            bloom_stage_segments_dict = {}
+            for segment in bloom_stage_segments:
+                # 각 배열 요소를 Bloom 단계와 시간 범위로 분리
+                stage, times = segment.split(": ")
+                bloom_stage_segments_dict[stage] = times
+
             # MongoDB 연결
             db = get_mongo_connection()
             analysis_result_collection = db['BloomHub_analysisresult']
@@ -1266,10 +1272,16 @@ def save_analysis_result(request):
             )
 
              # LearningVideo 데이터베이스의 해당 문서에서 learning_status 업데이트
-            learning_video_collection.update_one(
+            update_result = learning_video_collection.update_one(
                 {"vid": video_id},  # vid로 해당 비디오를 찾기
                 {"$set": {"learning_status": True}}  # learning_status를 True로 업데이트
             )
+
+            # 업데이트 성공 여부 확인
+            if update_result.acknowledged and update_result.modified_count > 0:
+                print("Update successful.")
+            else:
+                print("Update failed.")
 
             # 업데이트 후 분석 결과 반환
             analysis_result["_id"] = str(analysis_result_collection.find_one({"video_id": video_id})["_id"])
@@ -1282,8 +1294,7 @@ def save_analysis_result(request):
 
     return JsonResponse({"success": False, "error": "Invalid request."})
 
-
-#분석결과 불러오기 함수(수정중)
+#분석결과 불러오기 함수
 def get_analysis_result(request, video_id):
     try:
         analysis_result = AnalysisResult.objects.get(video__vid=video_id)
