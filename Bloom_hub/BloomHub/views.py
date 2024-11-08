@@ -103,7 +103,7 @@ class YoutubeVideoapi:
                 video = video_response['items'][0]
                 has_caption = video['contentDetails'].get('caption') == 'true'  # 자막 유무 확인
 
-                 # duration을 두 가지 형식으로 가져옵니다.
+                # duration을 두 가지 형식으로 가져옵니다.
                 duration = video['contentDetails']['duration']
                 duration_seconds = int(isodate.parse_duration(duration).total_seconds())  # 초 단위
 
@@ -185,6 +185,16 @@ def study(request, video_id):
 
     video_info['videoId'] = video_id
     return render(request, 'study.html', {'video': video_info})
+
+def study_kor(request, video_id):
+    video_api = YoutubeVideoapi()
+    video_info = video_api.get_video_details(video_id)
+
+    if video_info is None:
+        return render(request, 'studykor.html', {'error': '비디오 정보를 불러올 수 없습니다.'})
+
+    video_info['videoId'] = video_id
+    return render(request, 'studykor.html', {'video': video_info})
 
 ###########영상저장하기################################
 # 학습할 영상 저장
@@ -1608,7 +1618,6 @@ def mypage_kor(request):
 
 def mypage_manager(request):
     return render(request, 'mypagemanager.html')
-
 
 def search_result(request):
     return render(request, 'searchresult.html')
