@@ -310,7 +310,7 @@ button:disabled {
 }
 
 .howtokey a:hover {
-    text-decoration: underline;
+    color: rgb(134, 107, 134); 
 }
 
 @media only screen and (max-width: 768px) {
