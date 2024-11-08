@@ -26,6 +26,8 @@ header {
     height: 100px;
     background-color: rgb(11, 36, 60);
     position: relative;
+    top:0;
+    position: sticky;
 }
 
 header .logo {
@@ -156,6 +158,16 @@ h1 {
     top:-140px;
     right: calc(30% - 20px);
 }
+
+header nav a:hover,
+header .auth a:hover,
+.language:hover,
+.language-dropdown a:hover,
+.dropdown a:hover, nav a.classing:hover {
+    color: lightgray;
+    cursor: pointer; 
+}
+
 
 #hr-green {
     position: relative;
