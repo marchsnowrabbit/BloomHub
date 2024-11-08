@@ -47,7 +47,7 @@ urlpatterns = [
     ########################### 검색 및 검색 결과 ########################################
 
     path('search', views.search, name='search'),
-    path('search', views.search, name='searchkor'), # 슬래시 없이 URL 작성
+    path('search', views.search_kor, name='searchkor'), # 슬래시 없이 URL 작성
     path('search/result', views.search_result, name='searchresult'),
     path('search/result/kor', views.search_result_kor, name='searchresultkor'),
     ##################비디오 저장 및 추출 분석#################################
