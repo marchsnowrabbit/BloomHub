@@ -1282,8 +1282,6 @@ def save_analysis_result(request):
             return JsonResponse({"success": False, "error": error_message})
 
     return JsonResponse({"success": False, "error": "Invalid request."})
-   
-
 
 #분석결과 불러오기 함수
 def get_analysis_result(request, video_id):
