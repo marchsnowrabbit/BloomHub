@@ -244,7 +244,7 @@
             console.log("Sending password change request");
             // Send request to change password
             $.ajax({
-                url: "{% url 'reset_password' %}",
+                url: "{% url 'mypage_reset_password' %}",
                 method: "POST",
                 data: {
                     new_password: newPassword,
