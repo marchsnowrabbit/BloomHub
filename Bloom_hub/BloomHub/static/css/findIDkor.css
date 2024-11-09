@@ -160,7 +160,7 @@ header .auth a:hover,
     position: relative;
     top:-8px;
     right: calc(0% - 0px);
-    width:210px;
+    width:175px;
     border-color: #72BA84;
     border-top: 2px solid #72BA84;
     margin-bottom: 10px;
@@ -513,7 +513,7 @@ pointer-events: none;
 
     /* 설명 */
     .description-container {
-    right: calc(25% - 0px);
+    right: calc(28% - 0px);
     }
 
     /* input 위치 */
