@@ -1,3 +1,4 @@
+
 import os,json,logging,string
 import traceback
 import isodate,urllib,csv,re,time
@@ -152,6 +153,27 @@ def search(request):
     })
 
 
+def search_kor(request):
+    keyword = request.POST.get('keyword') or request.GET.get('keyword', '')
+    page_token = request.GET.get('pageToken')  # 페이지 토큰 추가
+
+    videos, next_page_token, prev_page_token = [], None, None
+    if keyword:  # 검색어가 있을 때만 API 호출
+        video_api = YoutubeVideoapi()
+        videos, next_page_token, prev_page_token = video_api.videolist(keyword, page_token)
+
+    if not keyword:
+        return render(request, 'searchkor.html')
+    
+        if not videos:
+            messages.error(request, '비디오를 찾을 수 없습니다.')
+
+    return render(request, 'searchresultkor.html', {
+        'videos': videos,
+        'keyword': keyword,
+        'next_page_token': next_page_token,
+        'prev_page_token': prev_page_token
+    })
 
 def study(request, video_id):
     video_api = YoutubeVideoapi()
@@ -162,6 +184,18 @@ def study(request, video_id):
 
     video_info['videoId'] = video_id
     return render(request, 'study.html', {'video': video_info})
+
+
+def study_kor(request, video_id):
+    video_api = YoutubeVideoapi()
+    video_info = video_api.get_video_details(video_id)
+
+    if video_info is None:
+        return render(request, 'studykor.html', {'error': '비디오 정보를 불러올 수 없습니다.'})
+
+    video_info['videoId'] = video_id
+    return render(request, 'studykor.html', {'video': video_info})
+
 
 ###########영상저장하기################################
 # 학습할 영상 저장
@@ -1541,6 +1575,80 @@ def change_email(request):
 
     return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
 
+#########마이페이지 이메일 띄우기
+@login_required
+def get_user_info(request):
+    user = request.user
+    last_login = user.last_login
+
+    if last_login:
+        # 서버 시간(UTC)을 로컬 시간으로 변환
+        local_last_login = timezone.localtime(last_login)
+        # 24시간 형식으로 포맷
+        last_login_str = local_last_login.strftime("%Y-%m-%d %H:%M:%S")
+    else:
+        last_login_str = "No login data"
+
+    return JsonResponse({
+        'email': user.email,
+        'last_login': last_login_str
+    })
+
+@login_required
+def mypage_reset_password(request):
+    if request.method == "POST":
+        user = request.user
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        # 입력된 비밀번호 확인
+        if not new_password or not confirm_password:
+            return JsonResponse({'success': False, 'message': 'Please fill in all password fields.'})
+        
+        if new_password != confirm_password:
+            return JsonResponse({'success': False, 'message': 'Passwords do not match.'})
+        
+        if user:
+            user.set_password(new_password)
+            user.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'message': 'User not found.'})
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+@login_required
+def change_email(request):
+    if request.method == "POST":
+        user = request.user
+        new_email = request.POST.get('email')
+        
+        # 이메일 필드가 비어 있는지 확인
+        if not new_email:
+            return JsonResponse({'success': False, 'message': 'Please enter a valid email address.'})
+        
+        # 사용자 이메일 변경
+        if user:
+            user.email = new_email
+            user.save()
+            return JsonResponse({'success': True, 'message': 'Email has been updated.'})
+        else:
+            return JsonResponse({'success': False, 'message': 'User not found.'})
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+@login_required
+def check_old_password(request):
+    if request.method == 'POST':
+        new_password = request.POST.get('new_password')
+        # 인증된 사용자의 기존 비밀번호와 비교
+        if request.user.check_password(new_password):
+            return JsonResponse({'is_same_as_old': True})
+        else:
+            return JsonResponse({'is_same_as_old': False})
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
 ###########################################################################################
 # 페이지 렌더링 뷰들
 def home(request):
@@ -1587,9 +1695,6 @@ def mypage_kor(request):
 
 def mypage_manager(request):
     return render(request, 'mypagemanager.html')
-
-def search_kor(request):
-    return render(request, 'searchkor.html')
 
 def search_result(request):
     return render(request, 'searchresult.html')
