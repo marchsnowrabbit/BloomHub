@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: 'KCC-Hanbit';
     src: url('/static/fonts/KCC-Hanbit.woff2') format('woff2'),
@@ -31,6 +32,10 @@ header {
     background-color: rgb(11, 36, 60);
     position: relative;
     margin-top: -20px;
+    top:0;
+    position: sticky;
+    position: relative;
+    z-index: 10;
 }
 
 header .logo {
@@ -98,12 +103,9 @@ header .auth a {
     display: block;
 }
 
-nav a.classing:hover, nav a.language:hover {
-    color: rgb(11, 36, 60);
-}
-
 .dropdown-container {
     position: relative;
+    overflow: visible;
 }
 
 .dropdown {
@@ -126,13 +128,23 @@ nav a.classing:hover, nav a.language:hover {
 }
 
 nav a.classing:hover {
-    color: white; 
+    color: lightgray; 
     display: inline; 
 }
 
 .dropdown-container:hover .dropdown {
     display: block;
 }
+
+header nav a:hover,
+header .auth a:hover,
+.language:hover,
+.language-dropdown a:hover,
+.dropdown a:hover, nav a.classing:hover {
+    color: lightgray;
+    cursor: pointer; 
+}
+
 
 .container {
     display: block;
@@ -146,6 +158,7 @@ nav a.classing:hover {
     position: relative;
     top: -105px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
 
 h1 {
@@ -160,19 +173,25 @@ h1 {
 h1:after {
     content: '';
     display: block;
-    width: 463px;
+    width: 470px;
     height: 2px;
     background-color: #72BA84; 
-    margin: 5px auto 15px;
-    top: 35px;
+    margin: 20px auto 20px;
+    top: 25px;
     position: relative;
-    right: calc(13% - 0px);
+    right: calc(13% - 22px);
 }
 
 .description {
     font-size: 18px;
     color: #000000;
     font-family: 'KCC-Hanbit', sans-serif;
+}
+
+#description {
+    margin-left: 24px; 
+    top: -15px;
+    position: relative;
 }
 
 label {
@@ -182,8 +201,8 @@ label {
     width: 25%;
     vertical-align: middle;
     margin-right: 11px;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    margin-top: 25px;
+    margin-bottom: 10px;
 }
 
 label[for="user_id"] {
@@ -299,7 +318,7 @@ button:disabled {
 }
 
 .howtokey a:hover {
-    text-decoration: underline;
+    color: rgb(134, 107, 134); 
 }
 
 @media only screen and (max-width: 768px) {
@@ -375,7 +394,12 @@ button:disabled {
     }
     
     h1:after {
-        right: calc(2% - -5px);
+        right: calc(2% - -12px);
+        width: 468px;
+    }
+
+    #description {
+        margin-left: -7px;
     }
 
     .howtokey a {

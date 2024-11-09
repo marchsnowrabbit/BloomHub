@@ -166,7 +166,7 @@ nav a.classing:hover, nav a.language:hover {
 }
 
 nav a.classing:hover {
-    color: white; 
+    color: lightgray; 
     display: inline; 
 
 }

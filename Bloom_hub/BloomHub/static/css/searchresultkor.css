@@ -373,7 +373,7 @@ table th:nth-child(1) {
 /* 영상 제목 */
 table td:nth-child(2), 
 table th:nth-child(2) {
-    width: 390px; 
+    width: 370px; 
 }
 
 /* 채널명 */
@@ -385,20 +385,20 @@ table th:nth-child(3) {
 /* 조회수 */
 table td:nth-child(4), 
 table th:nth-child(4) {
-    width: 100px;
+    width: 95px;
 }
 
 /* 영상 길이 */
 table td:nth-child(5), 
 table th:nth-child(5) {
-    width: 60px;
+    width: 55px;
     white-space: nowrap; 
 }
 
 /* 학습하기 버튼 */
 table td:nth-child(6), 
 table th:nth-child(6) {
-    width: 65px; 
+    width: 75px; 
 }
 
 /* 썸네일 크기 조정 */
@@ -492,4 +492,23 @@ table th:nth-child(6) {
         width: 40px;
         height: 43px;
     }
+
+/* 썸네일 크기 조정: 폭 줄이기 */
+table td:nth-child(1),
+table th:nth-child(1) {
+ width: 30px; /* 기존 150px에서 줄였습니다 */
+}
+
+/* 영상 제목 크기 조정: 폭 줄이기 */
+table td:nth-child(2),
+table th:nth-child(2) {
+ width: 150px; /* 기존 370px에서 줄였습니다 */
+}
+
+ /* 학습하기 버튼 크기 조정: 폭 늘리기 */
+table td:nth-child(6),
+table th:nth-child(6) {
+ width: 180px; /* 기존 75px에서 늘렸습니다 */
+}
+
 }

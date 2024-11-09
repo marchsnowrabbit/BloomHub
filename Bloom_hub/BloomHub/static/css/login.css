@@ -31,6 +31,10 @@ header {
     height: 100px;
     background-color: rgb(11, 36, 60);
     position: relative;
+    top:0;
+    position: sticky;
+    position: relative;
+    z-index: 10;
 }
 
 header .logo {
@@ -100,12 +104,11 @@ header .auth a {
     display: block;
 }
 
-nav a.classing:hover, nav a.language:hover {
-    color: rgb(11, 36, 60);
-}
+
 
 .dropdown-container {
     position: relative;
+    overflow: visible;
 }
 
 .dropdown {
@@ -128,7 +131,7 @@ nav a.classing:hover, nav a.language:hover {
 }
 
 nav a.classing:hover {
-    color: white; 
+    color: lightgray; 
     display: inline; 
 
 }
@@ -138,13 +141,23 @@ nav a.classing:hover {
     
 }
 
+header nav a:hover,
+header .auth a:hover,
+.language:hover,
+.language-dropdown a:hover,
+.dropdown a:hover, nav a.classing:hover {
+    color: lightgray;
+    cursor: pointer; 
+}
+
+
 #hr-green {
-    width: 450px;
+    width: 390px;
     border: none;
     border-top: 2px solid #72BA84;
     margin: 10px auto;
     position: relative;
-    right: calc(0% - -47px);
+    right: calc(13% - 2px);
     top: -165px;
 }
 
@@ -175,7 +188,7 @@ nav a.classing:hover {
     border-radius: 70px;
     position: relative;
 	top: -105px;
-
+    z-index: 1;
 }
 
 h1 {
@@ -333,7 +346,7 @@ form {
 }
 
 .signin__btn:hover {
-    background: rgb(71, 125, 20);
+    opacity: 0.7;
 }
 
 #error_message {
@@ -429,7 +442,7 @@ font-size:12px;
     }
 
     #hr-green {
-        right: calc(-1% - -5px);
+        right: calc(7% - 0px);
     }
 
     .description-container {
@@ -490,5 +503,7 @@ font-size:12px;
         top:200px;
         right: calc(0% - -10px);
     }
+
+
 }
 
