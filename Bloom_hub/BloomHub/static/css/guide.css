@@ -142,7 +142,7 @@ header .auth a:hover,
 
 /* 로그인 시 상단바 아이디 글자색 */
 #username {
-    color: white
+    color: white;
 }
 
 .api-keys-instructions {
