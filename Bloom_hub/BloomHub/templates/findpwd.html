@@ -64,6 +64,10 @@
         <input type="text" id="user_id" name="user_id" placeholder="ID" required>
     </div>
         <button type="button" id="send-code-btn">Send</button>
+        <div class="box" id="loading-animation" style="display: none;">
+            <div class="plane"></div>
+        </div>
+        
         <div class="input__row">
         <label class="hide-on-small" for="email">Email:</label>
         <input type="email" id="email" name="email" placeholder="Email" required>
@@ -100,12 +104,18 @@
     $('.first-input__block, .input__block').show(); 
     $('#send-code-btn').show();   
     $('#logout-link').hide();
+    
             $('#send-code-btn').click(function() {
+                $('#send-code-btn').hide();
+                $('#loading-animation').show();
+                $('#user_id').parent().show();
+                $('#email').parent().show();
                 $.post({
                     url: "{% url 'send_verification_code_for_password_reset' %}",
                     data: { user_id: $('#user_id').val(), email: $('#email').val(), csrfmiddlewaretoken: '{{ csrf_token }}' },
                     success: function(response) {
                         if (response.success) {
+                            $('#loading-animation').hide();
                             $('#verification-section').show();
                             alert(response.message);
                             $('#verify-code-btn').show(); // 확인 버튼 표시
@@ -116,8 +126,20 @@
                     $('#user_id').parent().hide(); // ID 입력란 숨기기
                         } else {
                             alert(response.message);
+                            $('#loading-animation').hide();
+                            $('#send-code-btn').show();
+                            $('#user_id').parent().show();
+                            $('#email').parent().show();
                         }
-                    }
+                    },
+                    error: function() {
+                alert('An error occurred while sending the verification code.');
+                // 오류 발생 시, 원래 필드와 버튼을 다시 보여줌
+                $('#loading-animation').hide();
+                $('#send-code-btn').show();
+                $('#user_id').parent().show();
+                $('#email').parent().show();
+            }
                 });
             });
 

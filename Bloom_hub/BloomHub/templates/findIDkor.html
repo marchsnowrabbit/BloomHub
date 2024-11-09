@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>아이디 찾기</title>
-    <link rel="stylesheet" href="{% static 'css/findID.css' %}">
+    <link rel="stylesheet" href="{% static 'css/findIDkor.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -43,7 +43,7 @@
             <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
             <a href="{% url 'mypagekor' %}" id="mypage-link">마이 페이지</a>
             <div class="dropdown-container">
-                <a href="#" class="classing">클래싱</a>
+                <a href="#" class="classing">학습하기</a>
                 <div class="dropdown">
                     <a href="{% url 'learningkor' %}" class="dropdown-link" data-url="{% url 'learningkor' %}">학습중인 영상</a>
                     <a href="{% url 'learnedkor' %}" class="dropdown-link" data-url="{% url 'learnedkor' %}">학습했던 영상</a>
@@ -91,6 +91,9 @@
             
         </form>
         <button class="signin__btn" id="send-code-btn" >인증하기</button> <!--! 초록색 인증하기 -->
+        <div class="box" id="loading-animation" style="display: none;">
+            <div class="plane"></div>
+        </div>
         <button class="signin__btn" id="verify-code-btn"  >확인</button>  <!--! 초록색 확인 -->
     </form>
 </div>
@@ -131,6 +134,9 @@
                     e.preventDefault();
                     const email = $('#email').val();
         
+                    $('#send-code-btn').hide();
+                    $('#loading-animation').show();
+
                     $.ajax({
                         type: 'POST',
                         url: '{% url "send_verification_code" %}',
@@ -140,14 +146,21 @@
                         },
                         success: function(response) {
                             if (response.success) {
+                                $('#loading-animation').hide();
+                                $('#send-code-btn').show();
+
                                 alert(response.message);
                                 $('#verify-code-btn').show();
                                 $('.verification__block').show();
                             } else {
                                 alert(response.message);
+                                $('#loading-animation').hide();
+                                $('#send-code-btn').show();
                             }
                         },
                         error: function() {
+                            $('#loading-animation').hide();
+                            $('#send-code-btn').show();
                             alert('인증번호 발송 중 오류가 발생했습니다.');
                         }
                     });
@@ -193,7 +206,7 @@
         method: "GET",
         success: function(response) {
             if (response.is_logged_in) {
-                $('#username').text(response.username).show(); 
+                $('#username').text(response.username  + '님').show(); 
                 $('#logout-link').show();                      
                 $('#login-link').hide();                     
                 $('#signup-link').hide();                   
@@ -217,7 +230,7 @@
             method: "GET",
             success: function(response) {
                 if (response.is_logged_in) {
-                    window.location.href = "{% url 'mypage' %}";
+                    window.location.href = "{% url 'mypagekor' %}";
                 } else {
                     alert("로그인이 필요합니다. 로그인해 주세요.");
                 }
