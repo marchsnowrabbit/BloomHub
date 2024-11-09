@@ -29,7 +29,7 @@ urlpatterns = [
     path('find-id/', views.find_id, name='findID'),
     path('find-id/kor/', views.find_id_kor, name='findIDkor'),
     path('find-pwd/', views.find_pwd, name='findpwd'),
-    path('find-pwd/kor/', views.find_pwd_kor, name='find_pwd_kor'),
+    path('find-pwd/kor/', views.find_pwd_kor, name='findpwdkor'),
     path('send_verification_code/', views.send_verification_code, name='send_verification_code'),
     path('verify_code_and_find_id/', views.verify_code_and_find_id, name='verify_code_and_find_id'),
     path('send_verification_code_for_password_reset/', views.send_verification_code_for_password_reset, name='send_verification_code_for_password_reset'),
@@ -42,14 +42,16 @@ urlpatterns = [
     path('mypage/kor/', views.mypage_kor, name='mypagekor'),
     path('mypage/manager/', views.mypage_manager, name='mypage_manager'),
     path('change_email/', views.change_email, name='change_email'),
+    path('mypage/password/change/', views.mypage_reset_password, name='mypage_reset_password'),
 
     ########################### 검색 및 검색 결과 ########################################
     path('search', views.search, name='search'),
-    path('search', views.search, name='searchkor'), # 슬래시 없이 URL 작성
+    path('searchkor', views.search_kor, name='searchkor'), # 슬래시 없이 URL 작성
     path('search/result', views.search_result, name='searchresult'),
     path('search/result/kor', views.search_result_kor, name='searchresultkor'),
     ##################비디오 저장 및 추출 분석#################################
     path('study/<str:video_id>', views.study, name='study'),  # video_id를 인자로 받는 study URL
+    path('study/kor/<str:video_id>', views.study_kor, name='studykor'),
     path('save_learning_video/', views.save_learning_video, name='save_learning_video'),
     path('run_extractor_and_save_to_db/', views.run_extractor_and_save_to_db,name='run_extractor_and_save_to_db'),
     path('run_analysis/<str:video_id>/', views.run_analysis, name='run_analysis'), 
@@ -57,4 +59,8 @@ urlpatterns = [
     path('get_analysis_result/<str:video_id>/',views.get_analysis_result, name='get_analysis_result'),
 
     path('analysis/', views.analysis, name='analysis'),
+
+    path('get_user_info/', views.get_user_info, name='get_user_info'),
+    path('change_email/', views.change_email, name='change_email'),
+    path('check_old_password/', views.check_old_password, name='check_old_password'),
 ]
