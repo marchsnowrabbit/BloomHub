@@ -1,3 +1,4 @@
+
 import os,json,logging,string
 import traceback
 import isodate,urllib,csv,re,time
@@ -151,6 +152,7 @@ def search(request):
         'prev_page_token': prev_page_token
     })
 
+
 def search_kor(request):
     keyword = request.POST.get('keyword') or request.GET.get('keyword', '')
     page_token = request.GET.get('pageToken')  # 페이지 토큰 추가
@@ -173,8 +175,6 @@ def search_kor(request):
         'prev_page_token': prev_page_token
     })
 
-
-
 def study(request, video_id):
     video_api = YoutubeVideoapi()
     video_info = video_api.get_video_details(video_id)
@@ -195,6 +195,7 @@ def study_kor(request, video_id):
 
     video_info['videoId'] = video_id
     return render(request, 'studykor.html', {'video': video_info})
+
 
 ###########영상저장하기################################
 # 학습할 영상 저장
@@ -1257,25 +1258,21 @@ def run_analysis(request, video_id):
 
     return JsonResponse(response_data)
 
-   
-@csrf_exempt
-# 분석 결과 저장 최종 중복 id키 해결 (id의 영역을 날림)
+
+# 분석 결과 저장 함수 예시
 def save_analysis_result(request):
     if request.method == "POST":
         data = json.loads(request.body)
         video_id = data.get("video_id")
         bloom_stage_segments = data.get("bloom_stage_segments")
         top_nouns = data.get("top_nouns")
-        donut_chart = json.loads(data.get("donut_chart"))  # JSON 문자열을 딕셔너리로 변환
-        dot_chart = json.loads(data.get("dot_chart")) # JSON 문자열을 딕셔너리로 변환
+        donut_chart = data.get("donut_chart")
+        dot_chart = data.get("dot_chart")
+
+        logger.debug(f"Received donut_chart data: {donut_chart}")
+        logger.debug(f"Received dot_chart data: {dot_chart}")
 
         try:
-            # 배열 형태의 bloom_stage_segments를 객체 형태로 변환
-            bloom_stage_segments_dict = {}
-            for segment in bloom_stage_segments:
-                # 각 배열 요소를 Bloom 단계와 시간 범위로 분리
-                stage, times = segment.split(": ")
-                bloom_stage_segments_dict[stage] = times
 
             # MongoDB 연결
             db = get_mongo_connection()
@@ -1297,27 +1294,20 @@ def save_analysis_result(request):
                 "dot_chart": dot_chart
             }
 
-            # MongoDB에 업서트 (insert or update)
-            analysis_result_collection.update_one(
-                {"video_id": video_id},  # 비디오 ID로 문서 찾기
-                {"$set": analysis_result},  # 업데이트할 데이터
-                upsert=True  # 문서가 없으면 새로 삽입
-            )
-
-             # LearningVideo 데이터베이스의 해당 문서에서 learning_status 업데이트
+            # LearningVideo 데이터베이스의 해당 문서에서 learning_status 업데이트
             update_result = learning_video_collection.update_one(
                 {"vid": video_id},  # vid로 해당 비디오를 찾기
                 {"$set": {"learning_status": True}}  # learning_status를 True로 업데이트
             )
-
             # 업데이트 성공 여부 확인
             if update_result.acknowledged and update_result.modified_count > 0:
                 print("Update successful.")
             else:
                 print("Update failed.")
 
-            # 업데이트 후 분석 결과 반환
-            analysis_result["_id"] = str(analysis_result_collection.find_one({"video_id": video_id})["_id"])
+            result = analysis_result_collection.insert_one(analysis_result)
+            analysis_result["_id"] = str(result.inserted_id)
+
             return JsonResponse({"success": True, "result": analysis_result})
 
         except Exception as e:
@@ -1584,7 +1574,6 @@ def change_email(request):
             return JsonResponse({'success': False, 'message': f'오류가 발생했습니다: {str(e)}'})
 
     return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
-
 
 #########마이페이지 이메일 띄우기
 @login_required
