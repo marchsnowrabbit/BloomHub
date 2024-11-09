@@ -149,12 +149,12 @@ header .auth a:hover,
 
 
 #hr-green {
-    width: 390px;
+    width: 420px;
     border: none;
     border-top: 2px solid #72BA84;
     margin: 10px auto;
     position: relative;
-    right: calc(13% - 2px);
+    right: calc(10% - 0px);
     top: -165px;
 }
 
