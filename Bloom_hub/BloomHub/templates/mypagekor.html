@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Page</title>
-    <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mypagekor.css' %}">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -22,8 +22,8 @@
             <div class="language-container">
                 <a href="#" class="language">언어</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'loginkor' %}">한국어</a>
-                    <a href="{% url 'login' %}">영어</a>
+                    <a href="{% url 'mypagekor' %}">한국어</a>
+                    <a href="{% url 'mypage' %}">영어</a>
                 </div>
             </div>
     
@@ -143,7 +143,7 @@
             method: "GET",
             success: function(response) {
                 if (response.is_logged_in) {
-                    $('#username').text(response.username).show(); 
+                    $('#username').text(response.username  + '님').show(); 
                     $('#logout-link').show();                      
                     $('#login-link').hide();                     
                     $('#signup-link').hide();   
@@ -181,7 +181,7 @@
                 url: "{% url 'logout_view' %}",
                 method: "GET",
                 success: function() {
-                    window.location.href = "{% url 'home' %}"; 
+                    window.location.href = "{% url 'homekor' %}"; 
                 },
                 error: function() {
                     alert("로그아웃에 실패했습니다. 다시 시도해 주세요.");
@@ -244,7 +244,7 @@
             console.log("비밀번호 변경 요청 전송 중");
             // 서버로 비밀번호 변경 요청
             $.ajax({
-                url: "{% url 'reset_password' %}",
+                url: "{% url 'mypage_reset_password' %}",
                 method: "POST",
                 data: {
                     new_password: newPassword,

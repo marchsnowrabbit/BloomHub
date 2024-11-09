@@ -44,7 +44,7 @@
             <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
             <a href="{% url 'mypagekor' %}" id="mypage-link">마이 페이지</a>
             <div class="dropdown-container">
-                <a href="#" class="classing">클래싱</a>
+                <a href="#" class="classing">학습하기</a>
                 <div class="dropdown">
                     <a href="{% url 'learningkor' %}" class="dropdown-link" data-url="{% url 'learningkor' %}">학습중인 영상</a>
                     <a href="{% url 'learnedkor' %}" class="dropdown-link" data-url="{% url 'learnedkor' %}">학습했던 영상</a>
@@ -180,7 +180,7 @@
                 url: "{% url 'logout_view' %}",
                 method: "GET",
                 success: function() {
-                    window.location.href = "{% url 'home' %}"; // 홈으로 리다이렉트
+                    window.location.href = "{% url 'homekor' %}"; // 홈으로 리다이렉트
                 },
                 error: function() {
                     alert("로그아웃에 실패했습니다.");
@@ -196,7 +196,7 @@
                 method: "GET",
                 success: function(response) {
                     if (response.is_logged_in) {
-                        window.location.href = "{% url 'mypage' %}";
+                        window.location.href = "{% url 'mypagekor' %}";
                     } else {
                         alert("로그인이 필요합니다. 로그인 해주세요.");
                     }

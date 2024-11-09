@@ -22,8 +22,8 @@
             <div class="language-container">
                 <a href="#" class="language">Language</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'loginkor' %}">Korean</a>
-                    <a href="{% url 'login' %}">English</a>
+                    <a href="{% url 'mypagekor' %}">Korean</a>
+                    <a href="{% url 'mypage' %}">English</a>
                 </div>
             </div>
     
@@ -38,10 +38,10 @@
     
         <nav>
             <!-- Change navigation links to Django URL -->
-            <a href="{% url 'guide' %}">Guide</a>
+            <a href="{% url 'guide' %}">Guides</a>
             <a href="{% url 'search' %}">Search</a>
             <!-- Navigation links check login status, guide and search available before login -->
-            <a href="{% url 'mypage' %}" id="mypage-link">My Profile</a>
+            <a href="{% url 'mypage' %}" id="mypage-link">My profile</a>
             <div class="dropdown-container">
                 <a href="#" class="classing">Classing</a>
                 <div class="dropdown">
@@ -244,7 +244,7 @@
             console.log("Sending password change request");
             // Send request to change password
             $.ajax({
-                url: "{% url 'reset_password' %}",
+                url: "{% url 'mypage_reset_password' %}",
                 method: "POST",
                 data: {
                     new_password: newPassword,

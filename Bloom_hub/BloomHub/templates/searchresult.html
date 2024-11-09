@@ -85,7 +85,7 @@
                         <a href="https://www.youtube.com/watch?v={{ video.videoId }}" target="_blank">{{ video.title }}</a>
                     </td>
                     <td>{{ video.channelTitle }}</td>
-                    <td>{{ video.viewCount }}회</td>
+                    <td>{{ video.viewCount }}</td>
                     <td>{{ video.duration }}</td>
                     <!-- 'study' URL로 이동하도록 설정 -->
                     <td><a href="{% url 'study' video.videoId %}" class="button">Learning</a></td>
@@ -101,67 +101,74 @@
 
     <script>
         $(document).ready(function() {
-    // 기본 상태 설정
-    $('#login-link').show();  
-    $('#signup-link').show(); 
-    $('#username').hide();      
-
-    // 로그인 상태 확인
-    $.ajax({
-        url: "{% url 'check_login' %}",
-        method: "GET",
-        success: function(response) {
-            if (response.is_logged_in) {
-                $('#username').text(response.username).show(); 
-                $('#logout-link').show();                      
-                $('#login-link').hide();                     
-                $('#signup-link').hide();                   
-            } else {
-                $('#login-link').show();                     
-                $('#signup-link').show();                     
-                $('#username').hide();                     
-                $('#logout-link').hide();                    
-            }
-        },
-        error: function() {
-            alert("An error occurred while checking the login status. Please try again later.");
-        }
-    });
-
-    // 마이페이지 링크 클릭 시 로그인 확인
-    $('#mypage-link').on('click', function(e) {
-        e.preventDefault();
+        // 로그인 상태 확인
         $.ajax({
             url: "{% url 'check_login' %}",
             method: "GET",
             success: function(response) {
                 if (response.is_logged_in) {
-                    window.location.href = "{% url 'mypage' %}";
+                    // 로그인 상태일 때
+                    $('#username').text(response.username).show();
+                    $('#logout-link').show();
                 } else {
-                    alert("Login is required. Please log in.");
+                    // 비로그인 상태일 때
+                    $('#login-link').show();
+                    $('#signup-link').show();
                 }
+            },
+            error: function() {
+                alert("An error occurred while checking the login status.");
             }
         });
-    });
 
-    // 드롭다운 링크 클릭 시 로그인 확인
-    $('.dropdown-link').on('click', function(e) {
-        e.preventDefault();
-        const url = $(this).data('url');
-        $.ajax({
-            url: "{% url 'check_login' %}",
-            method: "GET",
-            success: function(response) {
-                if (response.is_logged_in) {
-                    window.location.href = url;
-                } else {
-                    alert("Login is required. Please log in.");
+        // 로그아웃 처리
+        $('#logout-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'logout_view' %}",
+                method: "GET",
+                success: function() {
+                    window.location.href = "{% url 'home' %}"; // 홈으로 리다이렉트
+                },
+                error: function() {
+                    alert("Failed to log out.");
                 }
-            }
+            });
+        });
+
+        // 마이페이지 링크 클릭 시 로그인 확인
+        $('#mypage-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = "{% url 'mypage' %}";
+                    } else {
+                        alert("Login is required. Please log in.");
+                    }
+                }
+            });
+        });
+
+        // 드롭다운 링크 클릭 시 로그인 확인
+        $('.dropdown-link').on('click', function(e) {
+            e.preventDefault();
+            const url = $(this).data('url');
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = url;
+                    } else {
+                        alert("Login is required. Please log in.");
+                    }
+                }
+            });
         });
     });
-
-});
 
     
     </script>

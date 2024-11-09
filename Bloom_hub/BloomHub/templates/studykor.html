@@ -6,52 +6,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>학습하기</title>>
-    <link rel="stylesheet" href="{% static 'css/study.css' %}">
+    <link rel="stylesheet" href="{% static 'css/studykor.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script><!--plotly 불러오기-->
 </head>
 <body>
+   
     <header>
         <!-- 로고 링크를 Django URL로 변경 -->
-        <a href="{% url 'home' %}" class="logo">
+        <a href="{% url 'homekor' %}" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 100px;">
         </a>
     
         <div class="auth">
             <div class="language-container">
-                <a href="#" class="language">Language</a>
+                <a href="#" class="language">언어</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'searchkor' %}">Korean</a>
-                    <a href="{% url 'search' %}">English</a>
+                    <a href="{% url 'searchkor' %}">한국어</a>
+                    <a href="{% url 'search' %}">영어</a>
                 </div>
             </div>
     
             <span id="auth-options">
                 <!-- 로그인 상태에 따라 사용자 이름 또는 로그인/회원가입 링크 표시 -->
-                <a href="{% url 'login' %}" id="login-link" style="display: none;">Login</a>
-                <a href="{% url 'signup' %}" id="signup-link" style="display: none;">Sign up</a>
+                <a href="{% url 'loginkor' %}" id="login-link" style="display: none;">로그인</a>
+                <a href="{% url 'signupkor' %}" id="signup-link" style="display: none;">회원가입</a>
                 <span id="username" style="display: none;"></span>
-                <a href="#" id="logout-link" style="display: none;">Logout</a>
+                <a href="#" id="logout-link" style="display: none;">로그아웃</a>
             </span>
         </div>
     
         <nav>
             <!-- 네비게이션 링크들도 Django URL로 변경 -->
-            <a href="{% url 'guide' %}">Guides</a>
-            <a href="{% url 'search' %}">Search</a>
+            <a href="{% url 'guidekor' %}">가이드</a>
+            <a href="{% url 'searchkor' %}">검색</a>
             <!-- 네비게이션 링크들도 로그인 여부 확인, 로그인 전에는 가이드 서치만 접근 가능 -->
-            <a href="{% url 'mypage' %}" id="mypage-link">My profile</a>
+            <a href="{% url 'mypagekor' %}" id="mypage-link">마이 페이지</a>
             <div class="dropdown-container">
-                <a href="#" class="classing">Classing</a>
+                <a href="#" class="classing">학습하기</a>
                 <div class="dropdown">
-                    <a href="#" class="dropdown-link" data-url="{% url 'learning' %}">Learning Video</a>
-                    <a href="#" class="dropdown-link" data-url="{% url 'learned' %}">Learned Video</a>
+                    <a href="{% url 'learningkor' %}" class="dropdown-link" data-url="{% url 'learningkor' %}">학습중인 영상</a>
+                    <a href="{% url 'learnedkor' %}" class="dropdown-link" data-url="{% url 'learnedkor' %}">학습했던 영상</a>
                 </div>
             </div>
             
         </nav>
     </header>
+
     <div class="content-container">
     <div class="video-container">
         {% if video %}
@@ -59,8 +61,8 @@
             <div class="info">
                 <h2>{{ video.title }}</h2>
                 <div class="view-channel-info"></div>
-                <p>Views: {{ video.viewCount }}회</p>
-                <p>Channel: {{ video.channelTitle }}</p>
+                <p>조회수: {{ video.viewCount }}회</p>
+                <p>채널명: {{ video.channelTitle }}</p>
             </div>
         </div>
         {% else %}
@@ -70,50 +72,50 @@
 
     <div id="analysis-result" class="keywords-container" style="display: none;">
         <div class="top-nouns-section">
-            <h2>Main Noun Keywords (TF-IDF)</h2>
+            <h2>주요 명사 키워드 (TF-IDF)</h2>
             <ul class="top-nouns" id="top-nouns"></ul>
         </div>
         <div class="stage-list-section">
-            <h2>Bloom's Taxonomy Levels</h2>
+            <h2>Bloom 단계별 구간</h2>
             <ul class="stage-list" id="stage-segments"></ul>
         </div>
         <div class="charts-container">
             <div class="result-section">
                 <div id="donut-chart-wrapper">
-                    <h2>Donut chart by Bloom's Taxonomy levels</h2>
+                    <h2>Bloom 단계별 도넛 차트</h2>
                     <div id="donut-chart"></div>
                 </div>
             </div>
             <div class="result-section">
                 <div id="dot-chart-wrapper">
-                <h2>A time flow graph by Bloom's Taxonomy levels</h2>
+                <h2>Bloom 단계별 시간 흐름 그래프</h2>
                 <div id="dot-graph"></div>
             </div>
             </div>
         </div>
         <div class="result-buttons">
-            <button id="save-analysis" class="button">Save to My Learning</button>
-            <button id="close-without-saving" class="button">Close Without Saving</button>
+            <button id="save-analysis" class="button">나의 학습에 저장</button>
+            <button id="close-without-saving" class="button">저장하지 않고 닫기</button>
         </div>
         
     </div>
 
     <div class="controls">
-        <p>Select Video Language
+        <p>영상 지원 언어 선택
             <br>
-            <label><input type="radio" name="std_lang" value="KR" checked> Korean</label>
-            <label><input type="radio" name="std_lang" value="EN"> English</label>
+            <label><input type="radio" name="std_lang" value="KR" checked> 한국어</label>
+            <label><input type="radio" name="std_lang" value="EN"> 영어</label>
         </p>
-        
-        <button id="save-learning-video" class="button">Save to My Videos</button>
+    
+        <button id="save-learning-video" class="button">학습할 영상에 저장</button>
         <br>
-        <button id="analyze-video">Analyze</button>
-        <div id="loading-message">Loading...</div>
+        <button id="analyze-video">분석하기</button>
+        <div id="loading-message">로딩 중...</div>
         <div id="spinner" style="display:none;"></div> <!-- 로딩 애니메이션 -->
     </div>
 
     <div id="return-link-container">
-        <a href="{% url 'search' %}" id="return-link">Return to Search Results</a>
+        <a href="{% url 'search' %}" id="return-link">검색 결과로 돌아가기</a>
     </div>
     
     <script>
@@ -150,9 +152,9 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.success) alert("The video has been saved to the learning list.");
+                if (data.success) alert("영상이 학습할 목록에 저장되었습니다.");
             })
-            .catch(error => console.error("Error Saving:", error));
+            .catch(error => console.error("저장 중 오류:", error));
         });
 
         document.getElementById("analyze-video").addEventListener("click", function() {
@@ -199,14 +201,14 @@
             document.getElementById("spinner").style.display = "none";  // 로딩 애니메이션 숨기기
             // 분석 실패시 링크 다시 보이게 함
             document.getElementById("return-link-container").style.display = "block";
-                    alert(data.error || "An error occurred during extraction.");
+                    alert(data.error || "추출 중 오류가 발생했습니다.");
                 }
             })
             .catch(error => {
                 document.getElementById("loading-message").style.display = "none";
                 document.getElementById("spinner").style.display = "none";
-                console.error("Error during extraction:", error);
-                alert("An error occurred during extraction.");
+                console.error("추출 중 오류:", error);
+                alert("추출 중 오류가 발생했습니다.");
                 document.getElementById("return-link-container").style.display = "block";
             });
         });
@@ -233,15 +235,15 @@
                     displayAnalysisResult(data);
                     document.querySelector('.controls').style.display = "none"; 
                 } else {
-                    alert(data.error || "An error occurred during analysis.");
+                    alert(data.error || "분석 중 오류가 발생했습니다.");
                     document.getElementById("return-link-container").style.display = "block";
                 }
             }) 
             .catch(error => {
                 document.getElementById("loading-message").style.display = "none";
                 document.getElementById("spinner").style.display = "none";
-                console.error("Error during analysis:", error);
-                alert("분An error occurred during analysis.");
+                console.error("분석 중 오류:", error);
+                alert("분석 중 오류가 발생했습니다.");
                 document.getElementById("return-link-container").style.display = "block";
             });
         }
@@ -295,7 +297,7 @@
             } catch (error) {
                 console.error("Failed to parse dot graph data:", error);
             }
-            alert("Analysis is complete!");
+            alert("분석이 완료되었습니다!");
         }
 
         // 분석 결과를 저장하는 버튼 클릭 시
@@ -334,12 +336,12 @@
             .then(data => {
                 console.log("Save analysis response:", data);  // 응답 전체를 콘솔에 출력하여 확인
                 if (data.success) {
-                    alert("The analysis results have been saved.");
+                    alert("분석 결과가 저장되었습니다.");
                 } else {
-                    alert("Error during saving: " + (data.error || "An unknown error has occurred."));
+                    alert("저장 중 오류: " + (data.error || "알 수 없는 오류가 발생했습니다."));
                 }
             })
-            .catch(error => console.error("Error during saving:", error));
+            .catch(error => console.error("저장 중 오류:", error));
         });
         // "저장하지 않고 닫기" 버튼 클릭 시 홈 화면으로 이동
         document.getElementById("close-without-saving").addEventListener("click", function() {
@@ -347,80 +349,73 @@
         });
 
         $(document).ready(function() {
-    // 기본 상태 설정
-    $('#login-link').show();  
-    $('#signup-link').show(); 
-    $('#username').hide();      
-
-    // 로그인 상태 확인
-    $.ajax({
-        url: "{% url 'check_login' %}",
-        method: "GET",
-        success: function(response) {
-            if (response.is_logged_in) {
-                $('#username').text(response.username).show(); 
-                $('#logout-link').show();                      
-                $('#login-link').hide();                     
-                $('#signup-link').hide();                   
-            } else {
-                $('#login-link').show();                     
-                $('#signup-link').show();                     
-                $('#username').hide();                     
-                $('#logout-link').hide();                    
-            }
-        },
-        error: function() {
-            alert("An error occurred while checking the login status. Please try again later.");
-        }
-    });
-
-    // 마이페이지 링크 클릭 시 로그인 확인
-    $('#mypage-link').on('click', function(e) {
-        e.preventDefault();
+        // 로그인 상태 확인
         $.ajax({
             url: "{% url 'check_login' %}",
             method: "GET",
             success: function(response) {
                 if (response.is_logged_in) {
-                    window.location.href = "{% url 'mypage' %}";
+                    // 로그인 상태일 때
+                    $('#username').text(response.username + '님').show();
+                    $('#logout-link').show();
                 } else {
-                    alert("Login is required. Please log in.");
+                    // 비로그인 상태일 때
+                    $('#login-link').show();
+                    $('#signup-link').show();
                 }
-            }
-        });
-    });
-
-    // 드롭다운 링크 클릭 시 로그인 확인
-    $('.dropdown-link').on('click', function(e) {
-        e.preventDefault();
-        const url = $(this).data('url');
-        $.ajax({
-            url: "{% url 'check_login' %}",
-            method: "GET",
-            success: function(response) {
-                if (response.is_logged_in) {
-                    window.location.href = url;
-                } else {
-                    alert("Login is required. Please log in.");
-                }
-            }
-        });
-    });
-
-});
-
-    // 로그아웃 처리
-    $('#logout-link').on('click', function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: "{% url 'logout_view' %}",
-            method: "GET",
-            success: function() {
-                window.location.href = "{% url 'home' %}"; 
             },
             error: function() {
-                alert("Failed to log out. Please try again.");
+                alert("로그인 상태를 확인하는 중 오류가 발생했습니다.");
             }
+        });
+
+        // 로그아웃 처리
+        $('#logout-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'logout_view' %}",
+                method: "GET",
+                success: function() {
+                    window.location.href = "{% url 'homekor' %}"; // 홈으로 리다이렉트
+                },
+                error: function() {
+                    alert("로그아웃에 실패했습니다.");
+                }
+            });
+        });
+
+        // 마이페이지 링크 클릭 시 로그인 확인
+        $('#mypage-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = "{% url 'mypagekor' %}";
+                    } else {
+                        alert("로그인이 필요합니다. 로그인 해주세요.");
+                    }
+                }
+            });
+        });
+
+
+        // 드롭다운 링크 클릭 시 로그인 확인
+        $('.dropdown-link').on('click', function(e) {
+            e.preventDefault();
+            const url = $(this).data('url');
+            $.ajax({
+                url: "{% url 'check_login' %}",
+                method: "GET",
+                success: function(response) {
+                    if (response.is_logged_in) {
+                        window.location.href = url;
+                    } else {
+                        alert("로그인이 필요합니다. 로그인 해주세요.");
+                    }
+                }
+            });
         });
     });
     </script>
