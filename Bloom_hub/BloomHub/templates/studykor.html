@@ -5,17 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>학습하기</title>
+    <title>학습하기</title>>
     <link rel="stylesheet" href="{% static 'css/studykor.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .video-container { text-align: center; margin-top: 20px; }
-        .info { font-size: 18px; margin-top: 10px; }
-    </style>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script><!--plotly 불러오기-->
 </head>
 <body>
+   
     <header>
         <!-- 로고 링크를 Django URL로 변경 -->
         <a href="{% url 'homekor' %}" class="logo">
@@ -26,8 +23,8 @@
             <div class="language-container">
                 <a href="#" class="language">언어</a>
                 <div class="language-dropdown">
-                    <a href="{% url 'loginkor' %}">한국어</a>
-                    <a href="{% url 'login' %}">영어</a>
+                    <a href="{% url 'searchkor' %}">한국어</a>
+                    <a href="{% url 'search' %}">영어</a>
                 </div>
             </div>
     
@@ -57,22 +54,55 @@
         </nav>
     </header>
 
-    <h1>학습하기</h1>
+    <div class="content-container">
     <div class="video-container">
         {% if video %}
             <div id="player"></div>
             <div class="info">
                 <h2>{{ video.title }}</h2>
+                <div class="view-channel-info"></div>
                 <p>조회수: {{ video.viewCount }}회</p>
                 <p>채널명: {{ video.channelTitle }}</p>
             </div>
+        </div>
         {% else %}
-            <p style="color: red; display: none;">{{ error }}</p>
+            <p style="color: red;">{{ error }}</p>
         {% endif %}
     </div>
 
+    <div id="analysis-result" class="keywords-container" style="display: none;">
+        <div class="top-nouns-section">
+            <h2>주요 명사 키워드 (TF-IDF)</h2>
+            <ul class="top-nouns" id="top-nouns"></ul>
+        </div>
+        <div class="stage-list-section">
+            <h2>Bloom 단계별 구간</h2>
+            <ul class="stage-list" id="stage-segments"></ul>
+        </div>
+        <div class="charts-container">
+            <div class="result-section">
+                <div id="donut-chart-wrapper">
+                    <h2>Bloom 단계별 도넛 차트</h2>
+                    <div id="donut-chart"></div>
+                </div>
+            </div>
+            <div class="result-section">
+                <div id="dot-chart-wrapper">
+                <h2>Bloom 단계별 시간 흐름 그래프</h2>
+                <div id="dot-graph"></div>
+            </div>
+            </div>
+        </div>
+        <div class="result-buttons">
+            <button id="save-analysis" class="button">나의 학습에 저장</button>
+            <button id="close-without-saving" class="button">저장하지 않고 닫기</button>
+        </div>
+        
+    </div>
+
     <div class="controls">
-        <p>영상 지원 언어 선택: 
+        <p>영상 지원 언어 선택
+            <br>
             <label><input type="radio" name="std_lang" value="KR" checked> 한국어</label>
             <label><input type="radio" name="std_lang" value="EN"> 영어</label>
         </p>
@@ -80,61 +110,14 @@
         <button id="save-learning-video" class="button">학습할 영상에 저장</button>
         <br>
         <button id="analyze-video">분석하기</button>
-        <div id="loading-message" style="display: none;">로딩 중...</div>
-        <div class="spinner" style="display: none;"></div>
+        <div id="loading-message">로딩 중...</div>
+        <div id="spinner" style="display:none;"></div> <!-- 로딩 애니메이션 -->
     </div>
 
-    
-    <!-- 분석 결과를 표시할 영역 -->
-    <div id="analysis-result" style="display: none;">
-        
-        <div class="top-nouns-section">
-            <h2>주요 명사 키워드 (TF-IDF)</h2>
-            <ul class="top-nouns" id="top-nouns"></ul>
-        </div>
-        <div class="analysis-wrapper">
-    <div class="result-section">
-        <h2>Bloom 단계별 구간</h2>
-        <div class="pyramid" id="bloom-pyramid">
-        <ul class="stage-list" id="stage-segments"></ul>
-        
+    <div id="return-link-container">
+        <a href="{% url 'search' %}" id="return-link">검색 결과로 돌아가기</a>
     </div>
     
-    
-</div>
-<div class="chart-section">
-    <div class="result-section">
-    <div class="chart-section">
-        <h2>Bloom 단계별 도넛 차트</h2>
-        <div id="donut-chart"></div>
-    </div>
-</div>
-</div>
-    <div class="result-section">
-        <div class="dot-graph-wrapper">
-        <h2>Bloom 단계별 시간 흐름 그래프</h2></div>
-        <div id="dot-graph"></div>
-    </div>
-
-</div>
-    <!-- 버튼 추가 -->
-    
-    <div class="result-buttons">
-        <button id="save-analysis" class="button">나의 학습에 저장</button>
-        
-        <button id="close-without-saving" class="button">저장하지 않고 닫기</button>
-    </div>
-
-    
-
-
-
-
-        
-    
-
-    <a href="{% url 'searchkor' %}" div class="return-link">검색 결과로 돌아가기</a>
-
     <script>
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
@@ -175,14 +158,14 @@
         });
 
         document.getElementById("analyze-video").addEventListener("click", function() {
+            document.getElementById("loading-message").style.display = "block";
+            document.getElementById("spinner").style.display = "block";
             const selectedLang = document.querySelector('input[name="std_lang"]:checked').value;
             const videoId = "{{ video.videoId }}";
             const setTime = "{{ video.duration_seconds }}";
 
             console.log("Starting extraction...");
-            document.getElementById("loading-message").style.display = "block";
-            document.querySelector(".spinner").style.display = "block";
-
+            document.getElementById("return-link-container").style.display = "none";
             fetch("{% url 'run_extractor_and_save_to_db' %}", {  
                 method: "POST",
                 headers: { "Content-Type": "application/json", "X-CSRFToken": "{{ csrf_token }}" },
@@ -197,6 +180,8 @@
             })
             .then(response => response.json())
             .then(data => {
+                document.getElementById("loading-message").style.display = "none";
+                document.getElementById("spinner").style.display = "none";
                 console.log("Extraction response:", data); 
                 if (data.success) {
                     // 기존 데이터가 있다면 바로 분석 실행
@@ -205,21 +190,29 @@
                     }
                     // 데이터가 없을 경우에는 분석하기 진행
                     else {
+                        // 데이터가 성공적으로 저장되었음을 알리지만,
+                        // 분석 요청은 별도로 클라이언트에서 처리해야 합니다.
+                        alert("데이터가 성공적으로 저장되었습니다. 분석을 진행합니다.");
                         return runAnalysis(videoId);
+                        document.getElementById("return-link-container").style.display = "block";
                     }
                 } else {
                     document.getElementById("loading-message").style.display = "none";
-                    document.querySelector(".spinner").style.display = "none";
+            document.getElementById("spinner").style.display = "none";  // 로딩 애니메이션 숨기기
+            // 분석 실패시 링크 다시 보이게 함
+            document.getElementById("return-link-container").style.display = "block";
                     alert(data.error || "추출 중 오류가 발생했습니다.");
                 }
             })
             .catch(error => {
                 document.getElementById("loading-message").style.display = "none";
-                document.querySelector(".spinner").style.display = "none";
+                document.getElementById("spinner").style.display = "none";
                 console.error("추출 중 오류:", error);
                 alert("추출 중 오류가 발생했습니다.");
+                document.getElementById("return-link-container").style.display = "block";
             });
         });
+
 
         function runAnalysis(videoId) {
             console.log("Starting analysis for videoId:", videoId);
@@ -235,32 +228,34 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById("loading-message").style.display = "none";
-                document.querySelector(".spinner").style.display = "none";
                 console.log("Analysis response:", data);
 
                 if (data.success) {
                     // 분석 결과가 있을 경우 표시
                     displayAnalysisResult(data);
+                    document.querySelector('.controls').style.display = "none"; 
                 } else {
                     alert(data.error || "분석 중 오류가 발생했습니다.");
+                    document.getElementById("return-link-container").style.display = "block";
                 }
-            })
+            }) 
             .catch(error => {
                 document.getElementById("loading-message").style.display = "none";
-                document.querySelector(".spinner").style.display = "none";
+                document.getElementById("spinner").style.display = "none";
                 console.error("분석 중 오류:", error);
                 alert("분석 중 오류가 발생했습니다.");
+                document.getElementById("return-link-container").style.display = "block";
             });
         }
 
         function displayAnalysisResult(data) {
             document.getElementById("analysis-result").style.display = "block";
-            document.querySelector(".controls").classList.add("hidden");
+
             const topNounsList = document.getElementById("top-nouns");
             topNounsList.innerHTML = "";
             data.top_nouns.forEach(noun => {
                 const li = document.createElement("li");
-                li.textContent = noun;
+                li.textContent = `#${noun}`;
                 topNounsList.appendChild(li);
             });
 
@@ -302,7 +297,6 @@
             } catch (error) {
                 console.error("Failed to parse dot graph data:", error);
             }
-            document.querySelector(".result-buttons").style.display = "block";
             alert("분석이 완료되었습니다!");
         }
 
@@ -316,8 +310,13 @@
             var dotGraphDiv = document.getElementById('dot-graph');
 
             // 도넛 차트 데이터와 도트 그래프 데이터 가져오기
-            const donutChartData = JSON.stringify(donutChartDiv.data); // 도넛 차트 JSON 데이터
-            const dotGraphData = JSON.stringify(dotGraphDiv.data);     // 도트 그래프 JSON 데이터
+            const donutChartData = donutChartDiv.data;
+            const donutChartLayout = donutChartDiv.layout;
+            const dotGraphData = dotGraphDiv.data;
+            const dotGraphLayout = dotGraphDiv.layout;
+
+            const donutChartJSON = JSON.stringify({data: donutChartData,layout:donutChartLayout});
+            const dotGraphJSON = JSON.stringify({data:dotGraphData,layout:dotGraphLayout});
 
             fetch("{% url 'save_analysis_result' %}", {
                 method: "POST",
@@ -329,8 +328,8 @@
                     video_id: videoId,
                     bloom_stage_segments: stageSegments,
                     top_nouns: topNouns,
-                    donut_chart: donutChartData,
-                    dot_chart: dotGraphData
+                    donut_chart: donutChartJSON,
+                    dot_chart: dotGraphJSON
                 })
             })
             .then(response => response.json())
@@ -350,36 +349,43 @@
         });
 
         $(document).ready(function() {
-    // 기본 상태 설정
-    $('#login-link').show();  
-    $('#signup-link').show(); 
-    $('#username').hide();    
-    $('#logout-link').hide();  
-
-    // 로그인 상태 확인
-    $.ajax({
-        url: "{% url 'check_login' %}",
-        method: "GET",
-        success: function(response) {
-            if (response.is_logged_in) {
-                $('#username').text(response.username  + '님').show(); 
-                $('#logout-link').show();                      
-                $('#login-link').hide();                     
-                $('#signup-link').hide();                   
-            } else {
-                $('#login-link').show();                     
-                $('#signup-link').show();                     
-                $('#username').hide();                      
-                $('#logout-link').hide();                    
+        // 로그인 상태 확인
+        $.ajax({
+            url: "{% url 'check_login' %}",
+            method: "GET",
+            success: function(response) {
+                if (response.is_logged_in) {
+                    // 로그인 상태일 때
+                    $('#username').text(response.username + '님').show();
+                    $('#logout-link').show();
+                } else {
+                    // 비로그인 상태일 때
+                    $('#login-link').show();
+                    $('#signup-link').show();
+                }
+            },
+            error: function() {
+                alert("로그인 상태를 확인하는 중 오류가 발생했습니다.");
             }
-        },
-        error: function() {
-            alert("로그인 상태를 확인하는 중 오류가 발생했습니다. ");
-        }
-    });
+        });
 
-// 마이페이지 링크 클릭 시 로그인 확인
-$('#mypage-link').on('click', function(e) {
+        // 로그아웃 처리
+        $('#logout-link').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'logout_view' %}",
+                method: "GET",
+                success: function() {
+                    window.location.href = "{% url 'homekor' %}"; // 홈으로 리다이렉트
+                },
+                error: function() {
+                    alert("로그아웃에 실패했습니다.");
+                }
+            });
+        });
+
+        // 마이페이지 링크 클릭 시 로그인 확인
+        $('#mypage-link').on('click', function(e) {
             e.preventDefault();
             $.ajax({
                 url: "{% url 'check_login' %}",
@@ -393,6 +399,8 @@ $('#mypage-link').on('click', function(e) {
                 }
             });
         });
+
+
         // 드롭다운 링크 클릭 시 로그인 확인
         $('.dropdown-link').on('click', function(e) {
             e.preventDefault();
