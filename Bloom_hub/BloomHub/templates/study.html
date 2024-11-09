@@ -245,8 +245,13 @@
             var dotGraphDiv = document.getElementById('dot-graph');
 
             // 도넛 차트 데이터와 도트 그래프 데이터 가져오기
-            const donutChartData = JSON.stringify(donutChartDiv.data); // 도넛 차트 JSON 데이터
-            const dotGraphData = JSON.stringify(dotGraphDiv.data);     // 도트 그래프 JSON 데이터
+            const donutChartData = donutChartDiv.data;
+            const donutChartLayout = donutChartDiv.layout;
+            const dotGraphData = dotGraphDiv.data;
+            const dotGraphLayout = dotGraphDiv.layout;
+
+            const donutChartJSON = JSON.stringify({data: donutChartData,layout:donutChartLayout});
+            const dotGraphJSON = JSON.stringify({data:dotGraphData,layout:dotGraphLayout});
 
             fetch("{% url 'save_analysis_result' %}", {
                 method: "POST",
@@ -258,8 +263,8 @@
                     video_id: videoId,
                     bloom_stage_segments: stageSegments,
                     top_nouns: topNouns,
-                    donut_chart: donutChartData,
-                    dot_chart: dotGraphData
+                    donut_chart: donutChartJSON,
+                    dot_chart: dotGraphJSON
                 })
             })
             .then(response => response.json())
