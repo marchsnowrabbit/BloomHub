@@ -283,6 +283,8 @@ p {
 .card h2 {
     font-size: 1.5em;
     margin: 10px 0;
+    margin-left: -20px;
+    color: rgb(11,36,60);
 }
 
 .card p {
@@ -376,5 +378,9 @@ p {
     h2 {
         text-align: center;
         left: 0;
+    }
+
+    .card h2 {
+        margin: 10px 0;
     }
 }
