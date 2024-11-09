@@ -167,8 +167,8 @@ header .auth a:hover,
 #hr-green {
     position: relative;
     top:-8px;
-    left:145px;
-    width:450px;
+    left:1px;
+    width:166px;
     border-color: #72BA84;
     border-top: 2px solid #72BA84;
 }
@@ -227,6 +227,11 @@ button {
 
 button:hover {
     background-color: #5a9e6d;
+}
+
+#send-code-btn {
+    position: relative;
+    right: calc(-73% - 0px);
 }
 
 #verification-section {
@@ -309,6 +314,37 @@ button:hover {
     background: rgb(71, 125, 20);
 }
 
+/* 로딩 애니메이션 스타일 */
+#loading-animation {
+    width: 150px; /* 기존 Verify 버튼과 동일한 크기 */
+    height: 30px; /* 기존 Verify 버튼과 동일한 크기 */
+    margin: 0 auto;
+    border: none;
+    position: relative;
+    left: calc(38% - 0px); /* 기존 Verify 버튼과 동일한 위치 */
+    top: -150px; /* 기존 Verify 버튼과 동일한 위치 */
+    display: none; /* 기본적으로는 숨김 처리 */
+    justify-content: center;
+    align-items: center;
+}
+
+.plane {
+    width: 2em;
+    height: 2em;
+    background-color: #fc2f70;
+    transform: rotate(0);
+    animation: flip 1s infinite;
+}
+
+@keyframes flip {
+    50% {
+        transform: rotateY(180deg);
+    }
+    100% {
+        transform: rotateY(180deg) rotateX(180deg);
+    }
+}
+
 @media only screen and (max-width: 768px) {
     header {
         display: flex;
@@ -365,10 +401,6 @@ button:hover {
         right: calc(32% - 0px);
     }
 
-    #hr-green {
-        left:105px;
-        width:400px;
-    }
     .input__row {
         top: -150px;
         right: calc(-30% - 10px);
