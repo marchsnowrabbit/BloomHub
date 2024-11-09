@@ -90,6 +90,10 @@
 
         </form>
         <button class="signin__btn" id="send-code-btn" >Verify</button> <!--! 초록색 인증하기 -->
+        <div class="box" id="loading-animation" style="display: none;">
+            <div class="plane"></div>
+        </div>
+          
         <button class="signin__btn" id="verify-code-btn"  >Confirm</button>  <!--! 초록색 확인 -->
     </form>
 </div>
@@ -129,7 +133,8 @@
                 $('#send-code-btn').on('click', function(e) {
                     e.preventDefault();
                     const email = $('#email').val();
-        
+                    $('#send-code-btn').hide();
+                    $('#loading-animation').show();
                     $.ajax({
                         type: 'POST',
                         url: '{% url "send_verification_code" %}',
@@ -139,24 +144,39 @@
                         },
                         success: function(response) {
                             if (response.success) {
+                                $('#loading-animation').hide();
+                                $('#send-code-btn').show(); 
                                 alert(response.message);
+                                
                                 $('#verify-code-btn').show();
                                 $('.verification__block').show();
                             } else {
                                 alert(response.message);
+                                $('#loading-animation').hide();
+                                $('#send-code-btn').show();
                             }
                         },
                         error: function() {
+                            $('#loading-animation').hide();
+                            $('#send-code-btn').show();
                             alert('An error occurred while sending the verification code.');
                         }
                     });
                 });
-        
+            });
+            
+            $(document).ready(function() {
                 $('#verify-code-btn').on('click', function(e) {
                     e.preventDefault();
                     const email = $('#email').val();
                     const verificationCode = $('#verification-code').val();
-        
+                    
+                    if (!verificationCode) {
+                        alert("Please enter the verification code.");
+                        console.log("No verification code entered."); // 디버깅 로그 추가
+                        return;  // 입력하지 않았을 때, 함수 종료
+                    }
+
                     $.ajax({
                         type: 'POST',
                         url: '{% url "verify_code_and_find_id" %}',
@@ -166,19 +186,25 @@
                             'csrfmiddlewaretoken': '{{ csrf_token }}'
                         },
                         success: function(response) {
-                            if (response.success) {
+                            console.log("Verification response received:", response); 
+                            if (response.success === true || response.success === "true") {
                                 $('#found-id').text(response.found_id);
                                 $('#id-display').show();
+                                $('#input-section').hide()
+                                console.log("Verification successful. Found ID:", response.found_id);
                             } else {
                                 alert(response.message);
+                                console.log("Verification failed. No UI update performed.");
                             }
                         },
                         error: function() {
+                            console.error("Error during verification request:", status, error);
                             alert('An error occurred while verifying the verification code.');
                         }
                     });
                 });
             });
+            
 
             $(document).ready(function() {
     // 기본 상태 설정
