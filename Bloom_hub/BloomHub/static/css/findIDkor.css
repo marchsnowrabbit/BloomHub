@@ -34,6 +34,8 @@ header {
     position: relative;
     top:0;
     position: sticky;
+    position: relative;
+    z-index: 10;
 }
 
 header .logo {
@@ -110,6 +112,7 @@ header .auth a {
 /* classing - learning, learned */
 .dropdown-container {
     position: relative;
+    overflow: visible;
 }
 
 .dropdown {
@@ -192,7 +195,7 @@ header .auth a:hover,
     border-radius: 70px;
     position: relative;
     top: -105px;
-    z-index: -10;
+    z-index: 1;
 }
 
 
@@ -541,9 +544,5 @@ pointer-events: none;
 
     #hr-green {
     left:3px;    
-    }
-
-    .container{
-        z-index: -10;
     }
 }
