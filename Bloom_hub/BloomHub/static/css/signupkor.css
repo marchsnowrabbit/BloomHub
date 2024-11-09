@@ -156,6 +156,7 @@ header .auth a:hover,
     position: relative;
     top: -105px; 
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+    z-index: -10;
 }
 
 h1 {
@@ -397,5 +398,9 @@ button:disabled {
 
     #description {
         margin-left: 20px;
+    }
+
+    .container{
+        z-index: -10;
     }
 }

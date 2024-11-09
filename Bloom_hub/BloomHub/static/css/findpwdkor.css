@@ -132,6 +132,7 @@ header .auth a {
     border-radius: 70px;
     position: relative;
     top: -105px;
+    z-index: -10;
 }
 
 h1 {
@@ -465,4 +466,9 @@ button:hover {
         border-radius: 5px;
         transition: width 0.3s ease, transform 0.3s ease;
     }
+
+    .container{
+        z-index: -10;
+    }
+
 }

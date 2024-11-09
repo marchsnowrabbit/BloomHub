@@ -136,6 +136,7 @@ header .auth a {
     border-radius: 70px;
     position: relative;
     top: -105px;
+    z-index: -10;
 }
 
 /* 박스 제목 */
@@ -412,5 +413,9 @@ button:hover {
     #hr-green {
         left:1px;
         
+    }
+
+    .container{
+        z-index: -10;
     }
 }

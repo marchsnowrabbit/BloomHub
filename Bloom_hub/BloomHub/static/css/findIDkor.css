@@ -192,6 +192,7 @@ header .auth a:hover,
     border-radius: 70px;
     position: relative;
     top: -105px;
+    z-index: -10;
 }
 
 
@@ -540,5 +541,9 @@ pointer-events: none;
 
     #hr-green {
     left:3px;    
+    }
+
+    .container{
+        z-index: -10;
     }
 }

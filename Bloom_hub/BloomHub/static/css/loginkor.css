@@ -185,7 +185,7 @@ header .auth a:hover,
     border-radius: 70px;
     position: relative;
 	top: -105px;
-
+    z-index: -10;
 }
 
 h1 {
@@ -499,6 +499,10 @@ font-size:12px;
     .signin__btn {
         top:200px;
         right: calc(0% - -10px);
+    }
+
+    .container{
+        z-index: -10;
     }
 }
 
