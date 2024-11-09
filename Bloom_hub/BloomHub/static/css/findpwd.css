@@ -13,7 +13,7 @@ body {
     margin: 0;
     min-height: 100vh;
     padding: 0;
-    overflow: hidden;
+
 }
 
 /* 헤더 */
@@ -175,7 +175,7 @@ header .auth a:hover,
     left: 1px;
     width:240px;
     border-color: #72BA84;
-    border-top: 2px solid #72BA84; /* 굵기와 색상 설정 */
+    border-top: 2px solid #72BA84; 
 }
     
 .input__row {
@@ -317,14 +317,14 @@ button:hover {
 
 /* 로딩 애니메이션 스타일 */
 #loading-animation {
-    width: 150px; /* 기존 Verify 버튼과 동일한 크기 */
-    height: 30px; /* 기존 Verify 버튼과 동일한 크기 */
+    width: 150px;
+    height: 30px; 
     margin: 0 auto;
     border: none;
     position: relative;
-    left: calc(38% - 0px); /* 기존 Verify 버튼과 동일한 위치 */
-    top: -150px; /* 기존 Verify 버튼과 동일한 위치 */
-    display: none; /* 기본적으로는 숨김 처리 */
+    left: calc(38% - 0px); 
+    top: -150px;
+    display: none; 
     justify-content: center;
     align-items: center;
 }
@@ -388,8 +388,8 @@ button:hover {
     }
     
     #reset-password-btn {
-        margin-left: 370px; 
-        margin-bottom: 330px;
+        margin-left: 380px; 
+        top: -228px;
     }
 
     .input-section input {
