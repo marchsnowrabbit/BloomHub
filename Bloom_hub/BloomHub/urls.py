@@ -1,4 +1,3 @@
-
 from django.urls import path
 from . import views  # views 모듈을 임포트하여 사용
 
@@ -43,9 +42,9 @@ urlpatterns = [
     path('mypage/kor/', views.mypage_kor, name='mypagekor'),
     path('mypage/manager/', views.mypage_manager, name='mypage_manager'),
     path('change_email/', views.change_email, name='change_email'),
+    path('mypage/password/change/', views.mypage_reset_password, name='mypage_reset_password'),
 
     ########################### 검색 및 검색 결과 ########################################
-
     path('search', views.search, name='search'),
     path('searchkor', views.search_kor, name='searchkor'), # 슬래시 없이 URL 작성
     path('search/result', views.search_result, name='searchresult'),
@@ -60,7 +59,7 @@ urlpatterns = [
     path('get_analysis_result/<str:video_id>/',views.get_analysis_result, name='get_analysis_result'),
 
     path('analysis/', views.analysis, name='analysis'),
-    
+
     path('get_user_info/', views.get_user_info, name='get_user_info'),
     path('change_email/', views.change_email, name='change_email'),
     path('check_old_password/', views.check_old_password, name='check_old_password'),
