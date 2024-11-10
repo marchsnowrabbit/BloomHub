@@ -216,9 +216,12 @@ def save_learning_video(request):
                 'view_count': data.get("view_count"),
                 'std_lang': data.get("std_lang"),
                 'user_id': user_id,
-                'learning_status': False
             }
         )
+        # learning_status는 객체가 새로 생성된 경우에만 False로 설정
+        if created:
+            learning_video.learning_status = False
+            learning_video.save()
         
         return JsonResponse({"success": True, "created": created})
     return JsonResponse({"success": False, "error": "Invalid request method."}, status=400)
@@ -242,8 +245,9 @@ class KoreanScriptExtractor:
         self.video_title = self.get_video_title()
 
     def load_stopwords_from_mongo(self):
-        # MongoDB 연결 설정
-        client = MongoClient(settings.MONGO_URI)
+        # MongoDB URI 가져오기
+        mongo_uri = settings.DATABASES['default']['CLIENT']['host']
+        client = MongoClient(mongo_uri)
         db = client["BloomHub"]
         collection = db["bloom_dictionary"]
         
@@ -662,9 +666,12 @@ def run_extractor_and_save_to_db(request):
                 'view_count': data.get("view_count"),
                 'std_lang': std_lang,
                 'user_id': user_id,
-                'learning_status': False
             }
         )
+         # 새로 생성된 경우에만 learning_status를 False로 설정
+        if created:
+            video.learning_status = False
+            video.save()
 
         # 로그로 값 출력
         logger.debug("Received video_id: %s, set_time: %s, user_id: %s", video_id, set_time, user_id)
@@ -1296,14 +1303,13 @@ def save_analysis_result(request):
 
             # LearningVideo 데이터베이스의 해당 문서에서 learning_status 업데이트
             update_result = learning_video_collection.update_one(
-                {"vid": video_id},  # vid로 해당 비디오를 찾기
-                {"$set": {"learning_status": True}}  # learning_status를 True로 업데이트
+            {"vid": video_id.strip()},  # vid로 해당 비디오를 찾기
+            {"$set": {"learning_status": True}}  # learning_status를 True로 업데이트
             )
-            # 업데이트 성공 여부 확인
-            if update_result.acknowledged and update_result.modified_count > 0:
-                print("Update successful.")
-            else:
-                print("Update failed.")
+
+            # 업데이트 후 learning_status 확인
+            updated_document = learning_video_collection.find_one({"vid": video_id.strip()})
+            print("Updated document:", updated_document)
 
             result = analysis_result_collection.insert_one(analysis_result)
             analysis_result["_id"] = str(result.inserted_id)

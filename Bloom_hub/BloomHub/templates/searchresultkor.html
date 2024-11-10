@@ -91,7 +91,7 @@
                     <td>{{ video.channelTitle }}</td>
                     <td>{{ video.viewCount }}회</td>
                     <td>{{ video.duration }}</td>
-                    <td><a href="{% url 'studykor' video.videoId %}" class="button">학습하기</a></td>
+                    <td><a href="{% url 'study_kor' video.videoId %}" class="button">학습하기</a></td>
                 </tr>
             {% empty %}
                 <tr>
