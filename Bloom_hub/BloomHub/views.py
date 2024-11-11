@@ -197,7 +197,7 @@ def study_kor(request, video_id):
     return render(request, 'studykor.html', {'video': video_info})
 
 
-###########영상저장하기################################
+###########영상저장하기########################################
 # 학습할 영상 저장
 @login_required
 @csrf_exempt

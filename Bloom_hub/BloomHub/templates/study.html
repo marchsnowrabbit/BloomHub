@@ -259,11 +259,23 @@
 
             const stageSegmentsList = document.getElementById("stage-segments");
             stageSegmentsList.innerHTML = "";
+
+            // 객체 형식인지 배열 형식인지 확인
+            if (Array.isArray(data.stage_segments)) {
+            // 배열 형식일 경우
+            data.stage_segments.forEach(segment => {
+            const li = document.createElement("li");
+            li.textContent = segment.replace(/^\d+: /, ""); // 숫자와 콜론 제거
+            stageSegmentsList.appendChild(li);
+            });
+            } else {
+            // 객체 형식일 경우
             for (const [stage, segment] of Object.entries(data.stage_segments)) {
                 const li = document.createElement("li");
                 li.textContent = `${stage}: ${segment}`;
                 stageSegmentsList.appendChild(li);
             }
+        }
 
             // HTML에서 div 요소를 직접 가져와 변수로 저장
             var donutChartDiv = document.getElementById('donut-chart');
