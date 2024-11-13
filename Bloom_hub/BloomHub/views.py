@@ -31,6 +31,8 @@ import plotly.io as pio
 import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.feature_extraction.text import CountVectorizer
 from openai import OpenAI, max_retries
 
 
@@ -628,7 +630,7 @@ def extract_video_id(youtube_url):
 
 logger = logging.getLogger('myapp')
 
-# YouTube 링크에서 비디오 ID만 추출하는 함수
+#추출기 실행부
 def run_extractor_and_save_to_db(request):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -742,7 +744,7 @@ def run_extractor_and_save_to_db(request):
          
                                      
 
-#분석기
+#분석기(명사 키워드 부분 수정 할 것 TF-IDF에 LDA결합 테스트 중)
 class BloomAnalysisWithGPTandDictionary:
     def __init__(self, video_id, language):
         self.video_id = video_id
@@ -1020,20 +1022,40 @@ class BloomAnalysisWithGPTandDictionary:
 
         return merged_segments
 
-    def analyze_nouns(self, top_n=5):
+    def analyze_nouns(self, top_n=5, n_topics=3, time_interval=60):
         nouns = self.word_data[self.word_data['pos'] == 'noun']
-        nouns_text = ' '.join(nouns['word'])
-        logger.info(f"Noun text concatenated for TF-IDF analysis: {len(nouns_text)} characters")
+        # start_time을 기준으로 일정 시간 간격으로 나누어 document_id 생성
+        nouns['document_id'] = (nouns['start_time'] // time_interval).astype(int)
 
-        vectorizer = TfidfVectorizer()
-        tfidf_matrix = vectorizer.fit_transform([nouns_text])
-        feature_names = vectorizer.get_feature_names()
-        tfidf_scores = tfidf_matrix.toarray()[0]
-        top_n_indices = tfidf_scores.argsort()[-top_n:][::-1]
-        top_n_words = [feature_names[i] for i in top_n_indices]
-        
-        logger.info(f"Top {top_n} nouns by TF-IDF: {top_n_words}")
+        # document_id별로 명사 텍스트를 결합하여 문서 리스트 생성
+        nouns_text_list = [' '.join(doc['word'].tolist()) for _, doc in nouns.groupby('document_id')]
+
+        # TF-IDF 적용
+        vectorizer = TfidfVectorizer(max_df=0.85, min_df=0.05)
+        tfidf_matrix = vectorizer.fit_transform(nouns_text_list)  # [nouns_text_list] 대신 nouns_text_list만 사용
+        feature_names = vectorizer.get_feature_names()  # get_feature_names() 대신 get_feature_names_out()
+
+        # LDA 모델 적용
+        lda = LatentDirichletAllocation(n_components=n_topics, random_state=0)
+        lda.fit(tfidf_matrix)
+
+        # 각 주제별 상위 단어 수집
+        def get_top_words(model, feature_names, no_top_words):
+            top_words = []
+            for topic_idx, topic in enumerate(model.components_):
+                top_words.extend([feature_names[i] for i in topic.argsort()[:-no_top_words - 1:-1]])
+            return top_words
+    
+        top_words = get_top_words(lda, feature_names, 10)
+
+        # 전체적으로 중요한 상위 단어 n개 설정
+        top_word_counts = Counter(top_words)
+        top_n_words = [word for word, count in top_word_counts.most_common(top_n)]
+
+        logger.info(f"Top {top_n} nouns by combined TF-IDF and LDA: {top_n_words}")
+    
         return top_n_words
+
 
     def format_stage_segments(self, merged_segments):
         stage_dict = {}
