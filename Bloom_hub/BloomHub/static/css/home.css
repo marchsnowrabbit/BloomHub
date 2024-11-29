@@ -42,19 +42,25 @@ header .logo {
   color: white;
 }
 
+.logo img {
+  height: 100px; 
+  transition: transform 0.3s ease; 
+}
+
+.logo img:hover {
+  transform: scale(1.1);
+}
+
+.logo img:active {
+  transform: scale(1.2); 
+}
+
 header nav {
   display: flex;              
   gap: 35px;                 
   align-items: center;        
   margin: 0;  
   
-  /* /* margin-top: 50px; 
-  display: flex;
-  /* justify-content: center; 
-  gap: 35px;
-  align-items: center;
-  /* margin: 0; 
-  font-weight: 545; */
 }
 
 header nav a {
@@ -297,7 +303,7 @@ header .auth a:hover,
   transform: rotate(-15deg);
   top: 150px;
   left: calc(50% - 35px);
-  z-index: 3;
+  z-index: 3; 
   cursor: pointer;
   overflow: hidden;
 }
@@ -508,8 +514,8 @@ p {
   }
 
   #profile-card .card__button {
-    position: relative; /* 절대 위치 지정 */
-    bottom: 10px; /* 아래에서 20px 떨어진 위치 */
+    position: relative; 
+    bottom: 10px; 
     left: calc(25% - 20px);
     cursor: pointer;
   }

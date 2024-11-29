@@ -44,6 +44,19 @@ header .logo {
     color: white; 
 }
 
+.logo img {
+    height: 100px; 
+    transition: transform 0.3s ease; 
+}
+
+.logo img:hover {
+    transform: scale(1.1);
+}
+
+.logo img:active {
+    transform: scale(1.2); 
+}
+
 header nav {
     display: flex;              
     gap: 35px;                 
@@ -353,7 +366,7 @@ header .auth a:hover,
 
 /* 도넛 차트와 시간 흐름 그래프의 높이 및 너비 조정 */
 #donut-chart, #dot-graph {
-    width: 95%;  /* 그래프가 박스 내에서 간격을 유지하도록 설정 */
+    width: 95%; 
     height: 90%;
     margin-left: auto;
     margin-right: auto;
@@ -392,8 +405,6 @@ header .auth a:hover,
     font-family: 'KCC-Hanbit';
 }
 
-
-/* Mobile-specific styles */
 @media only screen and (max-width: 768px) {
     header {
         display: flex;

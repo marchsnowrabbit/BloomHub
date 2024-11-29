@@ -40,6 +40,19 @@ header .logo {
     color: white; 
 }
 
+.logo img {
+    height: 100px; 
+    transition: transform 0.3s ease; 
+}
+
+.logo img:hover {
+    transform: scale(1.1);
+}
+
+.logo img:active {
+    transform: scale(1.2); 
+}
+
 header nav {
     display: flex;              
     gap: 35px;                 
@@ -496,19 +509,19 @@ table th:nth-child(6) {
 /* 썸네일 크기 조정: 폭 줄이기 */
 table td:nth-child(1),
 table th:nth-child(1) {
- width: 30px; /* 기존 150px에서 줄였습니다 */
+ width: 30px; 
 }
 
 /* 영상 제목 크기 조정: 폭 줄이기 */
 table td:nth-child(2),
 table th:nth-child(2) {
- width: 150px; /* 기존 370px에서 줄였습니다 */
+    width: 150px;
 }
 
  /* 학습하기 버튼 크기 조정: 폭 늘리기 */
 table td:nth-child(6),
 table th:nth-child(6) {
- width: 180px; /* 기존 75px에서 늘렸습니다 */
+    width: 180px; 
 }
 
 }
