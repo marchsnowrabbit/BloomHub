@@ -395,7 +395,7 @@ button:disabled {
     
     h1:after {
         right: calc(2% - -12px);
-        width: 468px;
+        width: 440px;
     }
 
     #description {
@@ -404,5 +404,9 @@ button:disabled {
 
     .howtokey a {
         font-size: 18px;
+    }
+
+    .container {
+        width: 430px;
     }
 }

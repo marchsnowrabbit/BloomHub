@@ -545,4 +545,8 @@ pointer-events: none;
     #hr-green {
     left:3px;    
     }
+
+    .container {
+        width: 430px;
+    }
 }

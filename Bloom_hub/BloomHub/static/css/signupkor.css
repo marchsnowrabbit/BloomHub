@@ -397,10 +397,14 @@ button:disabled {
     }
     
     h1:after {
-        right: calc(22% - 1px);
+        right: calc(20% - 0px);
     }
 
     #description {
         margin-left: 20px;
+    }
+
+    .container {
+        width: 430px;
     }
 }
