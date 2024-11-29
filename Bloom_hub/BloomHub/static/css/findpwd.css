@@ -417,4 +417,8 @@ button:hover {
         left:1px;
         
     }
+
+    .container {
+        width: 425px;
+    }
 }
