@@ -442,7 +442,7 @@ font-size:12px;
     }
 
     #hr-green {
-        right: calc(7% - 0px);
+        right: calc(7% - 14px);
     }
 
     .description-container {
@@ -502,6 +502,10 @@ font-size:12px;
     .signin__btn {
         top:200px;
         right: calc(0% - -10px);
+    }
+
+    .container {
+        width: 430px;
     }
 
 
