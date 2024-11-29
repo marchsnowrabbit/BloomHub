@@ -40,6 +40,19 @@ header .logo {
     color: white; 
 }
 
+.logo img {
+    height: 100px; 
+    transition: transform 0.3s ease; 
+}
+
+.logo img:hover {
+    transform: scale(1.1);
+}
+
+.logo img:active {
+    transform: scale(1.2); 
+}
+
 header nav {
     display: flex;              
     gap: 35px;                 

@@ -43,6 +43,19 @@ header .logo {
     color: white; 
 }
 
+.logo img {
+    height: 100px; 
+    transition: transform 0.3s ease; 
+}
+
+.logo img:hover {
+    transform: scale(1.1);
+}
+
+.logo img:active {
+    transform: scale(1.2); 
+}
+
 
 header nav {
     display: flex;              
@@ -176,7 +189,6 @@ header .auth a:hover,
     right: calc(30% - 0px);
 }
 
-/*^ 설명 색깔 */
 .container #description {
     font-size: 18px;
     color: #000000;
@@ -436,14 +448,14 @@ pointer-events: none;
 
 /* 로딩 애니메이션 스타일 */
 #loading-animation {
-    width: 150px; /* Verify 버튼과 동일한 크기 */
-    height: 30px; /* Verify 버튼과 동일한 크기 */
+    width: 150px; 
+    height: 30px; 
     margin: 0 auto;
     border: none;
     position: relative;
-    left: calc(38% - 0px); /* Verify 버튼과 동일한 위치 */
-    top: -310px; /* Verify 버튼과 동일한 위치 */
-    display: flex; /* 중앙 정렬 */
+    left: calc(38% - 0px); 
+    top: -310px; 
+    display: flex; 
     justify-content: center; 
     align-items: center;
 }
@@ -548,5 +560,10 @@ pointer-events: none;
 
     .container {
         width: 430px;
+    }
+
+    #id-display {
+        right: 50px;
+        position: relative;
     }
 }
