@@ -22,8 +22,8 @@ BloomScope is a tool that analyzes YouTube video subtitles to automatically tag 
 3. **Bloom's Taxonomy Analysis**  
    - Automatically classify video subtitles into six Bloom's Taxonomy stages (Remember, Understand, Apply, Analyze, Evaluate, Create).  
    - Visualize results with graphs (donut chart and scatter plot).
-   <img width="485" alt="스크린샷 2024-12-02 오후 2 41 29" src="https://github.com/user-attachments/assets/f072efbb-d003-44e1-8f99-5ee7648642fd">
-   <img width="483" alt="스크린샷 2024-12-02 오후 2 42 05" src="https://github.com/user-attachments/assets/7bd87331-5f68-4580-b8ca-04cebc7ff430">
+   - <img width="485" alt="스크린샷 2024-12-02 오후 2 41 29" src="https://github.com/user-attachments/assets/f072efbb-d003-44e1-8f99-5ee7648642fd">
+   - <img width="483" alt="스크린샷 2024-12-02 오후 2 42 05" src="https://github.com/user-attachments/assets/7bd87331-5f68-4580-b8ca-04cebc7ff430">
 
 4. **User Data Management**  
    - Efficiently manage user-specific learning data using MongoDB.  
@@ -168,8 +168,9 @@ BloomScope는 YouTube 동영상의 자막 데이터를 분석하여 Bloom's Taxo
 1. **동영상 검색 및 저장**
    - YouTube API를 사용하여 동영상을 검색하고 학습용으로 저장할 수 있습니다.
    - 저장된 동영상의 메타데이터와 사용자 정보를 관리합니다.
-   <img width="487" alt="스크린샷 2024-12-02 오후 2 40 56" src="https://github.com/user-attachments/assets/7d5993a0-3ce2-4e9c-9e75-a7d90233f277">
-   <img width="484" alt="스크린샷 2024-12-02 오후 2 41 11" src="https://github.com/user-attachments/assets/05509e15-9de7-40ca-9a30-654d9e2a971b">
+   - <img width="484" alt="스크린샷 2024-12-02 오후 2 41 11" src="https://github.com/user-attachments/assets/7d5993a0-3ce2-4e9c-9e75-a7d90233f277">
+   - <img width="487" alt="스크린샷 2024-12-02 오후 2 40 56" src="https://github.com/user-attachments/assets/05509e15-9de7-40ca-9a30-654d9e2a971b">
+   
 
 2. **언어 기반 데이터 추출**
    - 한국어(KR)와 영어(EN) 자막 데이터를 분석합니다.
@@ -178,8 +179,8 @@ BloomScope는 YouTube 동영상의 자막 데이터를 분석하여 Bloom's Taxo
 3. **Bloom's Taxonomy 분석**
    - 자막 데이터를 기반으로 Bloom's Taxonomy의 6단계(기억, 이해, 적용, 분석, 평가, 창조)로 자동 분류합니다.
    - 결과는 시각화 그래프로 제공됩니다 (도넛 차트 및 도트 그래프).
-   <img width="485" alt="스크린샷 2024-12-02 오후 2 41 29" src="https://github.com/user-attachments/assets/f072efbb-d003-44e1-8f99-5ee7648642fd">
-   <img width="483" alt="스크린샷 2024-12-02 오후 2 42 05" src="https://github.com/user-attachments/assets/7bd87331-5f68-4580-b8ca-04cebc7ff430">
+   - <img width="485" alt="스크린샷 2024-12-02 오후 2 41 29" src="https://github.com/user-attachments/assets/f072efbb-d003-44e1-8f99-5ee7648642fd">
+   - <img width="483" alt="스크린샷 2024-12-02 오후 2 42 05" src="https://github.com/user-attachments/assets/7bd87331-5f68-4580-b8ca-04cebc7ff430">
 
 4. **사용자 데이터 관리**
    - MongoDB를 통해 사용자별 학습 데이터를 효율적으로 관리합니다.
