@@ -86,23 +86,42 @@ WIKIFIER_API_KEY=your_wikifier_api_key
 ## 📂 Directory Structure  
 
 ```plaintext
-BloomScope/
-│
-├── bloomscope/           # Main Django application
-│   ├── settings.py       # Project settings
-│   ├── models.py         # Database models
-│   ├── views.py          # View logic
-│   ├── templates/        # HTML templates
-│   └── static/           # Static files (CSS, JS)
-│
-├── scripts/              # Data processing scripts
-│   ├── GPT_KRextractor.py
-│   ├── GPT_ENextractor.py
-│   └── gpt_analysis.py
-│
-├── requirements.txt      # Python dependencies
-├── .env.example          # Environment variable template
-└── README.md             # Project documentation
+
+Bloom_hub/
+├── Bloom_hub/                # Main Django project settings and configurations
+│   ├── EN_bloom_dictionary/  # English Bloom dictionary-related files
+│   ├── KR_bloom_dictionary/  # Korean Bloom dictionary-related files
+│   ├── __pycache__/          # Compiled Python files (ignored by Git)
+│   ├── __init__.py           # Marks this directory as a Python package
+│   ├── asgi.py               # ASGI configuration for asynchronous support
+│   ├── settings.py           # Django project settings
+│   ├── urls.py               # Project-wide URL configurations
+│   ├── wsgi.py               # WSGI configuration for deployment
+│   ├── .DS_Store             # macOS system file (should be ignored by Git)
+│   └── ...
+├── BloomHub/                 # Core app for your Django project
+│   ├── management/commands/  # Custom management commands directory
+│   ├── migrations/           # Database migration files
+│   ├── static/               # Static files (CSS, JavaScript, images)
+│   ├── templates/            # HTML templates
+│   ├── __pycache__/          # Compiled Python files (ignored by Git)
+│   ├── .DS_Store             # macOS system file (should be ignored by Git)
+│   ├── __init__.py           # Marks this directory as a Python package
+│   ├── admin.py              # Django admin site configurations
+│   ├── apps.py               # App configuration file
+│   ├── models.py             # Database models
+│   ├── reserch.py            # Research-related scripts or utilities
+│   ├── tests.py              # Unit tests for this app
+│   ├── urls.py               # App-specific URL configurations
+│   ├── views.py              # Views to handle HTTP requests
+│   └── ...
+├── venv/                     # Python virtual environment (excluded from Git)
+├── manage.py                 # Django management script
+├── README.md                 # Project documentation
+├── requirements.txt          # Python dependencies
+├── .gitignore                # Git ignore rules
+└── .DS_Store                 # macOS system file (should be ignored by Git)
+
 ```
 
 ---
@@ -232,23 +251,41 @@ python manage.py runserver
 ## 📂 주요 디렉토리 구조  
 
 ```plaintext
-BloomScope/
-│
-├── bloomscope/           # Django 메인 애플리케이션
-│   ├── settings.py       # 프로젝트 설정
-│   ├── models.py         # 데이터베이스 모델 정의
-│   ├── views.py          # 뷰 로직
-│   ├── templates/        # HTML 템플릿
-│   └── static/           # 정적 파일 (CSS, JS)
-│
-├── scripts/              # 데이터 처리 스크립트
-│   ├── GPT_KRextractor.py
-│   ├── GPT_ENextractor.py
-│   └── gpt_analysis.py
-│
-├── requirements.txt      # Python 종속성 목록
-├── .env.example          # 환경 변수 템플릿
-└── README.md             # 프로젝트 설명서
+Bloom_hub/
+├── Bloom_hub/                # Django 프로젝트 설정 및 구성
+│   ├── EN_bloom_dictionary/  # 영어 Bloom 사전 관련 파일
+│   ├── KR_bloom_dictionary/  # 한국어 Bloom 사전 관련 파일
+│   ├── __pycache__/          # 컴파일된 Python 파일 (Git에서 제외됨)
+│   ├── __init__.py           # 해당 디렉토리를 Python 패키지로 인식
+│   ├── asgi.py               # 비동기 지원을 위한 ASGI 설정
+│   ├── settings.py           # Django 프로젝트 설정 파일
+│   ├── urls.py               # 프로젝트 전반의 URL 설정
+│   ├── wsgi.py               # 배포를 위한 WSGI 설정
+│   ├── .DS_Store             # macOS 시스템 파일 (Git에서 제외해야 함)
+│   └── ...
+├── BloomHub/                 # Django 프로젝트의 핵심 앱 디렉토리
+│   ├── management/commands/  # 사용자 정의 관리 명령어 디렉토리
+│   ├── migrations/           # 데이터베이스 마이그레이션 파일
+│   ├── static/               # 정적 파일 (CSS, JavaScript, 이미지 등)
+│   ├── templates/            # HTML 템플릿
+│   ├── __pycache__/          # 컴파일된 Python 파일 (Git에서 제외됨)
+│   ├── .DS_Store             # macOS 시스템 파일 (Git에서 제외해야 함)
+│   ├── __init__.py           # 해당 디렉토리를 Python 패키지로 인식
+│   ├── admin.py              # Django 관리자 설정
+│   ├── apps.py               # 앱 구성 파일
+│   ├── models.py             # 데이터베이스 모델 정의
+│   ├── reserch.py            # 리서치 관련 스크립트나 유틸리티
+│   ├── tests.py              # 앱 테스트 코드
+│   ├── urls.py               # 앱 전용 URL 설정
+│   ├── views.py              # HTTP 요청 처리를 위한 뷰
+│   └── ...
+├── venv/                     # Python 가상 환경 디렉토리 (Git에서 제외됨)
+├── manage.py                 # Django 관리 스크립트
+├── README.md                 # 프로젝트 문서 파일
+├── requirements.txt          # Python 의존성 패키지 목록
+├── .gitignore                # Git에서 제외할 파일 목록
+└── .DS_Store                 # macOS 시스템 파일 (Git에서 제외해야 함)
+
 ```
 
 ---
