@@ -5,6 +5,8 @@
 
 BloomScope is a tool that analyzes YouTube video subtitles to automatically tag them according to Bloom's Taxonomy cognitive stages. Built with Django and MongoDB, it leverages NLP techniques and GPT models to optimize video content for educational purposes.
 
+
+
 [![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api?name=marchsnowrabbit)](https://velog.io/@marchsnowrabbit)
 
 ---
@@ -14,8 +16,8 @@ BloomScope is a tool that analyzes YouTube video subtitles to automatically tag 
 1. **Video Search and Save**  
    - Search for YouTube videos using the YouTube Data API and save them for learning purposes.  
    - Manage metadata and user-specific information for saved videos.
-     <img width="487" alt="스크린샷 2024-12-02 오후 2 40 56" src="https://github.com/user-attachments/assets/7d5993a0-3ce2-4e9c-9e75-a7d90233f277">
-     <img width="484" alt="스크린샷 2024-12-02 오후 2 41 11" src="https://github.com/user-attachments/assets/05509e15-9de7-40ca-9a30-654d9e2a971b">
+   - <img width="487" alt="스크린샷 2024-12-02 오후 2 40 56" src="https://github.com/user-attachments/assets/7d5993a0-3ce2-4e9c-9e75-a7d90233f277">
+   - <img width="484" alt="스크린샷 2024-12-02 오후 2 41 11" src="https://github.com/user-attachments/assets/05509e15-9de7-40ca-9a30-654d9e2a971b">
 
 2. **Language-Based Data Extraction**  
    - Analyze Korean (KR) and English (EN) subtitles.  
@@ -23,9 +25,9 @@ BloomScope is a tool that analyzes YouTube video subtitles to automatically tag 
 
 3. **Bloom's Taxonomy Analysis**  
    - Automatically classify video subtitles into six Bloom's Taxonomy stages (Remember, Understand, Apply, Analyze, Evaluate, Create).  
-   - Visualize results with graphs (donut chart and scatter plot).
-    <img width="485" alt="스크린샷 2024-12-02 오후 2 41 29" src="https://github.com/user-attachments/assets/f072efbb-d003-44e1-8f99-5ee7648642fd">
-    <img width="483" alt="스크린샷 2024-12-02 오후 2 42 05" src="https://github.com/user-attachments/assets/7bd87331-5f68-4580-b8ca-04cebc7ff430">
+   - Visualize results with graphs (donut chart and scatter plot)
+   - <img width="485" alt="스크린샷 2024-12-02 오후 2 41 29" src="https://github.com/user-attachments/assets/f072efbb-d003-44e1-8f99-5ee7648642fd">
+   - <img width="483" alt="스크린샷 2024-12-02 오후 2 42 05" src="https://github.com/user-attachments/assets/7bd87331-5f68-4580-b8ca-04cebc7ff430">
 
 4. **User Data Management**  
    - Efficiently manage user-specific learning data using MongoDB.  
@@ -163,6 +165,11 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 BloomScope는 YouTube 동영상의 자막 데이터를 분석하여 Bloom's Taxonomy의 인지 단계에 따라 자동으로 태깅하고, 학습 목적에 최적화된 정보를 제공합니다. 이 프로젝트는 Django와 MongoDB를 기반으로 구현되었으며, NLP 기술과 GPT 모델을 활용합니다.
 
+
+[![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api?name=marchsnowrabbit)](https://velog.io/@marchsnowrabbit)
+
+
+
 ---
 
 ## 🛠 주요 기능  
@@ -170,8 +177,8 @@ BloomScope는 YouTube 동영상의 자막 데이터를 분석하여 Bloom's Taxo
 1. **동영상 검색 및 저장**
    - YouTube API를 사용하여 동영상을 검색하고 학습용으로 저장할 수 있습니다.
    - 저장된 동영상의 메타데이터와 사용자 정보를 관리합니다.
-    <img width="484" alt="스크린샷 2024-12-02 오후 2 41 11" src="https://github.com/user-attachments/assets/7d5993a0-3ce2-4e9c-9e75-a7d90233f277">
-    <img width="487" alt="스크린샷 2024-12-02 오후 2 40 56" src="https://github.com/user-attachments/assets/05509e15-9de7-40ca-9a30-654d9e2a971b">
+   - <img width="484" alt="스크린샷 2024-12-02 오후 2 41 11" src="https://github.com/user-attachments/assets/7d5993a0-3ce2-4e9c-9e75-a7d90233f277">
+   - <img width="487" alt="스크린샷 2024-12-02 오후 2 40 56" src="https://github.com/user-attachments/assets/05509e15-9de7-40ca-9a30-654d9e2a971b">
    
 
 2. **언어 기반 데이터 추출**
@@ -181,8 +188,8 @@ BloomScope는 YouTube 동영상의 자막 데이터를 분석하여 Bloom's Taxo
 3. **Bloom's Taxonomy 분석**
    - 자막 데이터를 기반으로 Bloom's Taxonomy의 6단계(기억, 이해, 적용, 분석, 평가, 창조)로 자동 분류합니다.
    - 결과는 시각화 그래프로 제공됩니다 (도넛 차트 및 도트 그래프).
-      <img width="485" alt="스크린샷 2024-12-02 오후 2 41 29" src="https://github.com/user-attachments/assets/f072efbb-d003-44e1-8f99-5ee7648642fd">
-    <img width="483" alt="스크린샷 2024-12-02 오후 2 42 05" src="https://github.com/user-attachments/assets/7bd87331-5f68-4580-b8ca-04cebc7ff430">
+   - <img width="485" alt="스크린샷 2024-12-02 오후 2 41 29" src="https://github.com/user-attachments/assets/f072efbb-d003-44e1-8f99-5ee7648642fd">
+   - <img width="483" alt="스크린샷 2024-12-02 오후 2 42 05" src="https://github.com/user-attachments/assets/7bd87331-5f68-4580-b8ca-04cebc7ff430">
 
 4. **사용자 데이터 관리**
    - MongoDB를 통해 사용자별 학습 데이터를 효율적으로 관리합니다.
