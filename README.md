@@ -197,7 +197,6 @@ BloomScope는 YouTube 동영상의 자막 데이터를 분석하여 Bloom's Taxo
 - **Python 3.9 이상**
 - **Django 4.0 이상**
 - **MongoDB (Atlas 또는 로컬 인스턴스)**
-- **Node.js (프런트엔드 빌드를 위한 선택 사항)**
 
 ### 2. 설치 방법  
 
