@@ -70,12 +70,15 @@ python manage.py runserver
 
 
 ### 3. API Key Setup  
-Add your YouTube Data API and Wikifier API keys to the `.env` file:  
-```env
-YOUTUBE_API_KEY=your_youtube_api_key
-WIKIFIER_API_KEY=your_wikifier_api_key
-```
+- Add the GPT api key to the file 'views.py ':
+```views.py
+def gpt_bloom_classification(self, grouped_sentences):
+client = OpenAI (api_key="your-api-key") #Enter the key value here
+max_retries = 3 # Maximum retries
 
+valid_stages = {'Remember', 'Understand', 'Apply', 'Analyze', 'Evaluate', 'Create'}
+```
+- Please sign up for membership and fill out a valid wikifier_key value before using video analysis.
 ---
 
 ## 📂 Directory Structure  
@@ -95,7 +98,6 @@ Bloom_hub/
 │   ├── .DS_Store             # macOS system file (should be ignored by Git)
 │   └── ...
 ├── BloomHub/                 # Core app for your Django project
-│   ├── management/commands/  # Custom management commands directory
 │   ├── migrations/           # Database migration files
 │   ├── static/               # Static files (CSS, JavaScript, images)
 │   ├── templates/            # HTML templates
@@ -231,12 +233,16 @@ python manage.py runserver
 ```
 
 ### 3. API 키 설정  
-- YouTube Data API 및 Wikifier API 키를 `.env` 파일에 추가하세요:
-  ```env
-  YOUTUBE_API_KEY=your_youtube_api_key
-  WIKIFIER_API_KEY=your_wikifier_api_key
-  ```
+- GPT api키를 `views.py` 파일에 추가하세요:
+  ```views.py
+   def gpt_bloom_classification(self, grouped_sentences):
+        client = OpenAI(api_key="your-api-key")  #키값을 여기에 입력
+        max_retries = 3  # 최대 재시도 횟수
+  
+        valid_stages = {'Remember', 'Understand', 'Apply', 'Analyze', 'Evaluate', 'Create'}
 
+  ```
+- 영상 분석을 사용하기 전 회원가입하시고, 유효한 wikifier_key값을 작성해 주세요.
 ---
 
 ## 📂 주요 디렉토리 구조  
@@ -255,7 +261,6 @@ Bloom_hub/
 │   ├── .DS_Store             # macOS 시스템 파일 (Git에서 제외해야 함)
 │   └── ...
 ├── BloomHub/                 # Django 프로젝트의 핵심 앱 디렉토리
-│   ├── management/commands/  # 사용자 정의 관리 명령어 디렉토리
 │   ├── migrations/           # 데이터베이스 마이그레이션 파일
 │   ├── static/               # 정적 파일 (CSS, JavaScript, 이미지 등)
 │   ├── templates/            # HTML 템플릿
