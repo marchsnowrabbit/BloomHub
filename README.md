@@ -5,6 +5,8 @@
 
 BloomScope is a tool that analyzes YouTube video subtitles to automatically tag them according to Bloom's Taxonomy cognitive stages. Built with Django and MongoDB, it leverages NLP techniques and GPT models to optimize video content for educational purposes.
 
+[![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api?name=marchsnowrabbit)](https://velog.io/@marchsnowrabbit)
+
 ---
 
 ## 🛠 Key Features  
