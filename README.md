@@ -41,7 +41,7 @@ BloomScope is a tool that analyzes YouTube video subtitles to automatically tag 
 
 - **Python 3.9 or higher**  
 - **Django 4.0 or higher**  
-- **MongoDB (Atlas or local instance)**  
+- **MongoDB (Atlas)**  
 
 ### 2. Installation  
 
@@ -50,21 +50,11 @@ BloomScope is a tool that analyzes YouTube video subtitles to automatically tag 
 git clone https://github.com/username/BloomScope.git
 cd BloomScope
 
-# 2. Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Configure environment variables
-cp .env.example .env
-# Add your API keys and MongoDB credentials in the .env file
-
-# 5. Apply migrations
+# 2. Apply migrations
+cd Bloom_hub
 python manage.py migrate
 
-# 6. Run the local server
+# 3. Run the local server
 python manage.py runserver
 ```
 
@@ -87,22 +77,18 @@ valid_stages = {'Remember', 'Understand', 'Apply', 'Analyze', 'Evaluate', 'Creat
 
 Bloom_hub/
 ├── Bloom_hub/                # Main Django project settings and configurations
-│   ├── EN_bloom_dictionary/  # English Bloom dictionary-related files
-│   ├── KR_bloom_dictionary/  # Korean Bloom dictionary-related files
 │   ├── __pycache__/          # Compiled Python files (ignored by Git)
 │   ├── __init__.py           # Marks this directory as a Python package
 │   ├── asgi.py               # ASGI configuration for asynchronous support
 │   ├── settings.py           # Django project settings
 │   ├── urls.py               # Project-wide URL configurations
 │   ├── wsgi.py               # WSGI configuration for deployment
-│   ├── .DS_Store             # macOS system file (should be ignored by Git)
 │   └── ...
 ├── BloomHub/                 # Core app for your Django project
 │   ├── migrations/           # Database migration files
 │   ├── static/               # Static files (CSS, JavaScript, images)
 │   ├── templates/            # HTML templates
 │   ├── __pycache__/          # Compiled Python files (ignored by Git)
-│   ├── .DS_Store             # macOS system file (should be ignored by Git)
 │   ├── __init__.py           # Marks this directory as a Python package
 │   ├── admin.py              # Django admin site configurations
 │   ├── apps.py               # App configuration file
@@ -117,7 +103,6 @@ Bloom_hub/
 ├── README.md                 # Project documentation
 ├── requirements.txt          # Python dependencies
 ├── .gitignore                # Git ignore rules
-└── .DS_Store                 # macOS system file (should be ignored by Git)
 
 ```
 
@@ -205,30 +190,20 @@ BloomScope는 YouTube 동영상의 자막 데이터를 분석하여 Bloom's Taxo
 
 - **Python 3.9 이상**
 - **Django 4.0 이상**
-- **MongoDB (Atlas 또는 로컬 인스턴스)**
+- **MongoDB (Atlas)**
 
 ### 2. 설치 방법  
 
 ```bash
 # 1. 프로젝트 클론
-git clone https://github.com/username/BloomScope.git
+git clone https://github.com/marchsnowrabbit/BloomScope.git
 cd BloomScope
 
-# 2. 가상 환경 생성 및 활성화
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# 3. 패키지 설치
-pip install -r requirements.txt
-
-# 4. 환경 변수 설정
-cp .env.example .env
-# .env 파일에서 API 키 및 MongoDB 정보를 입력하세요.
-
-# 5. Django 마이그레이션
+# 2. Django 마이그레이션
+cd Bloom_hub
 python manage.py migrate
 
-# 6. 로컬 서버 실행
+# 3. 로컬 서버 실행
 python manage.py runserver
 ```
 
@@ -243,6 +218,7 @@ python manage.py runserver
 
   ```
 - 영상 분석을 사용하기 전 회원가입하시고, 유효한 wikifier_key값을 작성해 주세요.
+  
 ---
 
 ## 📂 주요 디렉토리 구조  
@@ -250,22 +226,18 @@ python manage.py runserver
 ```plaintext
 Bloom_hub/
 ├── Bloom_hub/                # Django 프로젝트 설정 및 구성
-│   ├── EN_bloom_dictionary/  # 영어 Bloom 사전 관련 파일
-│   ├── KR_bloom_dictionary/  # 한국어 Bloom 사전 관련 파일
 │   ├── __pycache__/          # 컴파일된 Python 파일 (Git에서 제외됨)
 │   ├── __init__.py           # 해당 디렉토리를 Python 패키지로 인식
 │   ├── asgi.py               # 비동기 지원을 위한 ASGI 설정
 │   ├── settings.py           # Django 프로젝트 설정 파일
 │   ├── urls.py               # 프로젝트 전반의 URL 설정
 │   ├── wsgi.py               # 배포를 위한 WSGI 설정
-│   ├── .DS_Store             # macOS 시스템 파일 (Git에서 제외해야 함)
 │   └── ...
 ├── BloomHub/                 # Django 프로젝트의 핵심 앱 디렉토리
 │   ├── migrations/           # 데이터베이스 마이그레이션 파일
 │   ├── static/               # 정적 파일 (CSS, JavaScript, 이미지 등)
 │   ├── templates/            # HTML 템플릿
 │   ├── __pycache__/          # 컴파일된 Python 파일 (Git에서 제외됨)
-│   ├── .DS_Store             # macOS 시스템 파일 (Git에서 제외해야 함)
 │   ├── __init__.py           # 해당 디렉토리를 Python 패키지로 인식
 │   ├── admin.py              # Django 관리자 설정
 │   ├── apps.py               # 앱 구성 파일
@@ -280,7 +252,6 @@ Bloom_hub/
 ├── README.md                 # 프로젝트 문서 파일
 ├── requirements.txt          # Python 의존성 패키지 목록
 ├── .gitignore                # Git에서 제외할 파일 목록
-└── .DS_Store                 # macOS 시스템 파일 (Git에서 제외해야 함)
 
 ```
 
