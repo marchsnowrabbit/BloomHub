@@ -50,11 +50,14 @@ BloomScope is a tool that analyzes YouTube video subtitles to automatically tag 
 git clone https://github.com/username/BloomScope.git
 cd BloomScope
 
-# 2. Apply migrations
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Apply migrations
 cd Bloom_hub
 python manage.py migrate
 
-# 3. Run the local server
+# 4. Run the local server
 python manage.py runserver
 ```
 
@@ -114,8 +117,6 @@ BloomScope provides two types of graphs based on the analyzed data:
 
 1. **Donut Chart**: Visualizes the proportion of each Bloom stage.  
 2. **Scatter Plot**: Shows the relationship between Bloom stages and time segments.  
-
-Results are **saved in MongoDB** and accessible through the user interface.
 
 ---
 
@@ -199,12 +200,16 @@ BloomScope는 YouTube 동영상의 자막 데이터를 분석하여 Bloom's Taxo
 git clone https://github.com/marchsnowrabbit/BloomScope.git
 cd BloomScope
 
-# 2. Django 마이그레이션
+# 2. 패키지 설치
+pip install -r requirements.txt
+
+# 3. Django 마이그레이션
 cd Bloom_hub
 python manage.py migrate
 
-# 3. 로컬 서버 실행
+# 4. 로컬 서버 실행
 python manage.py runserver
+
 ```
 
 ### 3. API 키 설정  
@@ -262,8 +267,6 @@ BloomScope는 학습 데이터를 기반으로 두 가지 그래프를 제공합
 
 1. **도넛 차트**: 각 Bloom 단계의 비율 시각화  
 2. **도트 그래프**: Bloom 단계와 시간 구간 간의 관계를 나타냄  
-
-분석 결과는 **MongoDB에 저장**되며, 사용자 인터페이스에서 확인할 수 있습니다.
 
 ---
 
